@@ -1,0 +1,71 @@
+*** Product Vendors Changelog ***
+
+2016.04.04 - version 2.0.4
+* Add - Shortcode to list all vendors [wcpv_vendor_list].
+* Add - Placeholder commission in commission fields so users know what the current commission is.
+* Tweak - Don't display vendor registration form when vendor is logged in.
+* Fix - Vendor create products were not showing properly.
+
+2016.03.24 - version 2.0.3
+* Fix - Error when vendor has bookings enabled but bookings plugin is not active.
+* Remove - Visibility and featured product settings from vendor quick edit.
+* Add - Trash product capability to vendors.
+
+2016.03.16 - version 2.0.2
+* Fix - Possible non object issue on commission list if product was deleted.
+* Fix - Stock not being updated after order.
+* Fix - Product edit was not able to unselect a vendor.
+* Remove - Bookings global availability options for vendors.
+* Remove - Bookings resources for vendors.
+
+2016.03.02 - version 2.0.1
+* Fix - Clear bookings calendar cache to prevent wrong bookings from showing to vendors.
+
+2016.02.23 - version 2.0.0
+* Update - Release of 2.0.0 ( see here for changes https://docs.woothemes.com/document/product-vendors/#section-2 )
+ 
+2014.05.13 - version 1.0.9
+* New - Adding compatibility for WooCommerce Bookings extension
+* Fix - Fixing typos in dashboard
+
+2014.04.03 - version 1.0.8
+* New - Limiting media library to only show media items from current user's vendor
+* Tweak - Showing correct product and media counts for all statuses & views on list tables
+* Tweak - Adding Product Vendors admin pages to WooCommerce page list - this fixes the Chosen inputs on all pages
+* Fix - Fixing updating of vendor details page
+
+2014.01.10 - version 1.0.7
+* Update - Updating calls to deprecated $woocommerce->add_inline_js() in WooCommerce 2.1+ and ensuring backwards compatibility for older versions
+* Update - Updating Commissions menu icon to vector font icon
+* Update - Removing Javascript for tooltips from dashboard report for WooCommerce 2.1+
+* Fix - Fixing PHP notices in WooCommerce 2.1+
+* Fix - Fixing rare issue with product access permissions in dashboard
+
+2014.01.01 - version 1.0.6
+* Fix - Limiting request filter to dashboard requests only
+
+2013.12.20 - version 1.0.5
+* Update - Adding lots of actions and filters for extensibility
+* Tweak - Improving vendor description display
+* Tweak - Improving admin input fields display
+
+2013.12.09 - version 1.0.4
+* Fixing rounding errors in CSV export
+
+2013.11.22 - version 1.0.3
+* Fixing rounding errors
+* Fixing duplicate PayPal email address on CSV export
+* Fixing saving of vendor admins
+
+2013.09.09 - version 1.0.2
+* Allowing vendors to upload images to their own products
+* Fixing commission calculation in some instances
+* Fixing bug that caused duplicate vendors to display when editing a product
+
+2013.08.26 - version 1.0.1
+* Adding 'product-vendor' and current vendor slug as body classes on vendor product pages
+* Fixing bug that caused the vendor URL to sometimes return a WP_Error object
+
+2013.08.15 - version 1.0
+* First Release
+ 
