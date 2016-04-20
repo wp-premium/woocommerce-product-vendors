@@ -62,20 +62,48 @@ class WC_Product_Vendors_Commission {
 	/**
 	 * Pays the vendor their commission using passed in mass payments
 	 *
+	 * @todo currently batch processing may or may not process right away in PayPal
+	 *       but we're just flagging all commissions as paid after sending in the 
+	 *       batch payments.  We need to make this smarter by scheduling a cron job
+	 *       to periodically check the status of any batch jobs and flag commission paid
+	 *       status accordingly.
 	 * @access public
 	 * @since 2.0.0
-	 * @version 2.0.0
+	 * @version 2.0.6
 	 * @param int $commission_ids list of commission ids
-	 * @return mixed
+	 * @return bool
 	 */
 	public function pay( $commission_ids = array() ) {
 		if ( empty( $commission_ids ) ) {
 			return;
 		}
 
-		$commissions = $this->get_commission_data( $commission_ids );
+		$commission_data = $this->get_commission_data( $commission_ids );
+		$commission_data_save = $commission_data;
 
-		return $this->masspay->do_payment( $commissions );
+		// we want to combine each vendors total commission so that store owners
+		// will not be charged per transaction for all items for each vendor
+		if ( apply_filters( 'wcpv_combine_total_commission_payout_per_vendor', true ) ) {
+			$commission_data = $this->combine_total_commission_per_vendor( $commission_data );
+		}
+
+		$batch_id = $this->masspay->do_payment( $commission_data );
+
+		if ( ! empty( $batch_id ) ) {
+			// get the batch status of items
+			$batch_results = $this->masspay->get_batch_status( $batch_id );
+
+			// update commission status
+			if ( ! empty( $batch_results ) ) {
+				$results = json_decode( $batch_results );
+
+				foreach( $commission_data_save as $commission ) {
+					$this->update_status( absint( $commission->id ), absint( $commission->order_item_id ), 'paid' );
+				}
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -103,25 +131,66 @@ class WC_Product_Vendors_Commission {
 		// prepare it
 		$commission_ids = "'" . implode( "','", $commission_ids ) . "'";
 
-		$commissions = $wpdb->get_results( "SELECT DISTINCT * FROM {$this->table_name} WHERE `id` IN ( $commission_ids ) AND `commission_status` = 'unpaid'" );
+		$commissions = $wpdb->get_results( "SELECT DISTINCT `id`, `order_id`, `order_item_id`, `vendor_id`, `total_commission_amount`  FROM {$this->table_name} WHERE `id` IN ( $commission_ids ) AND `commission_status` = 'unpaid'" );
 
 		return $commissions;
 	}
 
 	/**
-	 * Gets the list of unpaid commission data
+	 * Combines the total commission per vendor
+	 *
+	 * @access public
+	 * @since 2.0.6
+	 * @version 2.0.6
+	 * @param array $commission_data
+	 * @return array $combined_commission
+	 */
+	public function combine_total_commission_per_vendor( $commission_data = array() ) {
+		if ( empty( $commission_data ) ) {
+			return null;
+		}
+
+		$combined_commission = array();
+
+		foreach( $commission_data as $commission ) {
+			if ( ! isset( $combined_commission[ $commission->vendor_id ] ) ) {
+				$combined_commission[ $commission->vendor_id ] = $commission;
+			} else {
+				// add to the total commission
+				$combined_commission[ $commission->vendor_id ]->total_commission_amount += (float) $commission->total_commission_amount;
+			}
+		}
+
+		return $combined_commission;
+	}
+
+	/**
+	 * Gets the list of unpaid commission ids
 	 *
 	 * @access public
 	 * @since 2.0.0
 	 * @version 2.0.0
-	 * @return object $commission
+	 * @return array $filtered_commission_ids
 	 */
-	public function get_unpaid_commission_data() {
+	public function get_unpaid_commission_ids() {
 		global $wpdb;
 
-		$commissions = $wpdb->get_results( "SELECT * FROM {$this->table_name} WHERE `commission_status` = 'unpaid'" );
+		$commissions = $wpdb->get_results( "SELECT DISTINCT `id`, `order_id` FROM {$this->table_name} WHERE `commission_status` = 'unpaid'" );
 
-		return $commissions;
+		$filtered_commission_ids = array();
+
+		// filter out only commission that are unpaid and order status is processing or completed
+		foreach( $commissions as $commission ) {
+			$order = wc_get_order( $commission->order_id );
+
+			$order_status = $order->get_status();
+
+			if ( 'completed' === $order_status || 'processing' === $order_status ) {
+				$filtered_commission_ids[ $commission->id ] = $commission->id;
+			}
+		}
+
+		return $filtered_commission_ids;
 	}
 
 	/**
@@ -194,7 +263,7 @@ class WC_Product_Vendors_Commission {
 
 		$status = $wpdb->get_var( $wpdb->prepare( $sql, $commission_status, $order_item_id, '_commission_status' ) );
 
-		do_action( 'wcpv_commissions_updated', $commission_id );
+		do_action( 'wcpv_commissions_updated', $commission_id, $order_item_id );
 		
 		return true;
 	}

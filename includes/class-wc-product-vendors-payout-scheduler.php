@@ -124,31 +124,10 @@ class WC_Product_Vendors_Payout_Scheduler {
 			return;
 		}
 
-		$unpaid_commission = $this->commission->get_unpaid_commission_data();
-
-		$filtered_commission = array();
-
-		// filter out only commission that are unpaid and order status is processing or completed
-		foreach( $unpaid_commission as $commission ) {
-			$order = wc_get_order( $commission->order_id );
-
-			$order_status = $order->get_status();
-
-			if ( 'completed' === $order_status || 'processing' === $order_status ) {
-				$filtered_commission[] = $commission;
-			}
-		}
-
-		$masspay = new WC_Product_Vendors_PayPal_MassPay();
+		$unpaid_commission_ids = $this->commission->get_unpaid_commission_ids();
 
 		try {
-			$results = $masspay->do_payment( $filtered_commission );
-
-			if ( ! is_wp_error( $results ) ) {
-				foreach( $filtered_commission as $commission ) {
-					$this->commission->update_status( absint( $commission->id ), absint( $commission->order_item_id ), 'paid' );
-				}
-			}
+			$results = $this->commission->pay( $unpaid_commission_ids );
 		} catch ( Exception $e ) {
 			$this->log->add( 'wcpv-masspay', $e->getMessage() );
 		}		

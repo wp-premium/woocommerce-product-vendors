@@ -208,23 +208,40 @@ jQuery( document ).ready( function( $ ) {
 				aLink.dispatchEvent( evt );
 			}
 
-			// CSV download ( commission )
-			$( document.body ).on( 'click', '.wcpv-csv-download-button', function( e ) {
+			// Export commissions for current view
+			$( document.body ).on( 'click', '.wcpv-export-commissions-button', function( e ) {
 				e.preventDefault();
 
 				// get the data to be rendered
 				var	data = {
-					'action': 'wcpv_csv_download_ajax',
-					'security': $( this ).data( 'nonce' ),
+					'action': 'wcpv_export_commissions_ajax',
+					'nonce': $( this ).data( 'nonce' ),
 					'order_id': $( this ).data( 'order_id' ),
 					'year': $( this ).data( 'year' ),
 					'month': $( this ).data( 'month' ),
 					'vendor': $( this ).data( 'vendor' ),
 					'commission_status': $( this ).data( 'commission_status' )
-					};
+					},
+					filename = $( this ).prop( 'download' );
 
 				$.post( wcpv_admin_local.ajaxurl, data ).done( function( response ) {
-					downloadCSV( 'commission.csv', 'data:application/csv;charset=utf-8,' + encodeURIComponent( response ) );
+					downloadCSV( filename, 'data:application/csv;charset=utf-8,' + encodeURIComponent( response ) );
+				});
+			});
+
+			// Exports all unpaid commissions
+			$( document.body ).on( 'click', '.wcpv-export-unpaid-commissions-button', function( e ) {
+				e.preventDefault();
+
+				// get the data to be rendered
+				var	data = {
+					'action': 'wcpv_export_unpaid_commissions_ajax',
+					'nonce': $( this ).data( 'nonce' )
+					},
+					filename = $( this ).prop( 'download' );
+
+				$.post( wcpv_admin_local.ajaxurl, data ).done( function( response ) {
+					downloadCSV( filename, 'data:application/csv;charset=utf-8,' + encodeURIComponent( response ) );
 				});
 			});
 

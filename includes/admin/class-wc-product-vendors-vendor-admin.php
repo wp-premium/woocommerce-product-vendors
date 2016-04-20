@@ -626,6 +626,10 @@ class WC_Product_Vendors_Vendor_Admin {
 	 */
 	public function save_post( $post_id ) {
 		if ( WC_Product_Vendors_Utils::auth_vendor_user() ) {
+			// don't continue if it is bulk/quick edit
+			if ( ! empty( $_REQUEST['woocommerce_quick_edit'] ) || ! empty( $_REQUEST['woocommerce_bulk_edit'] ) ) {
+				return;
+			}
 
 			// check post type to be product
 			if ( 'product' === get_post_type( $post_id ) ) {

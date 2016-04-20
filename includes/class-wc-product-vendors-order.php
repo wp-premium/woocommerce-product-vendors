@@ -78,6 +78,8 @@ class WC_Product_Vendors_Order {
 		$this->order = wc_get_order( $order_id );
 
 		if ( is_a( $this->order, 'WC_Order' ) && $items = $this->order->get_items( 'line_item' ) ) {
+			$order_status = $this->order->get_status();
+			$commission_ids = array();
 
 			foreach( $items as $order_item_id => $item ) {
 				$vendor_id = WC_Product_Vendors_Utils::get_vendor_id_from_product( $item['product_id'] );
@@ -122,20 +124,21 @@ class WC_Product_Vendors_Order {
 					$pp_shipping_title = ! empty( $pp_shipping_title ) ? $pp_shipping_title['title'] : '';
 
 					// calculate shipping amount and shipping tax ( per product shipping )
-					if ( $pp_shipping_title === $this->order->get_shipping_method() && 'yes' === $pass_shipping_tax ) {
+					$pp_shipping_method = $this->order->get_shipping_method();
+					if ( ! empty( $pp_shipping_method ) && $pp_shipping_title === $this->order->get_shipping_method() && 'yes' === $pass_shipping_tax ) {
 						$shipping_data       = $this->calc_per_product_shipping( $item );
 						$shipping_amount     = $shipping_data['shipping_cost'];
 						$shipping_tax_amount = $shipping_data['taxes'];
-						$shipping_total      = (float) number_format( ( $shipping_amount + $shipping_tax_amount ), 4 );
+						$shipping_total      = wc_format_decimal( ( $shipping_amount + $shipping_tax_amount ) );
 
-						$total_commission = (float) number_format( ( $total_commission + $shipping_total ), 4 );
+						$total_commission = wc_format_decimal( ( $total_commission + $shipping_total ) );
 					}
 
 					// calculate tax into total commission
 					if ( wc_tax_enabled() && 'yes' === $pass_shipping_tax ) {
 						$tax_total = $item['line_tax'];
 						
-						$total_commission = (float) number_format( ( $total_commission + $tax_total ), 4 );
+						$total_commission = wc_format_decimal( ( $total_commission + $tax_total ) );
 					}
 
 					$_product_id = ! empty( $item['variation_id'] ) ? $item['variation_id'] : $item['product_id'];
@@ -177,25 +180,10 @@ class WC_Product_Vendors_Order {
 
 					// initial commission status
 					$init_status = apply_filters( 'wcpv_processing_init_commission_status', 'unpaid' );
-					$order_status = $this->order->get_status();
 
 					// check if we need to pay vendor commission instantly
 					if ( ! empty( $vendor_data['instant_payout'] ) && 'yes' === $vendor_data['instant_payout'] && ! empty( $vendor_data['paypal'] ) && ( 'completed' === $order_status || 'processing' === $order_status ) ) {
-
-						$last_commission_id_arr = (array) absint( $last_commission_id );
-
-						$last_commission_id_arr = array_combine( $last_commission_id_arr, $last_commission_id_arr );
-
-						try {
-							$results = $this->commission->pay( $last_commission_id_arr );
-						} catch ( Exception $e ) {
-							$this->log->add( 'wcpv-masspay', $e->getMessage() );
-						}
-
-						if ( ! empty( $results ) && ! is_wp_error( $results ) ) {
-							$this->commission->update_status( absint( $last_commission_id ), absint( $order_item_id ), 'paid' );
-							$init_status = 'paid';
-						}
+						$commission_ids[ $last_commission_id ] = absint( $last_commission_id );
 					}
 
 					// check first to see if meta has already been added
@@ -221,6 +209,16 @@ class WC_Product_Vendors_Order {
 				update_post_meta( $order_id, '_wcpv_commission_added', 'yes' );
 
 				do_action( 'wcpv_commission_added', $this->order );
+			}
+
+			// process mass payment
+			if ( ! empty( $commission_ids ) ) {
+				try {
+					$this->commission->pay( $commission_ids );
+
+				} catch ( Exception $e ) {
+					$this->log->add( 'wcpv-masspay', $e->getMessage() );
+				}
 			}
 		}
 
@@ -252,11 +250,12 @@ class WC_Product_Vendors_Order {
 	 * @version 2.0.0
 	 * @return array
 	 */
-	public function add_commission_order_action( $actions ) {
+	public function add_commission_order_action() {
+		if ( ! isset( $_REQUEST['post'] ) ) {
+			return;
+		}
 
-		$actions['wcpv_manual_create_commission'] = __( 'Generate Vendor Commission', 'woocommerce-product-vendors' );
-		
-		return $actions;
+		return array( 'wcpv_manual_create_commission' => __( 'Generate Vendor Commission', 'woocommerce-product-vendors' ) );
 	}
 
 	/**
