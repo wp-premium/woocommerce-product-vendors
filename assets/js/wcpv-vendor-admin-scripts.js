@@ -70,7 +70,7 @@ jQuery( document ).ready( function( $ ) {
 			});
 
 			// remove product visibility options
-			$( '.vendor #catalog-visibility' ).remove();
+			$( '.vendor #catalog-visibility' ).hide();
 
 			// remove product level tax settings
 			$( '#general_product_data #_tax_status' ).prop( 'disabled', true ).parents( '.options_group' ).hide();

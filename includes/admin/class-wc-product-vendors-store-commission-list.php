@@ -236,6 +236,54 @@ class WC_Product_Vendors_Store_Admin_Commission_List extends WP_List_Table {
 					submit_button( __( 'Filter', 'woocommerce-product-vendors' ), false, false, false );
 				?>
 			</div>
+
+			<div class="alignleft actions">
+				<?php
+					// add data properties to the anchor tag so
+					// we can easily retrieve it to compile the
+					// CSV download
+					$order_id          = '';
+					$year              = '';
+					$month             = '';
+					$commission_status = '';
+					$vendor            = '';
+
+					if ( ! empty( $_REQUEST['s'] ) ) {
+						$order_id = $_REQUEST['s'];
+
+					} else {
+						if ( ! empty( $_REQUEST['m'] ) ) {
+
+							$year  = substr( $_REQUEST['m'], 0, 4 );
+							$month = substr( $_REQUEST['m'], 4, 2 );
+						}
+
+						if ( ! empty( $_REQUEST['commission_status'] ) ) { 
+							$commission_status = $_REQUEST['commission_status'];
+						}
+
+						if ( ! empty( $_REQUEST['vendor'] ) ) {
+							$vendor = $_REQUEST['vendor'];
+						}
+					}			
+				?>
+
+				<a href="#" class="button wcpv-export-commissions-button"
+					data-nonce="<?php echo esc_attr( wp_create_nonce( '_wcpv_export_commissions_nonce' ) ); ?>"
+					data-order_id="<?php echo esc_attr( $order_id ); ?>"
+					data-year="<?php echo esc_attr( $year ); ?>"
+					data-month="<?php echo esc_attr( $month ); ?>"
+					data-commission_status="<?php echo esc_attr( $commission_status ); ?>"
+					data-vendor="<?php echo esc_attr( $vendor ); ?>" download="<?php echo esc_attr( sprintf( __( 'commissions-%s.csv', 'woocommerce-product-vendors' ), date( 'm-d-Y' ) ) ); ?>">
+					<?php esc_html_e( 'Export Commissions', 'woocommerce-product-vendors' ); ?></a>
+			</div>
+
+			<div class="alignleft actions">
+				<a href="#" class="button wcpv-export-unpaid-commissions-button"
+					data-nonce="<?php echo esc_attr( wp_create_nonce( '_wcpv_export_unpaid_commissions_nonce' ) ); ?>"
+					download="<?php echo esc_attr( sprintf( __( 'unpaid-commissions-%s.csv', 'woocommerce-product-vendors' ), date( 'm-d-Y' ) ) ); ?>">
+					<?php esc_html_e( 'Export All Unpaid Commissions', 'woocommerce-product-vendors' ); ?></a>
+			</div>
 		<?php
 		}
 	}
