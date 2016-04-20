@@ -172,7 +172,9 @@ class WC_Product_Vendors_Registration {
 				$errors[] = __( 'Vendor Description is a required field.', 'woocommerce-product-vendors' );
 			}
 
-			do_action( 'wcpv_shortcode_registration_form_validation', $errors );
+			do_action( 'wcpv_shortcode_registration_form_validation', $errors, $form_items );
+			
+			$errors = apply_filters( 'wcpv_shortcode_registration_form_validation_errors', $errors, $form_items );
 
 			// no errors, lets process the form
 			if ( empty( $errors ) ) {
@@ -227,7 +229,7 @@ class WC_Product_Vendors_Registration {
 			$args['vendor_name'] = $vendor_name;
 			$args['vendor_desc'] = $vendor_desc;
 
-			do_action( 'wcpv_shortcode_registration_form_process', $args );
+			do_action( 'wcpv_shortcode_registration_form_process', $args, $form_items );
 
 			echo 'success';
 			exit;
@@ -300,7 +302,7 @@ class WC_Product_Vendors_Registration {
 			$args['vendor_name'] = $vendor_name;
 			$args['vendor_desc'] = $vendor_desc;
 
-			do_action( 'wcpv_shortcode_registration_form_process', $args );
+			do_action( 'wcpv_shortcode_registration_form_process', $args, $form_items );
 
 			echo 'success';
 			exit;

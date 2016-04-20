@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: WooCommerce Product Vendors
- * Version: 2.0.4
+ * Version: 2.0.7
  * Plugin URI: https://www.woothemes.com/products/product-vendors/
  * Description: Set up a multi-vendor marketplace that allows vendors to manage their own products and earn commissions.  Run stores similar to Amazon or Etsy.
  * Author: WooThemes
@@ -110,14 +110,14 @@ class WC_Product_Vendors {
 	 */
 	private function define_constants() {
 		global $wpdb;
-		
-		define( 'WC_PRODUCT_VENDORS_VERSION', '2.0.4' );
+
+		define( 'WC_PRODUCT_VENDORS_VERSION', '2.0.7' );
 		define( 'WC_PRODUCT_VENDORS_PATH', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
 		define( 'WC_PRODUCT_VENDORS_PLUGIN_URL', untrailingslashit( plugins_url( basename( plugin_dir_path( __FILE__ ) ), basename( __FILE__ ) ) ) );
 		define( 'WC_PRODUCT_VENDORS_TAXONOMY', 'wcpv_product_vendors' );
 		define( 'WC_PRODUCT_VENDORS_COMMISSION_TABLE', $wpdb->prefix . 'wcpv_commissions' );
 		define( 'WC_PRODUCT_VENDORS_PER_PRODUCT_SHIPPING_TABLE', $wpdb->prefix . 'wcpv_per_product_shipping_rules' );
-		
+
 		return true;
 	}
 
@@ -137,17 +137,16 @@ class WC_Product_Vendors {
 		include_once( 'includes/class-wc-product-vendors-roles-caps.php' );
 
 		include_once( 'includes/class-wc-product-vendors-install.php' );
-		
+
 		include_once( 'includes/class-wc-product-vendors-deactivation.php' );
 
 		include_once( 'includes/gateways/class-wc-product-vendors-vendor-payments-interface.php' );
-		
+
 		include_once( 'includes/gateways/class-wc-product-vendors-paypal-masspay.php' );
 
 		include_once( 'includes/class-wc-product-vendors-commission.php' );
-		
-		if ( is_admin() ) {
 
+		if ( is_admin() ) {
 			include_once( 'includes/admin/class-wc-product-vendors-vendor-order-detail-list.php' );
 
 			include_once( 'includes/admin/class-wc-product-vendors-vendor-orders-list.php' );
@@ -186,9 +185,9 @@ class WC_Product_Vendors {
 		include_once( 'includes/class-wc-product-vendors-emails.php' );
 
 		include_once( 'includes/shipping/per-product/class-wc-product-vendors-per-product-shipping.php' );
-		
+
 		include_once( 'includes/class-wc-product-vendors-payout-scheduler.php' );
-		
+
 		// check for bookings
 		if ( class_exists( 'WC_Bookings' ) ) {
 			include_once( 'includes/integrations/class-wc-product-vendors-bookings.php' );
@@ -216,7 +215,7 @@ class WC_Product_Vendors {
 
 		register_activation_hook( __FILE__, array( 'WC_Product_Vendors_Install', 'init' ) );
 		register_deactivation_hook( __FILE__, array( 'WC_Product_Vendors_Deactivation', 'deactivate' ) );
-		
+
 		return true;
 	}
 
@@ -230,7 +229,7 @@ class WC_Product_Vendors {
 	 */
 	public function init() {
 		if ( is_woocommerce_active() ) {
-			
+
 			$this->define_constants();
 			$this->dependencies();
 			$this->init_hooks();

@@ -131,8 +131,11 @@ class WC_Product_Vendors_Store_Admin {
 		// reports ajax search for vendors
 		add_action( 'wp_ajax_wcpv_vendor_search_ajax', array( $self, 'vendor_search_ajax' ) );
 
-		// csv download ajax
-		add_action( 'wp_ajax_wcpv_csv_download_ajax', array( $self, 'csv_download_ajax' ) );
+		// exports commissions for the current view
+		add_action( 'wp_ajax_wcpv_export_commissions_ajax', array( $self, 'export_commissions_ajax' ) );
+
+		// exports unpaid commissions
+		add_action( 'wp_ajax_wcpv_export_unpaid_commissions_ajax', array( $self, 'export_unpaid_commissions_ajax' ) );
 
 		// process when vendor role is updated from pending to admin or manager
 		add_action( 'set_user_role', array( $self, 'role_update' ), 10, 3 );
@@ -142,6 +145,14 @@ class WC_Product_Vendors_Store_Admin {
 		
 		// Filter order item meta label
 		add_filter( 'woocommerce_attribute_label', array( $self, 'filter_order_attribute_label' ), 10, 2 );
+
+		// add quick edit items and process save
+		add_action( 'quick_edit_custom_box', array( $self, 'quick_edit' ), 10, 2 );
+		add_action( 'bulk_edit_custom_box', array( $self, 'quick_edit' ), 10, 2 );
+		add_action( 'save_post', array( $self, 'bulk_and_quick_edit_save_post' ), 10, 2 );
+
+		// saves the vendor to the product
+		add_action( 'save_post', array( $self, 'save_product_vendor' ) );
 
     	return true;
 	}
@@ -643,44 +654,6 @@ class WC_Product_Vendors_Store_Admin {
 			<form id="wcpv-commission-list" action="" method="get">
 				<input type="hidden" name="page" value="wcpv-commissions" />
 				<?php $commissions_list->search_box( esc_html__( 'Search Order #', 'woocommerce-product-vendors' ), 'search_id' ); ?>
-
-				<?php
-					// add data properties to the anchor tag so
-					// we can easily retrieve it to compile the
-					// CSV download
-					$order_id          = '';
-					$year              = '';
-					$month             = '';
-					$commission_status = '';
-					$vendor            = '';
-
-					if ( ! empty( $_REQUEST['s'] ) ) {
-						$order_id = $_REQUEST['s'];
-
-					} else {
-						if ( ! empty( $_REQUEST['m'] ) ) {
-
-							$year  = substr( $_REQUEST['m'], 0, 4 );
-							$month = substr( $_REQUEST['m'], 4, 2 );
-						}
-
-						if ( ! empty( $_REQUEST['commission_status'] ) ) { 
-							$commission_status = $_REQUEST['commission_status'];
-						}
-
-						if ( ! empty( $_REQUEST['vendor'] ) ) {
-							$vendor = $_REQUEST['vendor'];
-						}
-					}			
-				?>
-				<a href="#" class="button wcpv-csv-download-button"
-					data-nonce="<?php echo esc_attr( wp_create_nonce( '_wcpv_csv_download_nonce' ) ); ?>"
-					data-order_id="<?php echo esc_attr( $order_id ); ?>"
-					data-year="<?php echo esc_attr( $year ); ?>"
-					data-month="<?php echo esc_attr( $month ); ?>"
-					data-commission_status="<?php echo esc_attr( $commission_status ); ?>"
-					data-vendor="<?php echo esc_attr( $vendor ); ?>" download="commission.csv">
-					<?php esc_html_e( 'CSV Download', 'woocommerce-product-vendors' ); ?></a>
 				<?php $commissions_list->display(); ?>
 			</form>
 		</div>
@@ -1296,21 +1269,170 @@ class WC_Product_Vendors_Store_Admin {
 
 		return true;		
 	}
-	
+
 	/**
-	 * Generates the CSV download of current view
+	 * Handles saving of the vendro to product
+	 *
+	 * @access public
+	 * @since 2.0.0
+	 * @version 2.0.0
+	 * @param int $post_id
+	 * @return bool
+	 */
+	public function save_product_vendor( $post_id ) {
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			return;
+		}
+
+		// don't continue if it is bulk/quick edit
+		if ( ! empty( $_REQUEST['woocommerce_quick_edit'] ) || ! empty( $_REQUEST['woocommerce_bulk_edit'] ) ) {
+			return;
+		}
+
+		// if not a product bail
+		if ( 'product' !== get_post_type( $post_id ) ) {
+			return;
+		}
+
+		$term = ! empty( $_POST['wcpv_product_term'] ) ? absint( $_POST['wcpv_product_term'] ) : '';
+
+		wp_set_object_terms( $post_id, $term, WC_PRODUCT_VENDORS_TAXONOMY );
+
+		return true;
+	}
+
+	/**
+	 * Add vendor selection on quick and bulk edit
+	 *
+	 * @access public
+	 * @since 2.0.0
+	 * @version 2.0.0
+	 * @param string $column_name the name of the column to add it to
+	 * @param string $post_type
+	 * @return bool
+	 */
+	public function quick_edit( $column_name, $post_type ) {
+		if ( WC_Product_Vendors_Utils::is_vendor() || ! current_user_can( 'manage_vendors' ) ) {
+			return;
+		}
+
+		if ( 'taxonomy-wcpv_product_vendors' !== $column_name || 'product' !== $post_type ) {
+			return;
+		}
+
+		$args = array(
+			'hide_empty'   => false,
+			'hierarchical' => false,
+		);
+
+		$terms = get_terms( WC_PRODUCT_VENDORS_TAXONOMY, $args );
+
+		if ( ! empty( $terms ) ) {
+			$output = '<fieldset class="inline-edit-col-center"><div class="inline-edit-group"><label class="alignleft"><span class="title">' . esc_html__( 'Vendors', 'woocommerce-product-vendors' ) . '</span>';
+
+			$output .= '<select class="wcpv-product-vendor-terms-dropdown" name="wcpv_qe_product_term">';
+
+			$output .= '<option value="no">' . esc_html__( 'No Change', 'woocommerce-product-vendors' ) . '</option>';
+			$output .= '<option value="novendor">' . esc_html__( 'No Vendor', 'woocommerce-product-vendors' ) . '</option>';
+
+			foreach( $terms as $term ) {
+				$output .= '<option value="' . esc_attr( $term->term_id ) . '">' . esc_html( $term->name ) . '</option>';
+			}
+
+			$output .= '</select>';
+
+			$output .= '</label></div></fieldset>';
+
+			echo $output;
+		}
+	}
+
+	/**
+	 * Handles quick and bulk edit saves
+	 *
+	 * @access public
+	 * @since 2.0.0
+	 * @version 2.0.0
+	 * @param int $post_id
+	 * @param object $post
+	 * @return int
+	 */
+	public function bulk_and_quick_edit_save_post( $post_id, $post ) {
+		if ( WC_Product_Vendors_Utils::is_vendor() || ! current_user_can( 'manage_vendors' ) ) {
+			return $post_id;
+		}
+
+		// If this is an autosave, our form has not been submitted, so we don't want to do anything.
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return $post_id;
+		}
+
+		// Don't save revisions and autosaves
+		if ( wp_is_post_revision( $post_id ) || wp_is_post_autosave( $post_id ) ) {
+			return $post_id;
+		}
+
+		// Check post type is product
+		if ( 'product' !== $post->post_type ) {
+			return $post_id;
+		}
+
+		// Check user permission
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return $post_id;
+		}
+
+		if ( empty( $_REQUEST['wcpv_qe_product_term'] ) || 'no' === $_REQUEST['wcpv_qe_product_term'] ) {
+			return $post_id;
+		}
+
+		$term = ! empty( $_REQUEST['wcpv_qe_product_term'] ) ? absint( $_REQUEST['wcpv_qe_product_term'] ) : '';
+
+		if ( 'novendor' === $term ) {
+			$term = '';
+		}
+		
+		// check if it is a quick edit or bulk edit
+		if ( ! empty( $_REQUEST['woocommerce_quick_edit'] ) ) {
+			// update the product term
+			wp_set_object_terms( $post_id, $term, WC_PRODUCT_VENDORS_TAXONOMY );
+
+			// Clear transient
+			wc_delete_product_transients( $post_id );
+
+		} elseif ( ! empty( $_REQUEST['woocommerce_bulk_edit'] ) && ! empty( $_REQUEST['post'] ) ) {
+			foreach( $_REQUEST['post'] as $post ) {
+				// update the product term
+				wp_set_object_terms( absint( $post ), $term, WC_PRODUCT_VENDORS_TAXONOMY );
+
+				// Clear transient
+				wc_delete_product_transients( absint( $post ) );
+			}
+		}
+
+		return $post_id;
+	}
+
+	/**
+	 * Generates the CSV ( commissions ) download of current view
 	 *
 	 * @access public
 	 * @since 2.0.0
 	 * @version 2.0.0
 	 * @return array $query
 	 */
-	public function csv_download_ajax() {
+	public function export_commissions_ajax() {
 		$order_id          = ! empty( $_POST['order_id'] ) ? absint( $_POST['order_id'] ) : '';
 		$year              = ! empty( $_POST['year'] ) ? sanitize_text_field( $_POST['year'] ) : '';
 		$month             = ! empty( $_POST['month'] ) ? sanitize_text_field( $_POST['month'] ) : '';
 		$commission_status = ! empty( $_POST['commission_status'] ) ? sanitize_text_field( $_POST['commission_status'] ) : '';
 		$vendor_id         = ! empty( $_POST['vendor'] ) ? absint( $_POST['vendor'] ) : '';
+		$nonce             = ! empty( $_POST['nonce'] ) ? sanitize_text_field( $_POST['nonce'] ) : '';
+
+		// bail if nonce don't check out
+		if ( ! wp_verify_nonce( $nonce, '_wcpv_export_commissions_nonce' ) ) {
+		     wp_die( __( 'Cheatin&#8217; huh?', 'woocommerce-product-vendors' ) );	
+		}
 
 		$commission = new WC_Product_Vendors_Commission( new WC_Product_Vendors_PayPal_MassPay );
 		
@@ -1319,6 +1441,77 @@ class WC_Product_Vendors_Store_Admin {
 		echo $query;
 		exit;
 	}
+
+	/**
+	 * Handles export of unpaid commissions
+	 *
+	 * @access public
+	 * @since 2.0.6
+	 * @version 2.0.6
+	 * @return bool
+	 */
+    public function export_unpaid_commissions_ajax() {
+		$nonce = ! empty( $_POST['nonce'] ) ? sanitize_text_field( $_POST['nonce'] ) : '';
+		
+		// bail if nonce don't check out
+		if ( ! wp_verify_nonce( $nonce, '_wcpv_export_unpaid_commissions_nonce' ) ) {
+		     wp_die( __( 'Cheatin&#8217; huh?', 'woocommerce-product-vendors' ) );	
+		}
+
+		$currency = get_woocommerce_currency();
+		$commission = new WC_Product_Vendors_Commission( new WC_Product_Vendors_PayPal_MassPay );
+
+		$unpaid_commissions = $commission->get_unpaid_commission_data();
+
+		$commissions = array();
+
+		foreach( $unpaid_commissions as $commission ) {
+			if ( ! isset( $commissions[ $commission->vendor_id ] ) ) {
+				$commissions[ $commission->vendor_id ] = (float) 0;
+			}
+
+			$commissions[ $commission->vendor_id ] += (float) $commission->total_commission_amount;
+		}
+
+		$payout_note = apply_filters( 'wcpv_export_unpaid_commissions_note', sprintf( __( 'Total commissions earned from %1$s as of %2$s on %3$s', 'woocommerce-product-vendors' ), get_bloginfo( 'name', 'display' ), date( 'H:i:s' ), date( 'd-m-Y' ) ) );
+
+		$commissions_data = array();
+
+		foreach( $commissions as $vendor_id => $total ) {
+			$vendor = WC_Product_Vendors_Utils::get_vendor_data_by_id( $vendor_id );
+
+			$recipient = $vendor['name'];
+
+			if ( ! empty( $vendor['paypal'] ) ) {
+				$recipient = $vendor['paypal'];
+			}
+
+			$commissions_data[] = array(
+				$recipient,
+				$total,
+				$currency,
+				$vendor_id,
+				$payout_note
+			);
+		}
+
+		// prepare CSV
+		$headers = array(
+			'Recipient',
+			'Payment',
+			'Currency',
+			'Customer ID',
+			'Note'
+		);
+
+		array_unshift( $commissions_data, $headers );
+
+		// convert the array to string recursively
+		$commissions_data = implode( PHP_EOL, array_map( array( 'WC_Product_Vendors_Utils', 'convert2string' ), $commissions_data ) );		
+
+		echo $commissions_data;
+		exit;
+    }
 
 	/**
 	 * Add debug tool button

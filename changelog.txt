@@ -1,5 +1,18 @@
 *** Product Vendors Changelog ***
 
+2016.04.19 - version 2.0.7
+* Fix - Fatal error caused by method return value is used in write context.
+
+2016.04.19 - version 2.0.6
+* Fix - Sometimes PayPal Mass Payments does not recognize live environment based on clientID.
+* Add - Export all unpaid commission button for PayPal Mass payments.
+* Tweak - Combine batch PayPal Payouts to prevent over charging on fees.
+
+2016.04.14 - version 2.0.5
+* Fix - When bulk/quick editing product, sometimes vendors are unassigned from the product.
+* Fix - When product is set to featured, it is removed after a vendor saves the product.
+* Fix - Update number formatting method to prevent rounding issues.
+
 2016.04.04 - version 2.0.4
 * Add - Shortcode to list all vendors [wcpv_vendor_list].
 * Add - Placeholder commission in commission fields so users know what the current commission is.
@@ -23,7 +36,7 @@
 
 2016.02.23 - version 2.0.0
 * Update - Release of 2.0.0 ( see here for changes https://docs.woothemes.com/document/product-vendors/#section-2 )
- 
+
 2014.05.13 - version 1.0.9
 * New - Adding compatibility for WooCommerce Bookings extension
 * Fix - Fixing typos in dashboard
@@ -68,4 +81,4 @@
 
 2013.08.15 - version 1.0
 * First Release
- 
+
