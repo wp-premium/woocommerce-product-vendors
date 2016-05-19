@@ -72,7 +72,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 </tr>
 
 <tr class="form-field">
-	<th scope="row" valign="top"><label for="wcpv-vendor-commission"><?php esc_html_e( 'Commission', 'woocommerce-product-vendors' ); ?> <?php echo wc_help_tip( __( 'Enter a whole number without period or decimal places.', 'woocommerce-product-vendors' ) ); ?></label></th>
+	<th scope="row" valign="top"><label for="wcpv-vendor-commission"><?php esc_html_e( 'Commission', 'woocommerce-product-vendors' ); ?> <?php echo wc_help_tip( __( 'Enter a positive number.', 'woocommerce-product-vendors' ) ); ?></label></th>
 	
 	<td>
 		<input type="text" id="wcpv-vendor-commission" name="vendor_data[commission]" value="<?php echo esc_attr( $commission ); ?>" />

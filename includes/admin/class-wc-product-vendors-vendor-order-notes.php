@@ -84,7 +84,7 @@ class WC_Product_Vendors_Vendor_Order_Notes {
 		if ( $is_customer_note ) {
 			add_comment_meta( $comment_id, 'is_customer_note', 1 );
 
-			do_action( 'wcpv_customer_order_note', $post_id, $commentdata['comment_content'], WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ) );
+			do_action( 'wcpv_customer_order_note', $post_id, $commentdata['comment_content'], WC_Product_Vendors_Utils::get_logged_in_vendor() );
 		}
 
 		// retrieve note

@@ -105,7 +105,7 @@ class WC_Product_Vendors_Vendor_Dashboard {
 	 * @return array $post_type_args
 	 */
 	public function is_bookings_enabled() {
-		$vendor_data = get_term_meta( WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ), 'vendor_data', true );
+		$vendor_data = get_term_meta( WC_Product_Vendors_Utils::get_logged_in_vendor(), 'vendor_data', true );
 
 		if ( ! empty( $vendor_data ) && 'yes' === $vendor_data['enable_bookings'] && class_exists( 'WC_Bookings' ) ) {
 			return true;
@@ -161,10 +161,10 @@ class WC_Product_Vendors_Vendor_Dashboard {
 		$sql .= " AND commission.vendor_id = %d";
 		$sql .= " AND MONTH( commission.order_date ) = MONTH( NOW() )";
 
-		if ( false === ( $total_product_amount = get_transient( 'wcpv_reports_wg_sales_' . WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ) ) ) ) {
-			$total_product_amount = $wpdb->get_var( $wpdb->prepare( $sql, WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ) ) );
+		if ( false === ( $total_product_amount = get_transient( 'wcpv_reports_wg_sales_' . WC_Product_Vendors_Utils::get_logged_in_vendor() ) ) ) {
+			$total_product_amount = $wpdb->get_var( $wpdb->prepare( $sql, WC_Product_Vendors_Utils::get_logged_in_vendor() ) );
 
-			set_transient( 'wcpv_reports_wg_sales_' . WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ), $total_product_amount, DAY_IN_SECONDS );
+			set_transient( 'wcpv_reports_wg_sales_' . WC_Product_Vendors_Utils::get_logged_in_vendor(), $total_product_amount, DAY_IN_SECONDS );
 		}
 
 		// Get top seller
@@ -196,10 +196,10 @@ class WC_Product_Vendors_Vendor_Dashboard {
 			$sql .= " AND commission.commission_status = 'paid'";
 			$sql .= " AND MONTH( commission.order_date ) = MONTH( NOW() )";
 
-			if ( false === ( $commission = get_transient( 'wcpv_reports_wg_commission_' . WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ) ) ) ) {
-				$commission = $wpdb->get_var( $wpdb->prepare( $sql, WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ) ) );
+			if ( false === ( $commission = get_transient( 'wcpv_reports_wg_commission_' . WC_Product_Vendors_Utils::get_logged_in_vendor() ) ) ) {
+				$commission = $wpdb->get_var( $wpdb->prepare( $sql, WC_Product_Vendors_Utils::get_logged_in_vendor() ) );
 
-				set_transient( 'wcpv_reports_wg_commission_' . WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ), $commission, DAY_IN_SECONDS );
+				set_transient( 'wcpv_reports_wg_commission_' . WC_Product_Vendors_Utils::get_logged_in_vendor(), $commission, DAY_IN_SECONDS );
 			}
 		}
 
@@ -213,10 +213,10 @@ class WC_Product_Vendors_Vendor_Dashboard {
 			$sql .= " AND order_item_meta.meta_key = '_fulfillment_status'";
 			$sql .= " AND order_item_meta.meta_value = 'unfulfilled'";
 
-			if ( false === ( $unfulfilled_products = get_transient( 'wcpv_reports_wg_fulfillment_' . WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ) ) ) ) {
-				$unfulfilled_products = $wpdb->get_var( $wpdb->prepare( $sql, WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ) ) );
+			if ( false === ( $unfulfilled_products = get_transient( 'wcpv_reports_wg_fulfillment_' . WC_Product_Vendors_Utils::get_logged_in_vendor() ) ) ) {
+				$unfulfilled_products = $wpdb->get_var( $wpdb->prepare( $sql, WC_Product_Vendors_Utils::get_logged_in_vendor() ) );
 
-				set_transient( 'wcpv_reports_wg_fulfillment_' . WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ), $unfulfilled_products, DAY_IN_SECONDS );
+				set_transient( 'wcpv_reports_wg_fulfillment_' . WC_Product_Vendors_Utils::get_logged_in_vendor(), $unfulfilled_products, DAY_IN_SECONDS );
 			}
 		}
 
@@ -234,7 +234,7 @@ class WC_Product_Vendors_Vendor_Dashboard {
 		$nostock        = absint( max( get_option( 'woocommerce_notify_no_stock_amount' ), 0 ) );
 		$transient_name = 'wc_low_stock_count';
 
-		if ( false === ( $lowinstock_count = get_transient( 'wcpv_reports_wg_lowstock_' . WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ) ) ) ) {
+		if ( false === ( $lowinstock_count = get_transient( 'wcpv_reports_wg_lowstock_' . WC_Product_Vendors_Utils::get_logged_in_vendor() ) ) ) {
 			$query_from = apply_filters( 'wcpv_report_low_in_stock_query_from', "FROM {$wpdb->posts} as posts
 				INNER JOIN {$wpdb->postmeta} AS postmeta ON posts.ID = postmeta.post_id
 				INNER JOIN {$wpdb->postmeta} AS postmeta2 ON posts.ID = postmeta2.post_id
@@ -249,10 +249,10 @@ class WC_Product_Vendors_Vendor_Dashboard {
 
 			$lowinstock_count = absint( $wpdb->get_var( "SELECT COUNT( DISTINCT posts.ID ) {$query_from};" ) );
 
-			set_transient( 'wcpv_reports_wg_lowstock_' . WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ), $lowinstock_count, DAY_IN_SECONDS );
+			set_transient( 'wcpv_reports_wg_lowstock_' . WC_Product_Vendors_Utils::get_logged_in_vendor(), $lowinstock_count, DAY_IN_SECONDS );
 		}
 
-		if ( false === ( $outofstock_count = get_transient( 'wcpv_reports_wg_nostock_' . WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ) ) ) ) {
+		if ( false === ( $outofstock_count = get_transient( 'wcpv_reports_wg_nostock_' . WC_Product_Vendors_Utils::get_logged_in_vendor() ) ) ) {
 			$query_from = apply_filters( 'wcpv_report_out_of_stock_query_from', "FROM {$wpdb->posts} as posts
 				INNER JOIN {$wpdb->postmeta} AS postmeta ON posts.ID = postmeta.post_id
 				INNER JOIN {$wpdb->postmeta} AS postmeta2 ON posts.ID = postmeta2.post_id
@@ -266,7 +266,7 @@ class WC_Product_Vendors_Vendor_Dashboard {
 
 			$outofstock_count = absint( $wpdb->get_var( "SELECT COUNT( DISTINCT posts.ID ) {$query_from};" ) );
 			
-			set_transient( 'wcpv_reports_wg_nostock_' . WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ), $outofstock_count, DAY_IN_SECONDS );
+			set_transient( 'wcpv_reports_wg_nostock_' . WC_Product_Vendors_Utils::get_logged_in_vendor(), $outofstock_count, DAY_IN_SECONDS );
 		}
 		?>
 		<ul class="wc_status_list">
@@ -335,7 +335,7 @@ class WC_Product_Vendors_Vendor_Dashboard {
 	 * @return bool
 	 */
 	public function render_bookings_dashboard_widget() {
-		if ( false === ( $bookings = get_transient( 'wcpv_reports_bookings_wg_' . WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ) ) ) ) {
+		if ( false === ( $bookings = get_transient( 'wcpv_reports_bookings_wg_' . WC_Product_Vendors_Utils::get_logged_in_vendor() ) ) ) {
 			$args = array(
 				'post_type'      => 'wc_booking',
 				'posts_per_page' => 20,
@@ -349,7 +349,7 @@ class WC_Product_Vendors_Vendor_Dashboard {
 				$bookings = array_filter( $bookings, array( $this, 'filter_booking_products' ) );
 			}
 
-			set_transient( 'wcpv_reports_bookings_wg_' . WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ), $bookings, DAY_IN_SECONDS );
+			set_transient( 'wcpv_reports_bookings_wg_' . WC_Product_Vendors_Utils::get_logged_in_vendor(), $bookings, DAY_IN_SECONDS );
 		}
 
 		if ( empty( $bookings ) ) {
@@ -439,7 +439,7 @@ class WC_Product_Vendors_Vendor_Dashboard {
 
 		$booking_item = get_wc_booking( $item->ID );
 
-		if ( is_object( $booking_item ) && $booking_item->get_product()->id && in_array( $booking_item->get_product()->id, $product_ids ) ) {
+		if ( is_object( $booking_item ) && is_object( $booking_item->get_product() ) && $booking_item->get_product()->id && in_array( $booking_item->get_product()->id, $product_ids ) ) {
 			return $item;
 		}
 	}

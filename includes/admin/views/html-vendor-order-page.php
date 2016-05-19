@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<div id="woocommerce-order-notes" class="postbox">
 					<div class="inside">
 						<h2><?php esc_html_e( 'Order Notes', 'woocommerce-product-vendors' ); ?></h2>
-						<?php $order_notes->output( $post ); ?>
+						<?php $this->order_notes->output( $post ); ?>
 					</div><!--.inside-->
 				</div><!--#woocommerce-order-notes-->
 			</div><!--#postbox-container-1-->

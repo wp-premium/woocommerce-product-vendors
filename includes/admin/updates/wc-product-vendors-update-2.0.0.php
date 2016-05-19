@@ -17,22 +17,22 @@ $wpdb->update( $wpdb->term_taxonomy, array( 'taxonomy' => WC_PRODUCT_VENDORS_TAX
 $wpdb->update( $wpdb->postmeta, array( 'meta_key' => '_wcpv_product_commission' ), array( 'meta_key' => '_product_vendors_commission' ) );
 
 // get all vendor ( term ) ids
-$sql = "SELECT DISTINCT term_tax.term_id FROM $wpdb->term_taxonomy AS term_tax";
+$sql = "SELECT DISTINCT term_tax.term_id, term_tax.description FROM $wpdb->term_taxonomy AS term_tax";
 $sql .= " WHERE term_tax.taxonomy = '" . WC_PRODUCT_VENDORS_TAXONOMY . "'";
 
-$vendor_ids = $wpdb->get_results( $sql ); // array of object term_id properties
+$vendors = $wpdb->get_results( $sql ); // array of object term_id properties
 
 // loop through all vendors and get their data and reset it using WP 4.4 term meta
-foreach( $vendor_ids as $id ) {
-	$vendor_data = get_option( 'shop_vendor_' . $id->term_id );
+foreach( $vendors as $vendor ) {
+	$vendor_data = get_option( 'shop_vendor_' . $vendor->term_id );
 
 	if ( ! empty( $vendor_data ) ) {
-		$new_vendor_data['profile'] = '';
-		$new_vendor_data['commission'] = $vendor_data['commission'];
-		$new_vendor_data['commission_type'] = 'percentage';
-		$new_vendor_data['enable_bookings'] = 'no';
+		$new_vendor_data['profile']              = $vendor->description;
+		$new_vendor_data['commission']           = $vendor_data['commission'];
+		$new_vendor_data['commission_type']      = 'percentage';
+		$new_vendor_data['enable_bookings']      = 'no';
 		$new_vendor_data['per_product_shipping'] = 'no';
-		$new_vendor_data['paypal'] = $vendor_data['paypal_email'];
+		$new_vendor_data['paypal']               = $vendor_data['paypal_email'];
 
 		if ( ! empty( $vendor_data['admins'] ) ) {
 			$new_vendor_data['admins'] = implode( ',', $vendor_data['admins'] );
@@ -47,7 +47,7 @@ foreach( $vendor_ids as $id ) {
 			$new_vendor_data['email'] = implode( ',', $admin_emails );
 		}
 		
-		update_term_meta( $id->term_id, 'vendor_data', $new_vendor_data );	
+		update_term_meta( $vendor->term_id, 'vendor_data', $new_vendor_data );	
 	}
 
 	// delete option
@@ -120,7 +120,7 @@ if ( ! empty( $commissions ) ) {
 			
 			$sql .= " VALUES ( %d, %d, %s, %d, %s, %d, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )";
 
-			$wpdb->query( $wpdb->prepare( $sql, $order_id, $order_item_id, $order_date, $vendor_id, $vendor_name, $product_id, $variation_id, $product_name, $variation_attributes, $product_amount, $product_qty, $product_shipping_amount, $product_shipping_tax_amount, $product_tax_amount, $product_commission_amount, $total_commission_amount, $commission_status, $paid_date ) );
+			$wpdb->query( $wpdb->prepare( $sql, $order_id, $order_item_id, $order_date, $vendor_id, $vendor_name, $product_id, $variation_id, $product_name, $variation_attributes, $product_amount, $product_qty, $product_shipping_amount, $product_shipping_tax_amount, $product_tax_amount, $product_commission_amount, $commission_amount, $commission_status, $paid_date ) );
 
 			$commission_ids[] = $commission->ID;
 
@@ -137,16 +137,36 @@ if ( ! empty( $commissions ) ) {
 			// delete all order item meta
 			$wpdb->query( "DELETE FROM {$wpdb->prefix}woocommerce_order_itemmeta WHERE `meta_key` = '_commission'" );
 
-			// add ship and paid status to order item meta
-			$sql = "INSERT INTO {$wpdb->prefix}woocommerce_order_itemmeta ( `order_item_id`, `meta_key`, `meta_value` )";
-			$sql .= " VALUES ( %d, '_fulfillment_status', 'fulfilled' )";
+			// check first to see if meta has already been added
+			$check_sql = "SELECT `meta_value`";
+			$check_sql .= " FROM {$wpdb->prefix}woocommerce_order_itemmeta";
+			$check_sql .= " WHERE `order_item_id` = %d";
+			$check_sql .= " AND `meta_key` = %s";
 
-			$wpdb->query( $wpdb->prepare( $sql, $order_item_id ) );
+			$result = $wpdb->get_results( $wpdb->prepare( $check_sql, $order_item_id, '_fulfillment_status' ) );
 
-			$sql = "INSERT INTO {$wpdb->prefix}woocommerce_order_itemmeta ( `order_item_id`, `meta_key`, `meta_value` )";
-			$sql .= " VALUES ( %d, '_commission_status', %s )";
+			if ( empty( $result ) ) {	
+				// add ship and paid status to order item meta
+				$sql = "INSERT INTO {$wpdb->prefix}woocommerce_order_itemmeta ( `order_item_id`, `meta_key`, `meta_value` )";
+				$sql .= " VALUES ( %d, '_fulfillment_status', 'fulfilled' )";
 
-			$wpdb->query( $wpdb->prepare( $sql, $order_item_id, $commission_status ) );
+				$wpdb->query( $wpdb->prepare( $sql, $order_item_id ) );
+			}
+
+			// check first to see if meta has already been added
+			$check_sql = "SELECT `meta_value`";
+			$check_sql .= " FROM {$wpdb->prefix}woocommerce_order_itemmeta";
+			$check_sql .= " WHERE `order_item_id` = %d";
+			$check_sql .= " AND `meta_key` = %s";
+
+			$result = $wpdb->get_results( $wpdb->prepare( $check_sql, $order_item_id, '_commission_status' ) );
+
+			if ( empty( $result ) ) {
+				$sql = "INSERT INTO {$wpdb->prefix}woocommerce_order_itemmeta ( `order_item_id`, `meta_key`, `meta_value` )";
+				$sql .= " VALUES ( %d, '_commission_status', %s )";
+
+				$wpdb->query( $wpdb->prepare( $sql, $order_item_id, $commission_status ) );
+			}
 		}
 	}
 

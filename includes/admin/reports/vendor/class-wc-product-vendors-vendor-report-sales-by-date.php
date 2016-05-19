@@ -103,14 +103,14 @@ class WC_Product_Vendors_Vendor_Report_Sales_By_Date extends WC_Admin_Report {
 				break;
 		}
 
-		if ( false === ( $results = get_transient( 'wcpv_reports_legend_' . WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ) . '_' . $this->current_range ) ) ) {
+		if ( false === ( $results = get_transient( 'wcpv_reports_legend_' . WC_Product_Vendors_Utils::get_logged_in_vendor() . '_' . $this->current_range ) ) ) {
 			
 			// Enable big selects for reports
 			$wpdb->query( 'SET SESSION SQL_BIG_SELECTS=1' );
 
-			$results = $wpdb->get_results( $wpdb->prepare( $sql, WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ) ) );
+			$results = $wpdb->get_results( $wpdb->prepare( $sql, WC_Product_Vendors_Utils::get_logged_in_vendor() ) );
 
-			set_transient( 'wcpv_reports_legend_' . WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ) . '_' . $this->current_range, $results, DAY_IN_SECONDS );
+			set_transient( 'wcpv_reports_legend_' . WC_Product_Vendors_Utils::get_logged_in_vendor() . '_' . $this->current_range, $results, DAY_IN_SECONDS );
 		}
 
 		$total_product_amount      = 0.00;
@@ -330,14 +330,14 @@ class WC_Product_Vendors_Vendor_Report_Sales_By_Date extends WC_Admin_Report {
 			
 		$sql .= " GROUP BY DATE( commission.order_date )";
 			
-		if ( false === ( $results = get_transient( 'wcpv_reports_' . WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ) . '_' . $this->current_range ) ) ) {
+		if ( false === ( $results = get_transient( 'wcpv_reports_' . WC_Product_Vendors_Utils::get_logged_in_vendor() . '_' . $this->current_range ) ) ) {
 
 			// Enable big selects for reports
 			$wpdb->query( 'SET SESSION SQL_BIG_SELECTS=1' );
 			
-			$results = $wpdb->get_results( $wpdb->prepare( $sql, WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ) ) );
+			$results = $wpdb->get_results( $wpdb->prepare( $sql, WC_Product_Vendors_Utils::get_logged_in_vendor() ) );
 
-			set_transient( 'wcpv_reports_' . WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ) . '_' . $this->current_range, $results, DAY_IN_SECONDS );
+			set_transient( 'wcpv_reports_' . WC_Product_Vendors_Utils::get_logged_in_vendor() . '_' . $this->current_range, $results, DAY_IN_SECONDS );
 		}
 
 		// Prepare data for report

@@ -117,7 +117,7 @@ class WC_Product_Vendors_Per_Product_Shipping_Method extends WC_Shipping_Method 
     /**
      * Calculate shipping when this method is used standalone.
      */
-    public function calculate_shipping( $package ) {
+    public function calculate_shipping( $package = array() ) {
 		$_tax          = new WC_Tax();
 		$taxes         = array();
 		$shipping_cost = 0;
@@ -135,7 +135,7 @@ class WC_Product_Vendors_Per_Product_Shipping_Method extends WC_Shipping_Method 
 							$rule = WC_Product_Vendors_Utils::get_pp_shipping_matching_rule( $values['variation_id'], $package );
 						}
 
-						if ( $rule === false ) {
+						if ( $rule === false || is_null( $rule ) ) {
 							$rule = WC_Product_Vendors_Utils::get_pp_shipping_matching_rule( $values['product_id'], $package );
 						}
 

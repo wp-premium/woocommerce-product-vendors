@@ -402,7 +402,7 @@ class WC_Product_Vendors_Store_Admin {
 			// sanitize html editor content
 			$posted_vendor_data['profile'] = ! empty( $_POST['vendor_data']['profile'] ) ? wp_kses_post( stripslashes( $_POST['vendor_data']['profile'] ) ) : '';
 			
-			// validate commission as it takes whole number or whole number and % sign
+			// validate commission as it takes an absolute number
 			$posted_vendor_data['commission'] = WC_Product_Vendors_Utils::sanitize_commission( $posted_vendor_data['commission'] );
 
 			// account for checkbox fields
@@ -807,7 +807,7 @@ class WC_Product_Vendors_Store_Admin {
 
 				array(
 					'title'    => __( 'Default Commission', 'woocommerce-product-vendors' ),
-					'desc'     => __( 'Enter a default commission that works globally for all vendors as a fallback if commission is not set per vendor level.  Enter a whole number without period or decimal places.', 'woocommerce-product-vendors' ),
+					'desc'     => __( 'Enter a default commission that works globally for all vendors as a fallback if commission is not set per vendor level.  Enter a positive number.', 'woocommerce-product-vendors' ),
 					'id'       => 'wcpv_vendor_settings_default_commission',
 					'default'  => '0',
 					'type'     => 'text',
@@ -952,7 +952,7 @@ class WC_Product_Vendors_Store_Admin {
 
 			echo '<div class="options_group show_if_simple show_if_variable show_if_booking">';
 
-			woocommerce_wp_text_input( array( 'id' => '_wcpv_product_commission', 'label' => __( 'Commission', 'woocommerce-product-vendors' ), 'desc_tip' => 'true', 'description' => __( 'Enter a default commission for this product.  Enter a whole number without period or decimal places.', 'woocommerce-product-vendors' ), 'placeholder' => $commission_placeholder ) );
+			woocommerce_wp_text_input( array( 'id' => '_wcpv_product_commission', 'label' => __( 'Commission', 'woocommerce-product-vendors' ), 'desc_tip' => 'true', 'description' => __( 'Enter a default commission for this product. Enter a positive number.', 'woocommerce-product-vendors' ), 'placeholder' => $commission_placeholder ) );
 
 			echo '</div>';
 		}
@@ -1011,7 +1011,7 @@ class WC_Product_Vendors_Store_Admin {
 			echo '<div class="options_group show_if_variable show_if_booking">';
 			?>
 			<p class="wcpv-commission form-row form-row-first">
-				<label><?php esc_html_e( 'Commission', 'woocommerce-product-vendors' ); ?>: <?php echo wc_help_tip( __( 'Enter a commission for this product variation.  Enter a whole number without period or decimal places.', 'woocommerce-product-vendors' ) ); ?></label>
+				<label><?php esc_html_e( 'Commission', 'woocommerce-product-vendors' ); ?>: <?php echo wc_help_tip( __( 'Enter a commission for this product variation.  Enter a positive number.', 'woocommerce-product-vendors' ) ); ?></label>
 
 				<input type="text" name="_wcpv_product_variation_commission[<?php echo $loop; ?>]" value="<?php echo esc_attr( $commission ); ?>" placeholder="<?php echo esc_attr( $commission_placeholder ); ?>" />
 			</p>

@@ -204,7 +204,7 @@ class WC_Product_Vendors_Vendor_Frontend {
 			$show_ratings = get_option( 'wcpv_vendor_settings_vendor_review', 'yes' );
 
 			if ( 'yes' === $show_ratings ) {
-				echo WC_Product_Vendors_Utils::get_vendor_rating_html( $term->slug );
+				echo WC_Product_Vendors_Utils::get_vendor_rating_html( $term->term_id );
 			}
 
 			// profile
