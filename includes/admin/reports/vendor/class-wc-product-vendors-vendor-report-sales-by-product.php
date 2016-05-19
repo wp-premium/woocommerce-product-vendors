@@ -48,7 +48,7 @@ class WC_Product_Vendors_Vendor_Report_Sales_By_Product extends WC_Admin_Report 
 		if ( ! empty( $this->product_ids ) ) {
 			foreach( $this->product_ids as $id ) {
 
-				if ( WC_Product_Vendors_Utils::can_user_manage_product( WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ), $id ) ) {
+				if ( WC_Product_Vendors_Utils::can_user_manage_product( WC_Product_Vendors_Utils::get_logged_in_vendor(), $id ) ) {
 					$filtered_ids[] = $id;
 				}
 			}
@@ -257,7 +257,7 @@ class WC_Product_Vendors_Vendor_Report_Sales_By_Product extends WC_Admin_Report 
 				if ( $top_sellers ) {
 					foreach ( $top_sellers as $product ) {
 
-						if ( ! WC_Product_Vendors_Utils::can_user_manage_product( WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ), $product->product_id ) ) {
+						if ( ! WC_Product_Vendors_Utils::can_user_manage_product( WC_Product_Vendors_Utils::get_logged_in_vendor(), $product->product_id ) ) {
 							continue;
 						}
 
@@ -302,7 +302,7 @@ class WC_Product_Vendors_Vendor_Report_Sales_By_Product extends WC_Admin_Report 
 				if ( $top_earners ) {
 					foreach ( $top_earners as $product ) {
 
-						if ( ! WC_Product_Vendors_Utils::can_user_manage_product( WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ), $product->product_id ) ) {
+						if ( ! WC_Product_Vendors_Utils::can_user_manage_product( WC_Product_Vendors_Utils::get_logged_in_vendor(), $product->product_id ) ) {
 							continue;
 						}
 

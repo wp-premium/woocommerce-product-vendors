@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @version  2.0.0
  */
 class WC_Product_Vendors_Authentication {
-	public $login_vendor;
+	public $logged_in_vendor;
 
 	/**
 	 * Constructor
@@ -67,14 +67,14 @@ class WC_Product_Vendors_Authentication {
 	 * @access public
 	 * @since 2.0.0
 	 * @version 2.0.0
-	 * @param object $user
-	 * @param string $vendor_name
+	 * @param int $user_id
+	 * @param string $vendor_id
 	 * @return bool
 	 */
-	public function set_cookie( $user, $vendor_name ) {
-		$expiry = apply_filters( 'auth_cookie_expiration', current_time( 'timestamp' ) + ( 14 * DAY_IN_SECONDS ), $user->ID, true );
+	public function set_cookie( $user_id, $vendor_id ) {
+		$expiry = apply_filters( 'auth_cookie_expiration', current_time( 'timestamp' ) + ( 14 * DAY_IN_SECONDS ), $user_id, true );
 
-		return setcookie( 'wcpv_vendor_name_' . COOKIEHASH, sanitize_title( $vendor_name ), 0, SITECOOKIEPATH, COOKIE_DOMAIN );
+		return setcookie( 'wcpv_vendor_id_' . COOKIEHASH, absint( $vendor_id ), 0, SITECOOKIEPATH, COOKIE_DOMAIN );
 	}
 
 	/**
@@ -86,7 +86,7 @@ class WC_Product_Vendors_Authentication {
 	 * @return bool
 	 */
 	public function expire_cookie() {
-		return setcookie( 'wcpv_vendor_name_' . COOKIEHASH, ' ', current_time( 'timestamp' ) - YEAR_IN_SECONDS, SITECOOKIEPATH, COOKIE_DOMAIN );
+		return setcookie( 'wcpv_vendor_id_' . COOKIEHASH, ' ', current_time( 'timestamp' ) - YEAR_IN_SECONDS, SITECOOKIEPATH, COOKIE_DOMAIN );
 	}
 
 	/**
@@ -98,8 +98,8 @@ class WC_Product_Vendors_Authentication {
 	 * @return mix
 	 */
 	public static function get_vendor_login_cookie() {
-		if ( ! empty( $_COOKIE[ 'wcpv_vendor_name_' . COOKIEHASH ] ) ) {
-			return $_COOKIE[ 'wcpv_vendor_name_' . COOKIEHASH ];
+		if ( ! empty( $_COOKIE[ 'wcpv_vendor_id_' . COOKIEHASH ] ) ) {
+			return $_COOKIE[ 'wcpv_vendor_id_' . COOKIEHASH ];
 		}
 
 		return false;
@@ -154,14 +154,8 @@ class WC_Product_Vendors_Authentication {
 				$user = new WP_Error( 'error', __( 'Your account is not authorized to manage any vendors.  Please contact us for help.', 'woocommerce-product-vendors' ) );
 			
 			} else {
-				$vendor_names = array();
-
-				foreach( $vendor_data as $vendor_name => $data ) {
-					$vendor_names[] = $vendor_name;
-				}
-
 				// set the default vendor this user will manage
-				$this->login_vendor = $vendor_names[0];
+				$this->logged_in_vendor = key( $vendor_data );
 			}
 		}
 
@@ -183,7 +177,7 @@ class WC_Product_Vendors_Authentication {
 
 			// by default set the session to the first vendor 
 			// the user is able to manage
-			$this->set_cookie( $user, $this->login_vendor );
+			$this->set_cookie( $user->ID, $this->logged_in_vendor );
 		}
 
 		return true;

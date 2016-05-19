@@ -35,7 +35,9 @@ class WC_Product_Vendors_Order {
 
 		add_action( 'wcpv_commission_added', array( $this, 'add_commission_order_note' ) );
 
-		add_filter( 'woocommerce_order_actions', array( $this, 'add_commission_order_action' ) );
+		if ( is_admin() ) {
+			add_filter( 'woocommerce_order_actions', array( $this, 'add_commission_order_action' ) );
+		}
 
 		add_action( 'woocommerce_order_action_wcpv_manual_create_commission', array( $this, 'process_manual_create_commission_action' ) );
 
@@ -248,14 +250,17 @@ class WC_Product_Vendors_Order {
 	 * @access public
 	 * @since 2.0.0
 	 * @version 2.0.0
-	 * @return array
+	 * @param array $actions
+	 * @return array $actions
 	 */
-	public function add_commission_order_action() {
+	public function add_commission_order_action( $actions ) {
 		if ( ! isset( $_REQUEST['post'] ) ) {
-			return;
+			return $actions;
 		}
 
-		return array( 'wcpv_manual_create_commission' => __( 'Generate Vendor Commission', 'woocommerce-product-vendors' ) );
+		$actions['wcpv_manual_create_commission'] = __( 'Generate Vendor Commission', 'woocommerce-product-vendors' );
+
+		return $actions;
 	}
 
 	/**

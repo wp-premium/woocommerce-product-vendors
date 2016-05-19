@@ -48,10 +48,59 @@ class WC_Product_Vendors_Bookings {
 		// remove bookable person post type access
 		add_filter( 'woocommerce_register_post_type_bookable_person', array( $this, 'remove_bookable_person_post_type' ) );
 
+		// filters the product type
+		add_filter( 'product_type_selector', array( $this, 'filter_product_type' ), 99 );
+
+		// modify the booking status views
+		add_filter( 'views_edit-wc_booking', array( $this, 'booking_status_views' ) );
+
 		// redirect vendors trying to access global availability page directly
 		add_action( 'init', array( $this, 'redirect_global_availability_page' ) );
 
 		return true;
+	}
+
+	/**
+	 * Filters the product type
+	 *
+	 * @access public
+	 * @since 2.0.9
+	 * @version 2.0.9
+	 * @param array $types
+	 * @return array $post_type_args
+	 */
+	public function filter_product_type( $types ) {
+		if ( WC_Product_Vendors_Utils::auth_vendor_user() && ! $this->is_bookings_enabled() ) {
+			unset( $types['booking'] );
+		}
+
+		return $types;
+	}
+
+	/**
+	 * Modifies the booking status views
+	 *
+	 * @access public
+	 * @since 2.0.9
+	 * @version 2.0.9
+	 * @param array $views
+	 * @return array $post_type_args
+	 */
+	public function booking_status_views( $views ) {
+		global $typenow;
+
+		if ( WC_Product_Vendors_Utils::auth_vendor_user() && 'wc_booking' === $typenow ) {
+			$new_views = array();
+
+			// remove the count from each status
+			foreach( $views as $k => $v ) {
+				$new_views[$k] = preg_replace( '/\(\d+\)/', '', $v );
+			}
+
+			$views = $new_views;
+		}
+
+		return $views;
 	}
 
 	/**
@@ -63,7 +112,7 @@ class WC_Product_Vendors_Bookings {
 	 * @return array $post_type_args
 	 */
 	public function is_bookings_enabled() {
-		$vendor_data = get_term_meta( WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ), 'vendor_data', true );
+		$vendor_data = get_term_meta( WC_Product_Vendors_Utils::get_logged_in_vendor(), 'vendor_data', true );
 
 		if ( empty( $vendor_data ) || 'no' === $vendor_data['enable_bookings'] ) {
 			return false;
@@ -267,9 +316,7 @@ class WC_Product_Vendors_Bookings {
 	 */
 	public function remove_wc_booking_post_type( $args ) {
 		if ( WC_Product_Vendors_Utils::is_vendor() ) {
-			$vendor_data = get_term_meta( WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ), 'vendor_data', true );
-
-			if ( empty( $vendor_data ) || 'no' === $vendor_data['enable_bookings'] ) {
+			if ( ! $this->is_bookings_enabled() ) {
 				$args['capability_type'] = 'manage_bookings';
 			}
 		}
