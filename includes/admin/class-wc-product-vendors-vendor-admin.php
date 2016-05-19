@@ -13,6 +13,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @version  2.0.0
  */
 class WC_Product_Vendors_Vendor_Admin {
+	public $order_notes;
+
 	/**
 	 * Initialize
 	 *
@@ -59,6 +61,9 @@ class WC_Product_Vendors_Vendor_Admin {
 
 		// restrict attachments only to vendor
 		add_filter( 'ajax_query_attachments_args', array( $self, 'restrict_attachments_ajax' ) );
+
+		// filter product list category page
+		add_filter( 'wc_product_dropdown_categories_get_terms_args', array( $self, 'filter_product_dropdown_categories' ) );
 
 		// modify product filters
 		add_filter( 'woocommerce_product_filters', array( $self, 'product_filters' ), 11 );
@@ -108,7 +113,38 @@ class WC_Product_Vendors_Vendor_Admin {
 		// displays count bubble on unfulfilled products
 		add_filter( 'add_menu_classes', array( $self, 'unfulfilled_products_count_bubble' ) );
 
+		// re-set the vendor cookie
+		add_action( 'set_logged_in_cookie', array( $self, 'reset_vendor_cookie' ), 10, 4 );
+
+		$self->order_notes = new WC_Product_Vendors_Vendor_Order_Notes();
+
     	return true;
+	}
+
+	/**
+	 * Adds vendor switcher function to the admin bar
+	 *
+	 * @access public
+	 * @since 2.0.9
+	 * @version 2.0.9
+	 * @param string $logged_in_cookie
+	 * @param int $expire
+	 * @param int $expiration
+	 * @param int $user_id
+	 * @return bool
+	 */
+	public function reset_vendor_cookie( $logged_in_cookie, $expire, $expiration, $user_id ) {
+		if ( WC_Product_Vendors_Utils::is_vendor( $user_id ) ) {
+			$authenticate = new WC_Product_Vendors_Authentication();
+			
+			$vendor = WC_Product_Vendors_Utils::get_vendor_data_from_user();
+
+			if ( ! empty( $vendor ) ) {
+				$authenticate->set_cookie( $user_id, $vendor['term_id'] );
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -129,25 +165,26 @@ class WC_Product_Vendors_Vendor_Admin {
 			return;
 		}
 
-		$current_vendor = WC_Product_Vendors_Utils::get_logged_in_vendor();
+		$current_vendor_id = WC_Product_Vendors_Utils::get_logged_in_vendor();
+		$current_active = '';
 
 		if ( ! empty( $vendors ) ) {
 			// loop through each vendor and build admin bar menu
-			foreach( $vendors as $vendor_slug => $vendor_data ) {
-				$active = $vendor_slug === $current_vendor ? ' ( ' . __( 'Current', 'woocommerce-product-vendors' ) . ' )' : '';
+			foreach( $vendors as $vendor_id => $vendor_data ) {
+				$active = $vendor_id === absint( $current_vendor_id ) ? ' ( ' . __( 'Current', 'woocommerce-product-vendors' ) . ' )' : '';
 
 				if ( ! empty( $active ) ) {
 					$current_active = $vendor_data['name'];
 				}
 
 				$args = array(
-					'id'     => 'wcpv_vendor_' . $vendor_slug,
+					'id'     => 'wcpv_vendor_' . $vendor_id,
 					'title'  => esc_attr( $vendor_data['name'] . $active ),
 					'parent' => 'wcpv_vendor_switcher',
 					'href'   => '#',
 					'meta'   => array(
 						'class' => 'wcpv-vendor-switch',
-						'html'  => '<input type="hidden" class="wcpv-vendor" value="' . esc_attr( $vendor_slug ) . '" />' . wp_nonce_field( 'wcpv_switch_vendor', 'wcpv_vendor_switch_nonce', true, false ),
+						'html'  => '<input type="hidden" class="wcpv-vendor" value="' . esc_attr( $vendor_id ) . '" />' . wp_nonce_field( 'wcpv_switch_vendor', 'wcpv_vendor_switch_nonce', true, false ),
 					),
 				);
 
@@ -230,7 +267,7 @@ class WC_Product_Vendors_Vendor_Admin {
 
 		WC_Product_Vendors_Utils::clear_reports_transients();
 		$authenticate->expire_cookie();
-		$authenticate->set_cookie( $user, $vendor );
+		$authenticate->set_cookie( $user->ID, $vendor );
 
 		echo 'switched';
 		exit;
@@ -297,7 +334,7 @@ class WC_Product_Vendors_Vendor_Admin {
 	 * @return bool
 	 */
 	public function vendor_support_form_process( $form_items ) {
-		$vendor_data = WC_Product_Vendors_Utils::get_vendor_data_by_id( WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ) );
+		$vendor_data = WC_Product_Vendors_Utils::get_vendor_data_by_id( WC_Product_Vendors_Utils::get_logged_in_vendor() );
 
 		$current_user   = wp_get_current_user();
 		$user_firstname = get_user_meta( $current_user->ID, 'user_firstname', true );
@@ -565,6 +602,23 @@ class WC_Product_Vendors_Vendor_Admin {
 	}
 
 	/**
+	 * Filters the product category dropdown
+	 *
+	 * @access public
+	 * @since 2.0.9
+	 * @version 2.0.9
+	 * @return array $columns modified columns
+	 */
+	public function filter_product_dropdown_categories( $args ) {
+		if ( WC_Product_Vendors_Utils::auth_vendor_user() ) {
+			// remove the post count per category
+			unset( $args['show_count'] );
+		}
+
+		return $args;
+	}
+
+	/**
 	 * Restricts some of the product columns from vendors
 	 *
 	 * @access public
@@ -598,8 +652,8 @@ class WC_Product_Vendors_Vendor_Admin {
 
 				$query->query_vars['tax_query'][] = array(
 					'taxonomy' => WC_PRODUCT_VENDORS_TAXONOMY,
-					'field'    => 'slug',
-					'terms'    => array( sanitize_title( WC_Product_Vendors_Utils::get_logged_in_vendor( 'slug' ) ) ),
+					'field'    => 'id',
+					'terms'    => array( WC_Product_Vendors_Utils::get_logged_in_vendor() ),
 				);
 			}
 
@@ -656,7 +710,7 @@ class WC_Product_Vendors_Vendor_Admin {
 	 */
 	public function process_attachment( $post_id ) {
 		if ( WC_Product_Vendors_Utils::auth_vendor_user() ) {
-			update_post_meta( $post_id, '_wcpv_vendor', WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ) );
+			update_post_meta( $post_id, '_wcpv_vendor', WC_Product_Vendors_Utils::get_logged_in_vendor() );
 		}
 
 		return true;
@@ -674,7 +728,7 @@ class WC_Product_Vendors_Vendor_Admin {
 	public function restrict_attachments_ajax( $query ) {
 		if ( WC_Product_Vendors_Utils::auth_vendor_user() ) {
 			$query['meta_key'] = '_wcpv_vendor';
-			$query['meta_value'] = WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' );
+			$query['meta_value'] = WC_Product_Vendors_Utils::get_logged_in_vendor();
 		}
 
 		return $query;
@@ -716,68 +770,70 @@ class WC_Product_Vendors_Vendor_Admin {
 	public function product_filters( $output ) {
 		global $wp_query;
 
-		// Type filtering
-		$terms   = get_terms( 'product_type' );
-		$output  = '<select name="product_type" id="dropdown_product_type">';
-		$output .= '<option value="">' . esc_html__( 'Show all product types', 'woocommerce-product-vendors' ) . '</option>';
+		if ( WC_Product_Vendors_Utils::auth_vendor_user() ) {
+			// Type filtering
+			$terms   = get_terms( 'product_type' );
+			$output  = '<select name="product_type" id="dropdown_product_type">';
+			$output .= '<option value="">' . esc_html__( 'Show all product types', 'woocommerce-product-vendors' ) . '</option>';
 
-		foreach ( $terms as $term ) {
-			// remove grouped product
-			if ( 'grouped' === $term->name ) {
-				continue;
-			}
-
-			$output .= '<option value="' . sanitize_title( $term->name ) . '" ';
-
-			if ( isset( $wp_query->query['product_type'] ) ) {
-				$output .= selected( $term->slug, $wp_query->query['product_type'], false );
-			}
-
-			$output .= '>';
-
-			switch ( $term->name ) {
-				case 'grouped' :
-					$output .= __( 'Grouped product', 'woocommerce-product-vendors' );
-					break;
-				case 'external' :
-					$output .= __( 'External/Affiliate product', 'woocommerce-product-vendors' );
-					break;
-				case 'variable' :
-					$output .= __( 'Variable product', 'woocommerce-product-vendors' );
-					break;
-				case 'simple' :
-					$output .= __( 'Simple product', 'woocommerce-product-vendors' );
-					break;
-				default :
-					// Assuming that we have other types in future
-					$output .= ucfirst( $term->name );
-					break;
-			}
-
-			$output .= "</option>";
-
-			if ( 'simple' === $term->name ) {
-
-				$output .= '<option value="downloadable" ';
-
-				if ( isset( $wp_query->query['product_type'] ) ) {
-					$output .= selected( 'downloadable', $wp_query->query['product_type'], false );
+			foreach ( $terms as $term ) {
+				// remove grouped product
+				if ( 'grouped' === $term->name ) {
+					continue;
 				}
 
-				$output .= '> &rarr; ' . esc_html__( 'Downloadable', 'woocommerce-product-vendors' ) . '</option>';
-
-				$output .= '<option value="virtual" ';
+				$output .= '<option value="' . sanitize_title( $term->name ) . '" ';
 
 				if ( isset( $wp_query->query['product_type'] ) ) {
-					$output .= selected( 'virtual', $wp_query->query['product_type'], false );
+					$output .= selected( $term->slug, $wp_query->query['product_type'], false );
 				}
 
-				$output .= '> &rarr;  ' . esc_html__( 'Virtual', 'woocommerce-product-vendors' ) . '</option>';
+				$output .= '>';
+
+				switch ( $term->name ) {
+					case 'grouped' :
+						$output .= __( 'Grouped product', 'woocommerce-product-vendors' );
+						break;
+					case 'external' :
+						$output .= __( 'External/Affiliate product', 'woocommerce-product-vendors' );
+						break;
+					case 'variable' :
+						$output .= __( 'Variable product', 'woocommerce-product-vendors' );
+						break;
+					case 'simple' :
+						$output .= __( 'Simple product', 'woocommerce-product-vendors' );
+						break;
+					default :
+						// Assuming that we have other types in future
+						$output .= ucfirst( $term->name );
+						break;
+				}
+
+				$output .= "</option>";
+
+				if ( 'simple' === $term->name ) {
+
+					$output .= '<option value="downloadable" ';
+
+					if ( isset( $wp_query->query['product_type'] ) ) {
+						$output .= selected( 'downloadable', $wp_query->query['product_type'], false );
+					}
+
+					$output .= '> &rarr; ' . esc_html__( 'Downloadable', 'woocommerce-product-vendors' ) . '</option>';
+
+					$output .= '<option value="virtual" ';
+
+					if ( isset( $wp_query->query['product_type'] ) ) {
+						$output .= selected( 'virtual', $wp_query->query['product_type'], false );
+					}
+
+					$output .= '> &rarr;  ' . esc_html__( 'Virtual', 'woocommerce-product-vendors' ) . '</option>';
+				}
 			}
+
+			$output .= '</select>';
 		}
-
-		$output .= '</select>';
-
+		
 		return $output;
 	}
 
@@ -969,8 +1025,6 @@ class WC_Product_Vendors_Vendor_Admin {
 		$order_list = new WC_Product_Vendors_Vendor_Order_Detail_List();
 
 		$order_list->prepare_items();
-		
-		$order_notes = new WC_Product_Vendors_Vendor_Order_Notes();
 
 		include_once( 'views/html-vendor-order-page.php' );
 	}
@@ -1091,7 +1145,7 @@ class WC_Product_Vendors_Vendor_Admin {
 				// merge the changes with existing settings
 				$posted_vendor_data = array_merge( $vendor_data, $posted_vendor_data );
 
-				if ( update_term_meta( WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ), 'vendor_data', $posted_vendor_data ) ) {
+				if ( update_term_meta( WC_Product_Vendors_Utils::get_logged_in_vendor(), 'vendor_data', $posted_vendor_data ) ) {
 
 					// grab the newly saved settings
 					$vendor_data = WC_Product_Vendors_Utils::get_vendor_data_from_user();
@@ -1186,12 +1240,12 @@ class WC_Product_Vendors_Vendor_Admin {
 
 		$sql .= " AND commission.vendor_id = '%d'";
 
-		if ( false === ( $count = get_transient( 'wcpv_unfulfilled_products_' . WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ) ) ) ) {
+		if ( false === ( $count = get_transient( 'wcpv_unfulfilled_products_' . WC_Product_Vendors_Utils::get_logged_in_vendor() ) ) ) {
 			$wpdb->query( 'SET SESSION SQL_BIG_SELECTS=1' );
 			
-			$count = $wpdb->get_var( $wpdb->prepare( $sql, WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ) ) );
+			$count = $wpdb->get_var( $wpdb->prepare( $sql, WC_Product_Vendors_Utils::get_logged_in_vendor() ) );
 
-			set_transient( 'wcpv_unfulfilled_products_' . WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ), $count, DAY_IN_SECONDS );
+			set_transient( 'wcpv_unfulfilled_products_' . WC_Product_Vendors_Utils::get_logged_in_vendor(), $count, DAY_IN_SECONDS );
 		}
 
 		return $count;

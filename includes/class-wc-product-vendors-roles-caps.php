@@ -39,6 +39,8 @@ class WC_Product_Vendors_Roles_Caps {
 			'edit_comments'             => false,
 			'delete_published_products' => true,
 			'delete_others_products'    => true,
+			'delete_posts'              => true,
+			'delete_others_posts'       => true,
 		) );
 	}
 
@@ -57,6 +59,8 @@ class WC_Product_Vendors_Roles_Caps {
 			'edit_products'            => true,
 			'edit_published_products'  => true,
 			'publish_products'         => false,
+			'assign_product_terms'     => true,
+			'upload_files'             => true,
 			'read'                     => true,
 			'manage_bookings'          => true,
 			'view_woocommerce_reports' => false,

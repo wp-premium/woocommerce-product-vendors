@@ -88,6 +88,7 @@ class WC_Product_Vendors_Emails {
 		$actions[] = 'woocommerce_order_status_on-hold_to_completed';
 		$actions[] = 'woocommerce_order_status_processing_to_cancelled';
 		$actions[] = 'woocommerce_order_status_completed_to_cancelled';
+		$actions[] = 'wcpv_customer_order_note';
 
 		return $actions;
 	}

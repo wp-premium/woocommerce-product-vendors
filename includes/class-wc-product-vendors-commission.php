@@ -292,11 +292,11 @@ class WC_Product_Vendors_Commission {
 		}
 
 		if ( 'percentage' === $type ) {
-			$commission = $product_amount * ( absint( $commission ) / 100 );
+			$commission = number_format( $product_amount * ( abs( $commission ) / 100 ), 2 );
 		
 		// fixed commission
 		} else {
-			$commission = absint( $commission );
+			$commission = number_format( abs( $commission ), 2 );
 		}
 
 		return $commission;

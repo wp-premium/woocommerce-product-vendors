@@ -161,7 +161,7 @@ class WC_Product_Vendors_Utils {
 		}
 
 		// strip all percentages and make positive whole number
-		return absint( str_replace( '%', '', trim( $commission ) ) );
+		return abs( str_replace( '%', '', trim( $commission ) ) );
 	}
 
 	/**
@@ -173,7 +173,7 @@ class WC_Product_Vendors_Utils {
 	 * @return array $vendor_data
 	 */
 	public static function get_vendor_data_from_user() {
-		return self::get_vendor_data_by_id( WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' ) );
+		return self::get_vendor_data_by_id( WC_Product_Vendors_Utils::get_logged_in_vendor() );
 	}
 
 	/**
@@ -239,7 +239,7 @@ class WC_Product_Vendors_Utils {
 	 *
 	 * @access public
 	 * @since 2.0.0
-	 * @version 2.0.0
+	 * @version 2.0.9
 	 * @param int $user_id
 	 * @return array $vendor_data
 	 */
@@ -275,7 +275,7 @@ class WC_Product_Vendors_Utils {
 					$vendor_data['parent']           = $term->parent;
 					$vendor_data['count']            = $term->count;
 
-					$vendors[ $term->slug ] = $vendor_data;
+					$vendors[ $term->term_id ] = $vendor_data;
 				}
 			}
 		}
@@ -288,12 +288,12 @@ class WC_Product_Vendors_Utils {
 	 *
 	 * @access private
 	 * @since 2.0.0
-	 * @version 2.0.0
+	 * @version 2.0.9
 	 * @return mix
 	 */
 	private static function _get_vendor_login_cookie() {
-		if ( ! empty( $_COOKIE[ 'wcpv_vendor_name_' . COOKIEHASH ] ) ) {
-			return $_COOKIE[ 'wcpv_vendor_name_' . COOKIEHASH ];
+		if ( ! empty( $_COOKIE[ 'wcpv_vendor_id_' . COOKIEHASH ] ) ) {
+			return $_COOKIE[ 'wcpv_vendor_id_' . COOKIEHASH ];
 		}
 
 		return false;
@@ -304,12 +304,12 @@ class WC_Product_Vendors_Utils {
 	 *
 	 * @access public
 	 * @since 2.0.0
-	 * @version 2.0.0
+	 * @version 2.0.9
 	 * @param int $user_id
-	 * @param string $vendor_slug
+	 * @param string $vendor_id
 	 * @return bool
 	 */
-	public static function auth_vendor_user( $user_id = null, $vendor_slug = null ) {
+	public static function auth_vendor_user( $user_id = null, $vendor_id = null ) {
 		// if param not passed use current user
 		if ( null === $user_id ) {
 			$current_user = wp_get_current_user();
@@ -318,17 +318,17 @@ class WC_Product_Vendors_Utils {
 		}
 
 		// if param not passed get from cookie
-		if ( null === $vendor_slug ) {
-			$vendor_slug = self::_get_vendor_login_cookie();
+		if ( null === $vendor_id ) {
+			$vendor_id = self::_get_vendor_login_cookie();
 		}
 
 		// if term does not exist
-		if ( 0 === self::is_valid_vendor_name( $vendor_slug ) || null === self::is_valid_vendor_name( $vendor_slug ) ) {
+		if ( 0 === self::is_valid_vendor( $vendor_id ) || null === self::is_valid_vendor( $vendor_id ) ) {
 			return false;
 		}
 
 		if ( self::is_admin_vendor( $user_id ) || self::is_manager_vendor( $user_id ) ) {
-			$term = get_term_by( 'slug', sanitize_text_field( $vendor_slug ), WC_PRODUCT_VENDORS_TAXONOMY );
+			$term = get_term_by( 'id', sanitize_text_field( $vendor_id ), WC_PRODUCT_VENDORS_TAXONOMY );
 
 			if ( null === $term || false === $term ) {
 				return false;
@@ -346,16 +346,20 @@ class WC_Product_Vendors_Utils {
 	}
 
 	/**
-	 * Checks if vendor name is valid
+	 * Checks if vendor is valid
 	 *
 	 * @access public
 	 * @since 2.0.0
-	 * @version 2.0.0
-	 * @param string $vendor_name
+	 * @version 2.0.9
+	 * @param int|string $vendor
 	 * @return mixed
 	 */
-	public static function is_valid_vendor_name( $vendor_name = null ) {
-		return term_exists( $vendor_name, WC_PRODUCT_VENDORS_TAXONOMY );
+	public static function is_valid_vendor( $vendor = null ) {
+		if ( 0 === intval( $vendor ) ) {
+			return term_exists( $vendor, WC_PRODUCT_VENDORS_TAXONOMY );
+		} else {
+			return term_exists( intval( $vendor ), WC_PRODUCT_VENDORS_TAXONOMY );
+		}
 	}
 
 	/**
@@ -389,7 +393,7 @@ class WC_Product_Vendors_Utils {
 			return false;
 		}
 
-		if ( $product_terms[0] === self::get_logged_in_vendor( 'id' ) ) {
+		if ( $product_terms[0] === self::get_logged_in_vendor() ) {
 			return true;
 		}
 
@@ -405,26 +409,27 @@ class WC_Product_Vendors_Utils {
 	 * @param string $type the type to return
 	 * @return mixed
 	 */
-	public static function get_logged_in_vendor( $type = 'slug' ) {
+	public static function get_logged_in_vendor( $type = 'id' ) {
 		$current_user = wp_get_current_user();
 
 		$user_id = $current_user->ID;
 		
-		$vendor_slug = self::_get_vendor_login_cookie();
+		$vendor_id = self::_get_vendor_login_cookie();
 		
 		// if cookie is set and user can manage this vendor
 		if ( self::auth_vendor_user() ) {
 			if ( 'slug' === $type ) {
-				return $vendor_slug;
-
-			} elseif ( 'id' === $type ) {
-				$term = get_term_by( 'slug', $vendor_slug, WC_PRODUCT_VENDORS_TAXONOMY );
+				$term = get_term_by( 'id', $vendor_id, WC_PRODUCT_VENDORS_TAXONOMY );
 
 				if ( is_object( $term ) ) {
-					return $term->term_id;
+					return $term->slug;
 				}
+
+			} elseif ( 'id' === $type ) {
+				return intval( $vendor_id );
+
 			} elseif ( 'name' === $type ) {
-				$term = get_term_by( 'slug', $vendor_slug, WC_PRODUCT_VENDORS_TAXONOMY );
+				$term = get_term_by( 'id', $vendor_id, WC_PRODUCT_VENDORS_TAXONOMY );
 
 				if ( is_object( $term ) ) {
 					return $term->name;
@@ -459,25 +464,26 @@ class WC_Product_Vendors_Utils {
 	 * @access public
 	 * @since 2.0.0
 	 * @version 2.0.0
-	 * @param string $term the slug of the term
+	 * @param int $term_id
 	 * @return array $ids product ids
 	 */
-	public static function get_vendor_product_ids( $term = '' ) {
+	public static function get_vendor_product_ids( $term_id = '' ) {
 		$ids = array();
 
-		if ( empty( $term ) ) {
-			$term = self::get_logged_in_vendor();
+		if ( empty( $term_id ) ) {
+			$term_id = self::get_logged_in_vendor();
 		}
 		
-		if ( ! empty( $term ) ) {
+		if ( ! empty( $term_id ) ) {
 			$args = array(
-				'post_type' => 'product',
+				'post_type'      => 'product',
+				'posts_per_page' => -1,
 				'fields'    => 'ids',
 				'tax_query' => array(
 					array(
 						'taxonomy' => WC_PRODUCT_VENDORS_TAXONOMY,
-						'field'    => 'slug',
-						'terms'    => $term,
+						'field'    => 'id',
+						'terms'    => $term_id,
 					),
 				),				
 			);
@@ -498,11 +504,11 @@ class WC_Product_Vendors_Utils {
 	 * @access public
 	 * @since 2.0.0
 	 * @version 2.0.0
-	 * @param string $term the slug of the term
+	 * @param int $term_id
 	 * @return string $avg_rating
 	 */
-	public static function get_vendor_rating( $term ) {
-		$product_ids = self::get_vendor_product_ids( $term );
+	public static function get_vendor_rating( $term_id ) {
+		$product_ids = self::get_vendor_product_ids( $term_id );
 
 		$avg_rating = 0;
 
@@ -532,11 +538,11 @@ class WC_Product_Vendors_Utils {
 	 * @access public
 	 * @since 2.0.0
 	 * @version 2.0.0
-	 * @param string $term the slug of the term
+	 * @param int $term_id
 	 * @return mixed
 	 */
-	public static function get_vendor_rating_html( $term ) {
-		$rating = self::get_vendor_rating( $term );
+	public static function get_vendor_rating_html( $term_id ) {
+		$rating = self::get_vendor_rating( $term_id );
 
 		$rating_html = '<small style="display:block;">' . esc_html__( 'Average Vendor Rating', 'woocommerce-product-vendors' ) . '</small>';
 
@@ -667,7 +673,7 @@ class WC_Product_Vendors_Utils {
 
 		// if no commission is set in variation or parent product level
 		// check commission from vendor level
-		if ( ! empty( $vendor_data['commission'] ) && '0' == $vendor_data['commission'] ) {
+		if ( ! empty( $vendor_data['commission'] ) && '0' != $vendor_data['commission'] ) {
 			return array( 'commission' => $vendor_data['commission'], 'type' => $vendor_data['commission_type'] );
 		}
 

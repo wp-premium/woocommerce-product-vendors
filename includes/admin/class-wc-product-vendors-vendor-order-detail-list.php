@@ -62,7 +62,7 @@ class WC_Product_Vendors_Vendor_Order_Detail_List extends WP_List_Table {
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 
 		$order_id = ! empty( $_REQUEST['id'] ) ? absint( $_REQUEST['id'] ) : 0;
-		$vendor_id = WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' );
+		$vendor_id = WC_Product_Vendors_Utils::get_logged_in_vendor();
 
 		$wpdb->query( 'SET SESSION SQL_BIG_SELECTS=1' );
 

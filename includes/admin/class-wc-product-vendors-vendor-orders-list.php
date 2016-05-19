@@ -36,7 +36,7 @@ class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 			'ajax'      => false,
 		) );
 
-		$this->vendor_id = WC_Product_Vendors_Utils::get_logged_in_vendor( 'id' );
+		$this->vendor_id = WC_Product_Vendors_Utils::get_logged_in_vendor();
 
     	return true;
 	}

@@ -1,5 +1,23 @@
 *** Product Vendors Changelog ***
 
+2016.05.16 - version 2.0.10
+* Fix - Store admin was not able to see bookable product ( regression from last update )
+
+2016.05.15 - version 2.0.9
+* Fix - Typo on vendor level commission setting which causes commission not to match.
+* Fix - Order generate commission action filter overriding 3rd party actions.
+* Fix - Vendor dashboard no longer shows when vendor resets password.
+* Fix - Vendors were not able to upload media.
+* Fix - Per product shipping not returning rate when used on variable product parent level.
+* Fix - Vendors can still add bookable product when their account has bookings disabled.
+* Fix - Vendor name in 2 byte characters would cause vendor dashboard not to show.
+
+2016.05.06 - version 2.0.8
+* Fix - Vendor order notes were not processing properly.
+* Fix - Upgrading version 1.x to 2.x were not converting commission amount correctly.
+* Add - Capability to use decimals in commission amounts.
+* Add - Vendor description to vendor profile on 1.x data upgrade.
+
 2016.04.19 - version 2.0.7
 * Fix - Fatal error caused by method return value is used in write context.
 
