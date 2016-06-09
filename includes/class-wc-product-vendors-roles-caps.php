@@ -157,4 +157,48 @@ class WC_Product_Vendors_Roles_Caps {
 
 		return true;		
 	}
+
+	/**
+	 * Adds manage users capabilities to a user
+	 *
+	 * @access public
+	 * @since 2.1.0
+	 * @version 2.1.0
+	 * @return bool
+	 */
+	public function add_manage_users( $user_id = null ) {
+		if ( null === $user_id ) {
+			return;
+		}
+
+		$user = new WP_User( $user_id );
+		$user->add_cap( 'list_users' );
+		$user->add_cap( 'create_users' );
+		$user->add_cap( 'edit_users' );
+		$user->add_cap( 'edit_shop_orders' );
+
+		return true;		
+	}
+
+	/**
+	 * Remove manage users capabilities from a user
+	 *
+	 * @access public
+	 * @since 2.1.0
+	 * @version 2.1.0
+	 * @return bool
+	 */
+	public function remove_manage_users( $user_id = null ) {
+		if ( null === $user_id ) {
+			return;
+		}
+
+		$user = new WP_User( $user_id );
+		$user->remove_cap( 'list_users' );
+		$user->remove_cap( 'create_users' );
+		$user->remove_cap( 'edit_users' );
+		$user->remove_cap( 'edit_shop_orders' );
+
+		return true;		
+	}
 }

@@ -40,9 +40,6 @@ class WC_Product_Vendors_Vendor_Dashboard {
 	 * @return bool
 	 */
 	public function setup_vendor_dashboard() {
-		// don't display the added capabilites in profile
-		add_filter( 'additional_capabilities_display', '__return_false' );
-
 		// remove the color scheme picker in profile
 		remove_action( 'admin_color_scheme_picker', 'admin_color_scheme_picker' );
 
@@ -66,7 +63,7 @@ class WC_Product_Vendors_Vendor_Dashboard {
 		// remove update nag
 		remove_action( 'admin_notices', 'update_nag', 3 );
 
-			// remove plugin update nags
+		// remove plugin update nags
 		remove_action( 'load-update-core.php', 'wp_update_plugins', 999 );
 
 		// remove theme update nags
@@ -97,24 +94,6 @@ class WC_Product_Vendors_Vendor_Dashboard {
 	}
 
 	/**
-	 * Checks if bookings is enabled for this vendor
-	 *
-	 * @access public
-	 * @since 2.0.0
-	 * @version 2.0.0
-	 * @return array $post_type_args
-	 */
-	public function is_bookings_enabled() {
-		$vendor_data = get_term_meta( WC_Product_Vendors_Utils::get_logged_in_vendor(), 'vendor_data', true );
-
-		if ( ! empty( $vendor_data ) && 'yes' === $vendor_data['enable_bookings'] && class_exists( 'WC_Bookings' ) ) {
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
 	 * Add dashboard widgets for vendors
 	 *
 	 * @access public
@@ -128,14 +107,6 @@ class WC_Product_Vendors_Vendor_Dashboard {
 			__( 'Sales Summary', 'woocommerce-product-vendors' ),
 			array( $this, 'render_sales_dashboard_widget' )
 		);
-
-		if ( $this->is_bookings_enabled() ) {
-			wp_add_dashboard_widget(
-				'wcpv_vendor_bookings_dashboard_widget',
-				__( 'Recent Bookings', 'woocommerce-product-vendors' ),
-				array( $this, 'render_bookings_dashboard_widget' )
-			);
-		}
 
 		return true;
 	}
@@ -324,124 +295,6 @@ class WC_Product_Vendors_Vendor_Dashboard {
 			<?php do_action( 'wcpv_after_sales_dashboard_status_widget' ); ?>
 		</ul>
 		<?php
-	}
-
-	/**
-	 * Renders the bookings dashboard widgets for vendors
-	 *
-	 * @access public
-	 * @since 2.0.0
-	 * @version 2.0.0
-	 * @return bool
-	 */
-	public function render_bookings_dashboard_widget() {
-		if ( false === ( $bookings = get_transient( 'wcpv_reports_bookings_wg_' . WC_Product_Vendors_Utils::get_logged_in_vendor() ) ) ) {
-			$args = array(
-				'post_type'      => 'wc_booking',
-				'posts_per_page' => 20,
-				'post_status'    => 'any',
-			);
-
-			$bookings = get_posts( apply_filters( 'wcpv_bookings_list_widget_args', $args ) );
-			
-			if ( ! empty( $bookings ) ) {
-				// filter out only bookings with products of the vendor
-				$bookings = array_filter( $bookings, array( $this, 'filter_booking_products' ) );
-			}
-
-			set_transient( 'wcpv_reports_bookings_wg_' . WC_Product_Vendors_Utils::get_logged_in_vendor(), $bookings, DAY_IN_SECONDS );
-		}
-
-		if ( empty( $bookings ) ) {
-			echo '<p>' . __( 'There are no bookings available.', 'woocommerce-product-vendors' ) . '</p>';
-
-			return;
-		}
-		?>
-		
-		<table class="wcpv-vendor-bookings-widget wp-list-table widefat fixed striped posts">
-			<thead>
-				<tr>
-					<th><?php esc_html_e( 'Booking ID', 'woocommerce-product-vendors' ); ?></th>
-					<th><?php esc_html_e( 'Booked Product', 'woocommerce-product-vendors' ); ?></th>
-					<th><?php esc_html_e( '# of Persons', 'woocommerce-product-vendors' ); ?></th>
-					<th><?php esc_html_e( 'Booked By', 'woocommerce-product-vendors' ); ?></th>
-					<th><?php esc_html_e( 'Order', 'woocommerce-product-vendors' ); ?></th>
-					<th><?php esc_html_e( 'Start Date', 'woocommerce-product-vendors' ); ?></th>
-					<th><?php esc_html_e( 'End Date', 'woocommerce-product-vendors' ); ?></th>
-				</tr>
-			</thead>
-
-			<tbody id="the-list">
-				<?php
-				foreach( $bookings as $booking ) {
-					$booking_item = get_wc_booking( $booking->ID );
-					?>
-					<tr>
-						<td><a href="<?php echo get_edit_post_link( $booking->ID ); ?>" title="<?php esc_attr_e( 'Edit Booking', 'woocommerce-product-vendors' ); ?>"><?php printf( __( 'Booking #%d', 'woocommerce-product-vendors' ), $booking->ID ); ?></a></td>
-
-						<td><a href="<?php echo get_edit_post_link( $booking_item->get_product()->id ); ?>" title="<?php esc_attr_e( 'Edit Product', 'woocommerce-product-vendors' ); ?>"><?php echo $booking_item->get_product()->post->post_title; ?></a></td>
-
-						<td>
-							<?php 
-							if ( $booking_item->has_persons() ) {
-								echo $booking_item->get_persons_total();
-							} else {
-								esc_html_e( 'N/A', 'woocommerce-product-vendors' );
-							} ?>
-						</td>
-
-						<td>
-							<?php
-							if ( $booking_item->get_customer() ) {
-							?>
-								<a href="mailto:<?php echo esc_attr( $booking_item->get_customer()->email ); ?>"><?php echo $booking_item->get_customer()->name; ?></a>
-							<?php
-							} else {
-								esc_html_e( 'N/A', 'woocommerce-product-vendors' );
-							} ?>
-						</td>
-
-						<td>
-							<?php
-							if ( $booking_item->get_order() ) {
-							?>
-								<a href="<?php echo admin_url( 'admin.php?page=wcpv-vendor-order&id=' . $booking_item->order_id ); ?>" title="<?php esc_attr_e( 'Order Detail', 'woocommerce-product-vendors' ); ?>"><?php printf( __( '#%d', 'woocommerce-product-vendors' ), $booking_item->order_id ); ?></a> &mdash; <?php echo $booking_item->get_order()->get_status(); ?>
-							<?php
-							} else {
-								esc_html_e( 'N/A', 'woocommerce-product-vendors' );
-							}
-							?>
-						</td>
-
-						<td><?php echo $booking_item->get_start_date(); ?></td>
-						<td><?php echo $booking_item->get_end_date(); ?></td>
-					</tr>
-					<?php
-				}
-				?>
-			</tbody>
-		</table>
-		<?php
-	}
-
-	/**
-	 * Filters the product ids for logged in vendor
-	 *
-	 * @access public
-	 * @since 2.0.0
-	 * @version 2.0.0
-	 * @param string $term the slug of the term
-	 * @return array $ids product ids
-	 */
-	public function filter_booking_products( $item ) {
-		$product_ids = WC_Product_Vendors_Utils::get_vendor_product_ids();
-
-		$booking_item = get_wc_booking( $item->ID );
-
-		if ( is_object( $booking_item ) && is_object( $booking_item->get_product() ) && $booking_item->get_product()->id && in_array( $booking_item->get_product()->id, $product_ids ) ) {
-			return $item;
-		}
 	}
 
 	/**

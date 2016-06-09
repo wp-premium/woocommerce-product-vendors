@@ -113,11 +113,12 @@ class WC_Product_Vendors_Vendor_Report_Sales_By_Date extends WC_Admin_Report {
 			set_transient( 'wcpv_reports_legend_' . WC_Product_Vendors_Utils::get_logged_in_vendor() . '_' . $this->current_range, $results, DAY_IN_SECONDS );
 		}
 
-		$total_product_amount      = 0.00;
-		$total_shipping_amount     = 0.00;
-		$total_shipping_tax_amount = 0.00;
-		$total_product_tax_amount  = 0.00;
-		$total_commission_amount   = 0.00;
+		$total_product_amount           = 0.00;
+		$total_shipping_amount          = 0.00;
+		$total_shipping_tax_amount      = 0.00;
+		$total_product_tax_amount       = 0.00;
+		$total_earned_commission_amount = 0.00;
+		$total_commission_amount        = 0.00;
 
 		$total_orders = array();
 
@@ -125,10 +126,11 @@ class WC_Product_Vendors_Vendor_Report_Sales_By_Date extends WC_Admin_Report {
 
 			$total_orders[] = $data->order_id;
 			
-			$total_product_amount      += (float) sanitize_text_field( $data->product_amount );
-			$total_product_tax_amount  += (float) sanitize_text_field( $data->product_tax_amount );
-			$total_shipping_amount     += (float) sanitize_text_field( $data->product_shipping_amount );
-			$total_shipping_tax_amount += (float) sanitize_text_field( $data->product_shipping_tax_amount );
+			$total_product_amount           += (float) sanitize_text_field( $data->product_amount );
+			$total_product_tax_amount       += (float) sanitize_text_field( $data->product_tax_amount );
+			$total_shipping_amount          += (float) sanitize_text_field( $data->product_shipping_amount );
+			$total_shipping_tax_amount      += (float) sanitize_text_field( $data->product_shipping_tax_amount );
+			$total_earned_commission_amount += (float) sanitize_text_field( $data->total_commission_amount );
 
 			// show only paid commissions
 			if ( 'paid' === $data->commission_status ) {
@@ -148,6 +150,7 @@ class WC_Product_Vendors_Vendor_Report_Sales_By_Date extends WC_Admin_Report {
 		$this->report_data->total_items           = count( $results );
 		$this->report_data->total_shipping        = wc_format_decimal( $total_shipping_amount );
 		$this->report_data->total_commission      = wc_format_decimal( $total_commission_amount );
+		$this->report_data->total_earned          = wc_format_decimal( $total_earned_commission_amount );
 		$this->report_data->total_tax             = wc_format_decimal( $total_tax_amount );
 	}
 
@@ -185,34 +188,41 @@ class WC_Product_Vendors_Vendor_Report_Sales_By_Date extends WC_Admin_Report {
 
 		if ( $data->average_sales > 0 ) {
 			$legend[] = array(
-				'title' => $average_sales_title,
-				'color' => $this->chart_colors['average'],
+				'title'            => $average_sales_title,
+				'color'            => $this->chart_colors['average'],
 				'highlight_series' => 3
 			);
 		}
 
 		$legend[] = array(
-			'title' => sprintf( __( '%s orders placed', 'woocommerce-product-vendors' ), '<strong>' . $data->total_orders . '</strong>' ),
-			'color' => $this->chart_colors['order_count'],
+			'title'            => sprintf( __( '%s orders placed', 'woocommerce-product-vendors' ), '<strong>' . $data->total_orders . '</strong>' ),
+			'color'            => $this->chart_colors['order_count'],
 			'highlight_series' => 0
 		);
 
 		$legend[] = array(
-			'title' => sprintf( __( '%s items purchased', 'woocommerce-product-vendors' ), '<strong>' . $data->total_items . '</strong>' ),
-			'color' => $this->chart_colors['item_count'],
+			'title'            => sprintf( __( '%s items purchased', 'woocommerce-product-vendors' ), '<strong>' . $data->total_items . '</strong>' ),
+			'color'            => $this->chart_colors['item_count'],
 			'highlight_series' => 1
 		);
 
 		$legend[] = array(
-			'title' => sprintf( __( '%s charged for shipping', 'woocommerce-product-vendors' ), '<strong>' . wc_price( $data->total_shipping ) . '</strong>' ),
-			'color' => $this->chart_colors['shipping_amount'],
+			'title'            => sprintf( __( '%s charged for shipping', 'woocommerce-product-vendors' ), '<strong>' . wc_price( $data->total_shipping ) . '</strong>' ),
+			'color'            => $this->chart_colors['shipping_amount'],
 			'highlight_series' => 2
 		);
 
 		$legend[] = array(
-			'title' => sprintf( __( '%s total commission', 'woocommerce-product-vendors' ), '<strong>' . wc_price( $data->total_commission ) . '</strong>' ),
-			'placeholder'      => __( 'This is the sum of the commission including shipping and taxes if applicable.', 'woocommerce-product-vendors' ),
-			'color' => $this->chart_colors['commission'],
+			'title'            => sprintf( __( '%s total earned commission', 'woocommerce-product-vendors' ), '<strong>' . wc_price( $data->total_earned ) . '</strong>' ),
+			'placeholder'      => __( 'This is the sum of the earned commission including shipping and taxes if applicable.', 'woocommerce-product-vendors' ),
+			'color'            => $this->chart_colors['commission'],
+			'highlight_series' => 6
+		);
+
+		$legend[] = array(
+			'title'            => sprintf( __( '%s total paid commission', 'woocommerce-product-vendors' ), '<strong>' . wc_price( $data->total_commission ) . '</strong>' ),
+			'placeholder'      => __( 'This is the sum of the commission paid including shipping and taxes if applicable.', 'woocommerce-product-vendors' ),
+			'color'            => $this->chart_colors['commission'],
 			'highlight_series' => 6
 		);
 
@@ -237,6 +247,7 @@ class WC_Product_Vendors_Vendor_Report_Sales_By_Date extends WC_Admin_Report {
 			'order_count'      => '#dbe1e3',
 			'item_count'       => '#ecf0f1',
 			'shipping_amount'  => '#5cc488',
+			'earned'           => '#FF69B4',
 			'commission'       => '#FF69B4',
 		);
 
@@ -294,7 +305,7 @@ class WC_Product_Vendors_Vendor_Report_Sales_By_Date extends WC_Admin_Report {
 			return $this->report_data;
 		}
 
-		$select = "SELECT COUNT( DISTINCT commission.order_id ) AS count, COUNT( commission.order_id ) AS order_item_count, SUM( commission.product_amount + commission.product_shipping_amount + commission.product_tax_amount + commission.product_shipping_tax_amount ) AS total_sales, SUM( commission.product_shipping_amount ) AS total_shipping, SUM( commission.product_tax_amount ) AS total_tax, SUM( commission.product_shipping_tax_amount ) AS total_shipping_tax, SUM( commission.total_commission_amount ) AS total_commission, commission.order_date";
+		$select = "SELECT COUNT( DISTINCT commission.order_id ) AS count, COUNT( commission.order_id ) AS order_item_count, SUM( commission.product_amount + commission.product_shipping_amount + commission.product_tax_amount + commission.product_shipping_tax_amount ) AS total_sales, SUM( commission.product_shipping_amount ) AS total_shipping, SUM( commission.product_tax_amount ) AS total_tax, SUM( commission.product_shipping_tax_amount ) AS total_shipping_tax, SUM( commission.total_commission_amount ) AS total_earned, SUM( commission.total_commission_amount ) AS total_commission, commission.order_date";
 
 		$sql = $select;
 		$sql .= " FROM " . WC_PRODUCT_VENDORS_COMMISSION_TABLE . " AS commission";
@@ -353,6 +364,8 @@ class WC_Product_Vendors_Vendor_Report_Sales_By_Date extends WC_Admin_Report {
 		
 		$tax_amounts          = $this->prepare_chart_data( $results, 'order_date', 'total_tax', $this->chart_interval, $this->start_date, $this->chart_groupby );
 
+		$total_earned         = $this->prepare_chart_data( $results, 'order_date', 'total_earned', $this->chart_interval, $this->start_date, $this->chart_groupby );
+
 		$total_commission     = $this->prepare_chart_data( $results, 'order_date', 'total_commission', $this->chart_interval, $this->start_date, $this->chart_groupby );
 
 		$net_order_amounts = array();
@@ -369,6 +382,7 @@ class WC_Product_Vendors_Vendor_Report_Sales_By_Date extends WC_Admin_Report {
 			'order_amounts'     => array_map( array( $this, 'round_chart_totals' ), array_values( $order_amounts ) ),
 			'net_order_amounts' => array_map( array( $this, 'round_chart_totals' ), array_values( $net_order_amounts ) ),
 			'shipping_amounts'  => array_map( array( $this, 'round_chart_totals' ), array_values( $shipping_amounts ) ),
+			'total_earned'      => array_map( array( $this, 'round_chart_totals' ), array_values( $total_earned ) ),
 			'total_commission'  => array_map( array( $this, 'round_chart_totals' ), array_values( $total_commission ) ),
 		) );
 		?>
@@ -434,6 +448,16 @@ class WC_Product_Vendors_Vendor_Report_Sales_By_Date extends WC_Admin_Report {
 							data: order_data.net_order_amounts,
 							yaxis: 2,
 							color: '<?php echo $this->chart_colors['net_sales_amount']; ?>',
+							points: { show: true, radius: 6, lineWidth: 4, fillColor: '#fff', fill: true },
+							lines: { show: true, lineWidth: 5, fill: false },
+							shadowSize: 0,
+							<?php echo $this->get_currency_tooltip(); ?>
+						},
+						{
+							label: "<?php echo esc_js( __( 'Total Earned Commission Amount', 'woocommerce-product-vendors' ) ) ?>",
+							data: order_data.total_earned,
+							yaxis: 2,
+							color: '<?php echo $this->chart_colors['earned']; ?>',
 							points: { show: true, radius: 6, lineWidth: 4, fillColor: '#fff', fill: true },
 							lines: { show: true, lineWidth: 5, fill: false },
 							shadowSize: 0,

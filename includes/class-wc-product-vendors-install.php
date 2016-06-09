@@ -255,7 +255,8 @@ class WC_Product_Vendors_Install {
 		self::update_commission_db_version();
 		self::update_per_product_shipping_db_version();
 		self::update_wcpv_version();
-
+		self::clear_reports_transients();
+		
 		flush_rewrite_rules();
 
 		return true;
@@ -319,6 +320,24 @@ class WC_Product_Vendors_Install {
 
 			update_option( 'wcpv_show_activate_notice', '0' );
 		}
+	}
+
+	/**
+	 * Clears all reports transients
+	 *
+	 * @access public
+	 * @since 2.0.0
+	 * @version 2.0.0
+	 * @return bool
+	 */
+	public static function clear_reports_transients() {
+		global $wpdb;
+
+		$wpdb->query( "DELETE FROM $wpdb->options WHERE option_name LIKE '%wcpv_reports%'" );
+		$wpdb->query( "DELETE FROM $wpdb->options WHERE option_name LIKE '%wcpv_unfulfilled_products%'" );
+		$wpdb->query( "DELETE FROM $wpdb->options WHERE option_name LIKE '%book_dr%'" );
+
+		return true;
 	}
 
 	/**
