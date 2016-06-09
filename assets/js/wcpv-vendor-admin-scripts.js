@@ -192,11 +192,7 @@ jQuery( document ).ready( function( $ ) {
 			$( '.inline-edit-product select.visibility' ).closest( 'label' ).remove();
 
 			// remove bookings detail items
-			$( '#_booking_customer_id' ).parent( 'p.form-field' ).remove();
-			$( '#_booking_status' ).parent( 'p.form-field' ).remove();
-			$( '#_booking_order_id' ).parent( 'p.form-field' ).remove();
 			$( '#woocommerce-customer-data' ).find( 'tr.view' ).remove();
-			$( '.post-type-wc_booking' ).find( 'a.page-title-action' ).remove();
 
 			// remove bookings resources panel
 			$( 'li.bookings_tab.bookings_resources_tab' ).hide();

@@ -71,6 +71,9 @@ class WC_Product_Vendors_Vendor_Admin {
 		// modify the product status views
 		add_filter( 'views_edit-product', array( $self, 'product_status_views' ), 11 );
 
+		// modify the users type views
+		add_filter( 'views_users', array( $self, 'users_type_views' ), 11 );
+
 		// modify product months filter
 		add_filter( 'months_dropdown_results', array( $self, 'product_months_filter' ), 11, 2 );
 
@@ -115,6 +118,31 @@ class WC_Product_Vendors_Vendor_Admin {
 
 		// re-set the vendor cookie
 		add_action( 'set_logged_in_cookie', array( $self, 'reset_vendor_cookie' ), 10, 4 );
+
+		// filter the user list for vendors
+		add_action( 'pre_get_users', array( $self, 'filter_users' ) );
+
+		// filter the user roles
+		add_filter( 'editable_roles', array( $self, 'filter_user_roles' ) );
+
+		// add customer detail section to user profile
+		add_action( 'edit_user_profile', array( $self, 'add_customer_detail_profile_section' ) );
+		add_action( 'show_user_profile', array( $self, 'add_customer_detail_profile_section' ) );
+
+		// save user profile
+		add_action( 'edit_user_profile_update', array( $self, 'update_user' ) );
+		add_action( 'user_register', array( $self, 'update_user' ) );
+		add_action( 'profile_update', array( $self, 'update_user' ) );
+
+		add_action( 'edit_user_profile_update', array( $self, 'update_user_addresses' ) );
+		add_action( 'user_register', array( $self, 'update_user_addresses' ) );
+		add_action( 'profile_update', array( $self, 'update_user_addresses' ) );
+
+		// filter the user columns
+		add_filter( 'manage_users_columns', array( $self, 'filter_user_columns' ) );
+
+		// don't display the added capabilites in profile
+		add_filter( 'additional_capabilities_display', '__return_false' );
 
 		$self->order_notes = new WC_Product_Vendors_Vendor_Order_Notes();
 
@@ -215,7 +243,41 @@ class WC_Product_Vendors_Vendor_Admin {
 	public function remove_new() {
 		global $wp_admin_bar;
 
-		$wp_admin_bar->remove_menu( 'new-content' );
+		// whitelist of nodes to show
+		$allowed_nodes = array(
+			'user-actions',
+			'user-info',
+			'edit-profile',
+			'logout',
+			'menu-toggle',
+			'my-account',
+			'site-name',
+			'view-store',
+			'new-content',
+			'new-media',
+			'new-product',
+			'new-wc_booking',
+			'top-secondary',
+			'new-user'
+		);
+
+		if ( ! WC_Product_Vendors_Utils::is_bookings_enabled() ) {
+			unset( $allowed_nodes['new-wc_booking'] );
+		}
+
+		if ( ! current_user_can( 'list_users' ) ) {
+			unset( $allowed_nodes['new-user'] );
+		}
+
+		$allowed_nodes = apply_filters( 'wcpv_vendor_admin_toolbar_nodes', $allowed_nodes );
+
+		$current_nodes = $wp_admin_bar->get_nodes();
+
+		foreach( $current_nodes as $node_id => $node ) {
+			if ( ! in_array( $node_id, $allowed_nodes ) ) {
+				$wp_admin_bar->remove_node( $node_id );
+			}
+		}
 
 		return true;
 	}
@@ -505,6 +567,8 @@ class WC_Product_Vendors_Vendor_Admin {
 		wp_register_script( 'wcpv-vendor-admin-scripts', WC_PRODUCT_VENDORS_PLUGIN_URL . '/assets/js/wcpv-vendor-admin-scripts' . $suffix . '.js', array( 'jquery' ), WC_PRODUCT_VENDORS_VERSION, true );
 
 		if ( 'toplevel_page_wcpv-vendor-reports' === $current_screen->id ) {
+			global $wp_scripts;
+
 			$jquery_version = isset( $wp_scripts->registered['jquery-ui-core']->ver ) ? $wp_scripts->registered['jquery-ui-core']->ver : '1.9.2';
 
 			wp_enqueue_script( 'jquery-ui-datepicker' );
@@ -866,6 +930,18 @@ class WC_Product_Vendors_Vendor_Admin {
 	}
 
 	/**
+	 * Modify the view columns for users
+	 *
+	 * @access public
+	 * @since 2.1.0
+	 * @version 2.1.0
+	 * @return mix $views
+	 */
+	public function users_type_views( $views ) {
+		return array();
+	}
+
+	/**
 	 * Modify the product months filter to only show the months where the
 	 * product belongs to the current vendor
 	 *
@@ -926,6 +1002,7 @@ class WC_Product_Vendors_Vendor_Admin {
 			remove_menu_page( 'edit.php' );
 			remove_menu_page( 'tools.php' );
 			remove_menu_page( 'edit-comments.php' );
+			remove_menu_page( 'edit.php?post_type=shop_order' );
 
 			if ( ! WC_Product_Vendors_Utils::auth_vendor_user() ) {
 				remove_menu_page( 'wc-reports' );
@@ -990,7 +1067,7 @@ class WC_Product_Vendors_Vendor_Admin {
 
 		$orders_list->prepare_items();
 
-		include_once( 'views/html-vendor-orders-page.php' );
+		include_once( apply_filters( 'wcpv_vendor_orders_page_template', 'views/html-vendor-orders-page.php' ) );
 
 		return true;
 	}
@@ -1026,7 +1103,7 @@ class WC_Product_Vendors_Vendor_Admin {
 
 		$order_list->prepare_items();
 
-		include_once( 'views/html-vendor-order-page.php' );
+		include_once( apply_filters( 'wcpv_vendor_order_page_template', 'views/html-vendor-order-page.php' ) );
 	}
 
 	/**
@@ -1249,6 +1326,277 @@ class WC_Product_Vendors_Vendor_Admin {
 		}
 
 		return $count;
+	}
+
+	/**
+	 * Filters the user list query to only the vendor can manage
+	 *
+	 * @access public
+	 * @since 2.1.0
+	 * @version 2.1.0
+	 * @param object $query
+	 * @return bool
+	 */
+	public function filter_users( $query ) {
+		$meta = array(
+			array(
+			'key'     => '_wcpv_customer_of',
+			'value'   => WC_Product_Vendors_Utils::get_logged_in_vendor(),
+			'compare' => 'LIKE',
+			)
+		);
+
+		$query->set( 'meta_query', $meta );
+		$query->set( 'role__in', array( 'customer', 'subscriber' ) );
+
+		return true;
+	}
+
+	/**
+	 * Filters the user roles to only the vendor can manage
+	 *
+	 * @access public
+	 * @since 2.1.0
+	 * @version 2.1.0
+	 * @param object $roles
+	 * @return bool
+	 */
+	public function filter_user_roles( $roles ) {
+		$filtered_roles['customer'] = $roles['customer'];
+		$filtered_roles['subscriber'] = $roles['subscriber'];
+
+		return $filtered_roles;
+	}
+
+	/**
+	 * Save vendor id to user meta
+	 *
+	 * @access public
+	 * @since 2.1.0
+	 * @version 2.1.0
+	 * @param object $user
+	 * @return bool
+	 */
+	public function update_user( $user_id ) {
+		if ( WC_Product_Vendors_Utils::auth_vendor_user() ) {
+			// don't update if current user is the editing user
+			if ( get_current_user_id() === absint( $user_id ) ) {
+				return true;
+			}
+
+			WC_Product_Vendors_Utils::update_user_related_vendors( $user_id, WC_Product_Vendors_Utils::get_logged_in_vendor() );
+		}
+
+		return true;
+	}
+
+	/**
+	 * Save user/customer addresses from profile
+	 *
+	 * @access public
+	 * @since 2.1.0
+	 * @version 2.1.0
+	 * @param object $user
+	 * @return bool
+	 */
+	public function update_user_addresses( $user_id ) {
+		// don't save for current logged in vendor
+		if ( WC_Product_Vendors_Utils::auth_vendor_user() && get_current_user_id() === $user_id ) {
+			return;
+		}
+
+		if ( WC_Product_Vendors_Utils::auth_vendor_user() ) {
+			$save_fields = $this->get_customer_meta_fields();
+
+			foreach ( $save_fields as $fieldset ) {
+
+				foreach ( $fieldset['fields'] as $key => $field ) {
+
+					if ( isset( $_POST[ $key ] ) ) {
+						update_user_meta( $user_id, $key, wc_clean( $_POST[ $key ] ) );
+					}
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Get Address Fields for the edit user pages.
+	 *
+	 * @return array Fields to display which are filtered through woocommerce_customer_meta_fields before being returned
+	 */
+	public function get_customer_meta_fields() {
+		$show_fields = apply_filters( 'woocommerce_customer_meta_fields', array(
+			'billing' => array(
+				'title' => __( 'Customer Billing Address', 'woocommerce-product-vendors' ),
+				'fields' => array(
+					'billing_first_name' => array(
+						'label'       => __( 'First name', 'woocommerce-product-vendors' ),
+						'description' => ''
+					),
+					'billing_last_name' => array(
+						'label'       => __( 'Last name', 'woocommerce-product-vendors' ),
+						'description' => ''
+					),
+					'billing_company' => array(
+						'label'       => __( 'Company', 'woocommerce-product-vendors' ),
+						'description' => ''
+					),
+					'billing_address_1' => array(
+						'label'       => __( 'Address 1', 'woocommerce-product-vendors' ),
+						'description' => ''
+					),
+					'billing_address_2' => array(
+						'label'       => __( 'Address 2', 'woocommerce-product-vendors' ),
+						'description' => ''
+					),
+					'billing_city' => array(
+						'label'       => __( 'City', 'woocommerce-product-vendors' ),
+						'description' => ''
+					),
+					'billing_postcode' => array(
+						'label'       => __( 'Postcode', 'woocommerce-product-vendors' ),
+						'description' => ''
+					),
+					'billing_country' => array(
+						'label'       => __( 'Country', 'woocommerce-product-vendors' ),
+						'description' => '',
+						'class'       => 'js_field-country',
+						'type'        => 'select',
+						'options'     => array( '' => __( 'Select a country&hellip;', 'woocommerce-product-vendors' ) ) + WC()->countries->get_allowed_countries()
+					),
+					'billing_state' => array(
+						'label'       => __( 'State/County', 'woocommerce-product-vendors' ),
+						'description' => __( 'State/County or state code', 'woocommerce-product-vendors' ),
+						'class'       => 'js_field-state'
+					),
+					'billing_phone' => array(
+						'label'       => __( 'Telephone', 'woocommerce-product-vendors' ),
+						'description' => ''
+					),
+					'billing_email' => array(
+						'label'       => __( 'Email', 'woocommerce-product-vendors' ),
+						'description' => ''
+					)
+				)
+			),
+			'shipping' => array(
+				'title' => __( 'Customer Shipping Address', 'woocommerce-product-vendors' ),
+				'fields' => array(
+					'shipping_first_name' => array(
+						'label'       => __( 'First name', 'woocommerce-product-vendors' ),
+						'description' => ''
+					),
+					'shipping_last_name' => array(
+						'label'       => __( 'Last name', 'woocommerce-product-vendors' ),
+						'description' => ''
+					),
+					'shipping_company' => array(
+						'label'       => __( 'Company', 'woocommerce-product-vendors' ),
+						'description' => ''
+					),
+					'shipping_address_1' => array(
+						'label'       => __( 'Address 1', 'woocommerce-product-vendors' ),
+						'description' => ''
+					),
+					'shipping_address_2' => array(
+						'label'       => __( 'Address 2', 'woocommerce-product-vendors' ),
+						'description' => ''
+					),
+					'shipping_city' => array(
+						'label'       => __( 'City', 'woocommerce-product-vendors' ),
+						'description' => ''
+					),
+					'shipping_postcode' => array(
+						'label'       => __( 'Postcode', 'woocommerce-product-vendors' ),
+						'description' => ''
+					),
+					'shipping_country' => array(
+						'label'       => __( 'Country', 'woocommerce-product-vendors' ),
+						'description' => '',
+						'class'       => 'js_field-country',
+						'type'        => 'select',
+						'options'     => array( '' => __( 'Select a country&hellip;', 'woocommerce-product-vendors' ) ) + WC()->countries->get_allowed_countries()
+					),
+					'shipping_state' => array(
+						'label'       => __( 'State/County', 'woocommerce-product-vendors' ),
+						'description' => __( 'State/County or state code', 'woocommerce-product-vendors' ),
+						'class'       => 'js_field-state'
+					)
+				)
+			)
+		) );
+		return $show_fields;
+	}
+
+	/**
+	 * Add customer shipping/billing info to user profile
+	 *
+	 * @access public
+	 * @since 2.1.0
+	 * @version 2.1.0
+	 * @param object $user
+	 * @return bool
+	 */
+	public function add_customer_detail_profile_section( $user ) {
+		// don't display to the current logged in vendor
+		if ( WC_Product_Vendors_Utils::auth_vendor_user() && get_current_user_id() === $user->ID ) {
+			return;
+		}
+
+		$show_fields = $this->get_customer_meta_fields();
+
+		foreach ( $show_fields as $fieldset ) :
+			?>
+			<h3><?php echo $fieldset['title']; ?></h3>
+			<table class="form-table">
+				<?php
+				foreach ( $fieldset['fields'] as $key => $field ) :
+					?>
+					<tr>
+						<th><label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $field['label'] ); ?></label></th>
+						<td>
+							<?php if ( ! empty( $field['type'] ) && 'select' == $field['type'] ) : ?>
+								<select name="<?php echo esc_attr( $key ); ?>" id="<?php echo esc_attr( $key ); ?>" class="<?php echo ( ! empty( $field['class'] ) ? $field['class'] : '' ); ?>" style="width: 25em;">
+									<?php
+										$selected = esc_attr( get_user_meta( $user->ID, $key, true ) );
+										foreach ( $field['options'] as $option_key => $option_value ) : ?>
+										<option value="<?php echo esc_attr( $option_key ); ?>" <?php selected( $selected, $option_key, true ); ?>><?php echo esc_attr( $option_value ); ?></option>
+									<?php endforeach; ?>
+								</select>
+							<?php else : ?>
+							<input type="text" name="<?php echo esc_attr( $key ); ?>" id="<?php echo esc_attr( $key ); ?>" value="<?php echo esc_attr( get_user_meta( $user->ID, $key, true ) ); ?>" class="<?php echo ( ! empty( $field['class'] ) ? $field['class'] : 'regular-text' ); ?>" />
+							<?php endif; ?>
+							<br/>
+							<span class="description"><?php echo wp_kses_post( $field['description'] ); ?></span>
+						</td>
+					</tr>
+					<?php
+				endforeach;
+				?>
+			</table>
+			<?php
+		endforeach;
+	}
+
+	/**
+	 * Filters the user columns
+	 *
+	 * @access public
+	 * @since 2.1.0
+	 * @version 2.1.0
+	 * @param array $columns
+	 * @return array $columns
+	 */
+	public function filter_user_columns( $columns ) {
+		if ( WC_Product_Vendors_Utils::auth_vendor_user() ) {
+			unset( $columns['role'] );
+			unset( $columns['posts'] );
+		}
+
+		return $columns;
 	}
 
 	/**

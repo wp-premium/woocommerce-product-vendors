@@ -1,7 +1,17 @@
 *** Product Vendors Changelog ***
 
+2016.06.07 - version 2.0.12
+* Add - Total earned commission in the vendors report.
+* Add - Admin toolbar menu items for vendors such as add product.
+* Fix - Commission number formatting.
+
+2016.06.03 - version 2.0.11
+* Fix - Commission logic when it is fixed amount, it would incorrectly account for only one quantity.
+* Add - Allow vendors to manage users as an option.
+* Add - Bookings global availability options are now available to vendors.
+
 2016.05.16 - version 2.0.10
-* Fix - Store admin was not able to see bookable product ( regression from last update )
+* Fix - Store admin was not able to see bookable product ( regression from last update ).
 
 2016.05.15 - version 2.0.9
 * Fix - Typo on vendor level commission setting which causes commission not to match.

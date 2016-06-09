@@ -37,28 +37,44 @@ if ( ! defined( 'ABSPATH' ) ) {
 									</div><!--.order_data_column-->
 
 									<div class="order_data_column">
+										<h4><?php esc_html_e( 'Billing Details', 'woocommerce-product-vendors' ); ?></h4>
+										<div class="address">
+											<?php
+											if ( $order->get_formatted_billing_address() ) {
+												echo '<p><strong>' . esc_html__( 'Address', 'woocommerce-product-vendors' ) . ':</strong>' . wp_kses( $order->get_formatted_billing_address(), array( 'br' => array() ) ) . '</p>';
+											} else {
+												echo '<p class="none_set"><strong>' . esc_html__( 'Address', 'woocommerce-product-vendors' ) . ':</strong> ' . esc_html__( 'No shipping address set.', 'woocommerce-product-vendors' ) . '</p>';
+											}
+										
+											$address = $order->get_address();
+
+											?>
+											<p>
+												<strong><?php esc_html_e( 'Email:', 'woocommerce-product-vendors' ); ?></strong>
+												<a href="mailto:<?php echo esc_attr( $address['email'] ); ?>"><?php echo $address['email']; ?></a>
+											</p>
+
+											<p>
+												<strong><?php esc_html_e( 'Phone:', 'woocommerce-product-vendors' ); ?></strong>
+												<?php echo $address['phone']; ?>
+											</p>
+										</div>
+									</div><!--.order_data_column-->
+
+									<div class="order_data_column">
 										<h4><?php esc_html_e( 'Shipping Details', 'woocommerce-product-vendors' ); ?></h4>
-											<div class="address">
-												<?php
-												if ( $order->get_formatted_shipping_address() ) {
-													echo '<p><strong>' . esc_html__( 'Address', 'woocommerce-product-vendors' ) . ':</strong>' . wp_kses( $order->get_formatted_shipping_address(), array( 'br' => array() ) ) . '</p>';
-												} else {
-													echo '<p class="none_set"><strong>' . esc_html__( 'Address', 'woocommerce-product-vendors' ) . ':</strong> ' . esc_html__( 'No shipping address set.', 'woocommerce-product-vendors' ) . '</p>';
-												}
-											
-												$address = $order->get_address();
+										<div class="address">
+											<?php
+											if ( $order->get_formatted_shipping_address() ) {
+												echo '<p><strong>' . esc_html__( 'Address', 'woocommerce-product-vendors' ) . ':</strong>' . wp_kses( $order->get_formatted_shipping_address(), array( 'br' => array() ) ) . '</p>';
+											} else {
+												echo '<p class="none_set"><strong>' . esc_html__( 'Address', 'woocommerce-product-vendors' ) . ':</strong> ' . esc_html__( 'No shipping address set.', 'woocommerce-product-vendors' ) . '</p>';
+											}
+										
+											$address = $order->get_address();
 
-												?>
-												<p>
-													<strong><?php esc_html_e( 'Email:', 'woocommerce-product-vendors' ); ?></strong>
-													<a href="mailto:<?php echo esc_attr( $address['email'] ); ?>"><?php echo $address['email']; ?></a>
-												</p>
-
-												<p>
-													<strong><?php esc_html_e( 'Phone:', 'woocommerce-product-vendors' ); ?></strong>
-													<?php echo $address['phone']; ?>
-												</p>
-											</div>
+											?>
+										</div>
 									</div><!--.order_data_column-->
 
 									<?php do_action( 'wcpv_vendor_order_detail_order_data_column', $order ); ?>

@@ -32,6 +32,7 @@ class WC_Product_Vendors_Order {
 		add_action( 'woocommerce_order_status_processing', array( $this, 'process' ) );
 		add_action( 'woocommerce_order_status_completed', array( $this, 'process' ) );
 		add_action( 'woocommerce_order_status_on-hold', array( $this, 'process' ) );
+		add_action( 'woocommerce_bookings_create_booking_page_add_order_item', array( $this, 'process' ) );
 
 		add_action( 'wcpv_commission_added', array( $this, 'add_commission_order_note' ) );
 
@@ -113,7 +114,7 @@ class WC_Product_Vendors_Order {
 					// create commission
 					$vendor_data = WC_Product_Vendors_Utils::get_vendor_data_by_id( $vendor_id );
 
-					$product_commission = $this->commission->calc_order_product_commission( ! empty( $item['variation_id'] ) ? $item['variation_id'] : $item['product_id'], $vendor_id, $item['line_total'] );
+					$product_commission = $this->commission->calc_order_product_commission( ! empty( $item['variation_id'] ) ? $item['variation_id'] : $item['product_id'], $vendor_id, $item['line_total'], $item['qty'] );
 
 					$total_commission = $product_commission;
 					$shipping_amount = '';
@@ -127,7 +128,7 @@ class WC_Product_Vendors_Order {
 
 					// calculate shipping amount and shipping tax ( per product shipping )
 					$pp_shipping_method = $this->order->get_shipping_method();
-					if ( ! empty( $pp_shipping_method ) && $pp_shipping_title === $this->order->get_shipping_method() && 'yes' === $pass_shipping_tax ) {
+					if ( ! empty( $pp_shipping_method ) && $pp_shipping_title === $pp_shipping_method && 'yes' === $pass_shipping_tax ) {
 						$shipping_data       = $this->calc_per_product_shipping( $item );
 						$shipping_amount     = $shipping_data['shipping_cost'];
 						$shipping_tax_amount = $shipping_data['taxes'];
@@ -202,6 +203,11 @@ class WC_Product_Vendors_Order {
 						$sql .= " VALUES ( %d, %s, %s )";
 
 						$wpdb->query( $wpdb->prepare( $sql, $order_item_id, '_commission_status', $init_status ) );
+					}
+
+					// add vendor id to customer meta
+					if ( ! empty( $this->order->customer_user ) ) {
+						WC_Product_Vendors_Utils::update_user_related_vendors( $this->order->customer_user, absint( $vendor_id ) );
 					}
 				}
 			}

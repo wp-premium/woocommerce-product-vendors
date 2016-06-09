@@ -24,6 +24,8 @@ jQuery( document ).ready( function( $ ) {
 					form.unblock();
 
 					if ( response.length && 'success' === response ) {
+						$( document.body ).trigger( 'wcpv_vendor_registration_on_success' );
+
 						form.before( '<p class="wcpv-shortcode-registration-success wcpv-registration-message">' + wcpv_registration_local.success + '</p>' );
 
 						// clear all fields

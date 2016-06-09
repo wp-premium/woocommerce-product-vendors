@@ -18,8 +18,8 @@ class WC_Product_Vendors_Per_Product_Shipping_Method extends WC_Shipping_Method 
 	 */
 	public function __construct() {
 		$this->id                 = 'wcpv_per_product';
-		$this->method_title       = __( 'Per Product', 'woocommerce-product-vendors' );
-		$this->method_description = __( 'Per product shipping allows you to define different shipping costs for products, based on customer location.', 'woocommerce-product-vendors' );
+		$this->method_title       = __( 'Vendors Per Product Shipping', 'woocommerce-product-vendors' );
+		$this->method_description = __( 'Per product shipping allows you to define different shipping costs for products per vendor, based on customer location.', 'woocommerce-product-vendors' );
 
 		// Load the form fields.
 		$this->init_form_fields();
@@ -47,10 +47,10 @@ class WC_Product_Vendors_Per_Product_Shipping_Method extends WC_Shipping_Method 
     public function init_form_fields() {
     	$this->form_fields = array(
     		'enabled' => array(
-					'title'   => __( 'Standalone Method', 'woocommerce-product-vendors' ),
+					'title'   => __( 'Enable Shipping Method', 'woocommerce-product-vendors' ),
 					'type'    => 'checkbox',
-					'label'   => __( 'Enable per-product shipping as a standalone shipping method', 'woocommerce-product-vendors' ),
-					'default' => 'yes'
+					'label'   => __( 'Enable per-product shipping method for vendors', 'woocommerce-product-vendors' ),
+					'default' => 'no'
 				),
 			'title' => array(
 					'title'       => __( 'Method Title', 'woocommerce-product-vendors' ),

@@ -526,7 +526,7 @@ class WC_Product_Vendors_Store_Admin {
 	 *
 	 * @access public
 	 * @since 2.0.0
-	 * @version 2.0.0
+	 * @version 2.1.0
 	 * @param object $user
 	 * @return bool
 	 */
@@ -536,11 +536,17 @@ class WC_Product_Vendors_Store_Admin {
 			return;
 		}
 
-		$selected = 'disallow';
+		$publish_products = 'disallow';
+		$manage_customers = 'disallow';
 
 		// check for user publish products capability
 		if ( $user->has_cap( 'publish_products' ) ) {
-			$selected = 'allow';
+			$publish_products = 'allow';
+		}
+
+		// check for create users capability
+		if ( $user->has_cap( 'create_users' ) && $user->has_cap( 'edit_users' ) ) {
+			$manage_customers = 'allow';
 		}
 
 		include_once( 'views/html-edit-user-profile-page.php' );
@@ -559,6 +565,7 @@ class WC_Product_Vendors_Store_Admin {
 	 */
 	public function save_product_vendor_user_profile_section( $user_id ) {
 		$publish_products = ! empty( $_POST['wcpv_publish_products'] ) ? sanitize_text_field( $_POST['wcpv_publish_products'] ) : 'disallow';
+		$manage_customers = ! empty( $_POST['wcpv_manage_customers'] ) ? sanitize_text_field( $_POST['wcpv_manage_customers'] ) : 'disallow';
 
 		$roles_caps = new WC_Product_Vendors_Roles_Caps;
 
@@ -567,6 +574,13 @@ class WC_Product_Vendors_Store_Admin {
 			$roles_caps->remove_publish_products( $user_id );
 		} else {
 			$roles_caps->add_publish_products( $user_id );
+		}
+
+		// update user capability
+		if ( 'disallow' === $manage_customers ) {
+			$roles_caps->remove_manage_users( $user_id );
+		} else {
+			$roles_caps->add_manage_users( $user_id );
 		}
 
 		return true;
