@@ -852,6 +852,41 @@ class WC_Product_Vendors_Utils {
 	}
 
 	/**
+	 * Updates the user/customer meta to contain related vendors
+	 * This comes from either vendor created user or a customer of the vendor
+	 *
+	 * @access public
+	 * @since 2.1.0
+	 * @version 2.1.0
+	 * @param int $user_id
+	 * @param int $vendor_id
+	 * @return bool
+	 */
+	public static function update_user_related_vendors( $user_id = null, $vendor_id = null ) {
+		if ( null === $user_id || null === $vendor_id ) {
+			return false;
+		}
+
+		$vendors = get_user_meta( $user_id, '_wcpv_customer_of', true ); // array
+
+		// if no vendors have been associated yet
+		if ( empty( $vendors ) ) {
+			$vendors = array();
+		}
+
+		// if vendor is not associated, add them
+		if ( ! in_array( $vendor_id, $vendors ) ) {
+			$vendors[] = absint( $vendor_id );
+		}
+
+		$vendors = array_unique( $vendors );
+
+		update_user_meta( $user_id, '_wcpv_customer_of', $vendors );
+
+		return true;
+	}
+
+	/**
 	 * Get fulfillment status of an order item
 	 *
 	 * @access public
@@ -914,5 +949,23 @@ class WC_Product_Vendors_Utils {
 		$wpdb->query( "DELETE FROM $wpdb->options WHERE option_name LIKE '%book_dr%'" );
 
 		return true;
+	}
+
+	/**
+	 * Checks if bookings is enabled for this vendor
+	 *
+	 * @access public
+	 * @since 2.0.0
+	 * @version 2.0.0
+	 * @return array $post_type_args
+	 */
+	public static function is_bookings_enabled() {
+		$vendor_data = get_term_meta( WC_Product_Vendors_Utils::get_logged_in_vendor(), 'vendor_data', true );
+
+		if ( ! empty( $vendor_data ) && 'yes' === $vendor_data['enable_bookings'] && class_exists( 'WC_Bookings' ) ) {
+			return true;
+		}
+
+		return false;
 	}
 }

@@ -276,9 +276,10 @@ class WC_Product_Vendors_Commission {
 	 * @version 2.0.0
 	 * @param int $product_id
 	 * @param int $vendor_id
+	 * @param int $quantity
 	 * @return float $commission
 	 */
-	public function calc_order_product_commission( $product_id, $vendor_id, $product_amount ) {
+	public function calc_order_product_commission( $product_id, $vendor_id, $product_amount, $quantity = 1 ) {
 		$vendor_data = WC_Product_Vendors_Utils::get_vendor_data_by_id( $vendor_id );
 
 		$commission_array = WC_Product_Vendors_Utils::get_product_commission( $product_id, $vendor_data );
@@ -292,11 +293,11 @@ class WC_Product_Vendors_Commission {
 		}
 
 		if ( 'percentage' === $type ) {
-			$commission = number_format( $product_amount * ( abs( $commission ) / 100 ), 2 );
-		
+			$commission = wc_format_decimal( $product_amount * ( abs( $commission ) / 100 ) );
+	
 		// fixed commission
 		} else {
-			$commission = number_format( abs( $commission ), 2 );
+			$commission = wc_format_decimal( ( abs( $commission ) * absint( $quantity ) ) );
 		}
 
 		return $commission;
