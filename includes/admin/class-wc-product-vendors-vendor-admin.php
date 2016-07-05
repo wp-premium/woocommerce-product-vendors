@@ -29,8 +29,8 @@ class WC_Product_Vendors_Vendor_Admin {
 		// add a vendor switcher to the admin bar
 		add_action( 'admin_bar_menu', array( $self, 'add_vendor_switcher' ) );
 
-		// remove new from admin bar
-		add_action( 'wp_before_admin_bar_render', array( $self, 'remove_new' ) );
+		// filter the admin bar
+		add_action( 'wp_before_admin_bar_render', array( $self, 'filter_admin_bar' ) );
 
 		// remove help tab
 		add_action( 'admin_bar_menu', array( $self, 'remove_help_tab' ) );
@@ -240,7 +240,7 @@ class WC_Product_Vendors_Vendor_Admin {
 	 * @version 2.0.0
 	 * @return bool
 	 */
-	public function remove_new() {
+	public function filter_admin_bar() {
 		global $wp_admin_bar;
 
 		// whitelist of nodes to show
@@ -258,7 +258,7 @@ class WC_Product_Vendors_Vendor_Admin {
 			'new-product',
 			'new-wc_booking',
 			'top-secondary',
-			'new-user'
+			'new-user',
 		);
 
 		if ( ! WC_Product_Vendors_Utils::is_bookings_enabled() ) {
@@ -274,6 +274,11 @@ class WC_Product_Vendors_Vendor_Admin {
 		$current_nodes = $wp_admin_bar->get_nodes();
 
 		foreach( $current_nodes as $node_id => $node ) {
+			// skip vendor specific nodes
+			if ( preg_match( '/^wcpv_vendor_[0-9]*/', $node_id ) ) {
+				continue;
+			}
+
 			if ( ! in_array( $node_id, $allowed_nodes ) ) {
 				$wp_admin_bar->remove_node( $node_id );
 			}
@@ -1136,15 +1141,17 @@ class WC_Product_Vendors_Vendor_Admin {
 			$vendor_data      = WC_Product_Vendors_Utils::get_vendor_data_by_id( $vendor_id );
 			$commission_data  = WC_Product_Vendors_Utils::get_product_commission( $post->ID, $vendor_data );
 
-			$commission_placeholder = $commission_data['commission'];
+			$commission_placeholder = ! empty( $commission_data['commission'] ) ? $commission_data['commission'] : '';
 
-			if ( 'percentage' === $commission_data['type'] && ! empty( $commission_placeholder ) ) {
-				$commission_placeholder = $commission_placeholder . '%';
+			$commission_type = __( 'Fixed', 'woocommerce-product-vendors' );
+
+			if ( 'percentage' === $commission_data['type'] ) {
+				$commission_type = '%';
 			}
 
 			echo '<div class="options_group show_if_simple show_if_variable show_if_booking">';
 
-			woocommerce_wp_text_input( array( 'id' => '_wcpv_product_commission', 'label' => __( 'Commission', 'woocommerce-product-vendors' ), 'custom_attributes' => array( 'disabled' => 'disabled' ), 'placeholder' => $commission_placeholder ) );
+			woocommerce_wp_text_input( array( 'id' => '_wcpv_product_commission', 'label' => __( 'Commission', 'woocommerce-product-vendors' ), 'custom_attributes' => array( 'disabled' => 'disabled' ), 'placeholder' => $commission_placeholder, 'description' => $commission_type ) );
 
 			echo '</div>';
 		}
@@ -1171,18 +1178,20 @@ class WC_Product_Vendors_Vendor_Admin {
 			$vendor_data      = WC_Product_Vendors_Utils::get_vendor_data_by_id( $vendor_id );
 			$commission_data  = WC_Product_Vendors_Utils::get_product_commission( $post->ID, $vendor_data );
 
-			$commission_placeholder = $commission_data['commission'];
+			$commission_placeholder = ! empty( $commission_data['commission'] ) ? $commission_data['commission'] : '';
 
-			if ( 'percentage' === $commission_data['type'] && ! empty( $commission_placeholder ) ) {
-				$commission_placeholder = $commission_placeholder . '%';
+			$commission_type = __( 'Fixed', 'woocommerce-product-vendors' );
+
+			if ( 'percentage' === $commission_data['type'] ) {
+				$commission_type = '%';
 			}
 
 			echo '<div class="options_group show_if_variable show_if_booking">';
 			?>
 			<p class="wcpv-commission form-row form-row-first">
-				<label><?php esc_html_e( 'Commission', 'woocommerce-product-vendors' ); ?>:</label>
+				<label><?php echo esc_html__( 'Commission', 'woocommerce-product-vendors' ) . ' (' . $commission_type . ')'; ?>:</label>
 
-				<input type="text" name="" value="<?php echo esc_attr( $commission ); ?>" disabled="disabled" placeholder="<?php echo esc_attr( $commission_placeholder ); ?>" />
+				<input type="text" class="short" name="" value="<?php echo esc_attr( $commission ); ?>" disabled="disabled" placeholder="<?php echo esc_attr( $commission_placeholder ); ?>" />
 			</p>
 			<?php
 			echo '</div>';

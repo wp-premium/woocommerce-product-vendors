@@ -191,7 +191,8 @@ class WC_Product_Vendors_Registration {
 	}
 
 	/**
-	 * Process the registration form for just vendor
+	 * Process the registration form for just vendor.
+	 * As in they already have a user account on the site.
 	 *
 	 * @access public
 	 * @since 2.0.0
@@ -229,6 +230,9 @@ class WC_Product_Vendors_Registration {
 			$args['vendor_name'] = $vendor_name;
 			$args['vendor_desc'] = $vendor_desc;
 
+			// change this user's role to pending vendor
+			wp_update_user( array( 'ID' => $current_user->ID, 'role' => 'wc_product_vendors_pending_vendor' ) );
+			
 			do_action( 'wcpv_shortcode_registration_form_process', $args, $form_items );
 
 			echo 'success';

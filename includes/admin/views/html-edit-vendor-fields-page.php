@@ -75,7 +75,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<th scope="row" valign="top"><label for="wcpv-vendor-commission"><?php esc_html_e( 'Commission', 'woocommerce-product-vendors' ); ?> <?php echo wc_help_tip( __( 'Enter a positive number.', 'woocommerce-product-vendors' ) ); ?></label></th>
 	
 	<td>
-		<input type="text" id="wcpv-vendor-commission" name="vendor_data[commission]" value="<?php echo esc_attr( $commission ); ?>" />
+		<input type="number" id="wcpv-vendor-commission" name="vendor_data[commission]" value="<?php echo esc_attr( $commission ); ?>" step="any" min="0" />
 
 		<p><?php esc_html_e( 'This is the commission amount the vendor will receive.  Product level commission can be set which will override this commission.', 'woocommerce-product-vendors' ); ?></p>
 	</td>
@@ -130,7 +130,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<td>
 		<input type="checkbox" id="wcpv-enable-bookings" name="vendor_data[enable_bookings]" <?php checked( 'yes', $enable_bookings ); ?> />
 
-		<p><?php esc_html_e( 'Enable to allow vendors to create bookable products such as booking classes or lessons. ( WooCommerce Bookings sold seperately )', 'woocommerce-product-vendors' ); ?> <a href="https://www.woothemes.com/products/woocommerce-bookings/" target="_blank">WooCommerce Bookings</a></p>		
+		<p><?php esc_html_e( 'Enable to allow vendors to create bookable products such as booking classes or lessons. ( WooCommerce Bookings sold separately )', 'woocommerce-product-vendors' ); ?> <a href="https://www.woothemes.com/products/woocommerce-bookings/" target="_blank">WooCommerce Bookings</a></p>		
 	</td>
 
 </tr>
