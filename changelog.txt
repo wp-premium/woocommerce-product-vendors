@@ -1,5 +1,9 @@
 *** Product Vendors Changelog ***
 
+2016.06.28 - version 2.0.13
+* Update - When registered user is applying to be a vendor, set their role to pending vendor.
+* Fix - Vendor switcher is not showing on the admin bar.
+
 2016.06.07 - version 2.0.12
 * Add - Total earned commission in the vendors report.
 * Add - Admin toolbar menu items for vendors such as add product.

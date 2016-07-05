@@ -958,15 +958,25 @@ class WC_Product_Vendors_Store_Admin {
 			$vendor_data      = WC_Product_Vendors_Utils::get_vendor_data_by_id( $vendor_id );
 			$commission_data  = WC_Product_Vendors_Utils::get_product_commission( $post->ID, $vendor_data );
 
-			$commission_placeholder = $commission_data['commission'];
+			$commission_placeholder = ! empty( $commission_data['commission'] ) ? $commission_data['commission'] : '';
 
-			if ( 'percentage' === $commission_data['type'] && ! empty( $commission_placeholder ) ) {
-				$commission_placeholder = $commission_placeholder . '%';
+			$commission_type = __( 'Fixed', 'woocommerce-product-vendors' );
+
+			if ( 'percentage' === $commission_data['type'] ) {
+				$commission_type = '%';
 			}
 
 			echo '<div class="options_group show_if_simple show_if_variable show_if_booking">';
 
-			woocommerce_wp_text_input( array( 'id' => '_wcpv_product_commission', 'label' => __( 'Commission', 'woocommerce-product-vendors' ), 'desc_tip' => 'true', 'description' => __( 'Enter a default commission for this product. Enter a positive number.', 'woocommerce-product-vendors' ), 'placeholder' => $commission_placeholder ) );
+			woocommerce_wp_text_input( array( 
+				'id'                => '_wcpv_product_commission', 
+				'label'             => sprintf( __( 'Commission %s:', 'woocommerce-product-vendors' ), '(' . $commission_type . ')' ), 
+				'desc_tip'          => 'true', 
+				'description'       => __( 'Enter a default commission for this product. Enter a positive number.', 'woocommerce-product-vendors' ), 
+				'placeholder'       => $commission_placeholder, 
+				'type'              => 'number', 
+				'custom_attributes' => array( 'step' => 'any', 'min' => '0' ) 
+			) );
 
 			echo '</div>';
 		}
@@ -1016,18 +1026,20 @@ class WC_Product_Vendors_Store_Admin {
 			$vendor_data      = WC_Product_Vendors_Utils::get_vendor_data_by_id( $vendor_id );
 			$commission_data  = WC_Product_Vendors_Utils::get_product_commission( $post->ID, $vendor_data );
 
-			$commission_placeholder = $commission_data['commission'];
+			$commission_placeholder = ! empty( $commission_data['commission'] ) ? $commission_data['commission'] : '';
 
-			if ( 'percentage' === $commission_data['type'] && ! empty( $commission_placeholder ) ) {
-				$commission_placeholder = $commission_placeholder . '%';
+			$commission_type = __( 'Fixed', 'woocommerce-product-vendors' );
+
+			if ( 'percentage' === $commission_data['type'] ) {
+				$commission_type = '%';
 			}
 
 			echo '<div class="options_group show_if_variable show_if_booking">';
 			?>
 			<p class="wcpv-commission form-row form-row-first">
-				<label><?php esc_html_e( 'Commission', 'woocommerce-product-vendors' ); ?>: <?php echo wc_help_tip( __( 'Enter a commission for this product variation.  Enter a positive number.', 'woocommerce-product-vendors' ) ); ?></label>
+				<label><?php echo esc_html__( 'Commission', 'woocommerce-product-vendors' ) . ' (' . $commission_type . ')'; ?>: <?php echo wc_help_tip( __( 'Enter a commission for this product variation.  Enter a positive number.', 'woocommerce-product-vendors' ) ); ?></label>
 
-				<input type="text" name="_wcpv_product_variation_commission[<?php echo $loop; ?>]" value="<?php echo esc_attr( $commission ); ?>" placeholder="<?php echo esc_attr( $commission_placeholder ); ?>" />
+				<input type="number" name="_wcpv_product_variation_commission[<?php echo $loop; ?>]" value="<?php echo esc_attr( $commission ); ?>" placeholder="<?php echo esc_attr( $commission_placeholder ); ?>" step="any" min="0" />
 			</p>
 			<?php
 			echo '</div>';

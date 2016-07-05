@@ -58,7 +58,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<div class="form-field term-commission">
 		<label for="wcpv-vendor-commission"><?php esc_html_e( 'Commission', 'woocommerce-product-vendors' ); ?> <?php echo wc_help_tip( __( 'This is the commission amount the vendor will receive.  Product level commission can be set which will override this commission.', 'woocommerce-product-vendors' ) ); ?></label>
-		<input type="text" id="wcpv-vendor-commission" name="vendor_data[commission]" value="" />
+		<input type="number" id="wcpv-vendor-commission" name="vendor_data[commission]" value="" step="any" min="0" />
 		
 		<p><?php esc_html_e( 'Enter a positive number.', 'woocommerce-product-vendors' ); ?></p>
 	</div>
