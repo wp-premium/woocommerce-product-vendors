@@ -18,9 +18,9 @@ class WC_Product_Vendors_Order_Email_To_Vendor extends WC_Email {
 		$this->heading          = __( 'New Customer Order', 'woocommerce-product-vendors' );
 		$this->subject          = __( '[{site_title}] New customer order ({order_number}) - {order_date}', 'woocommerce-product-vendors' );
 
-		$this->template_base    = WC_PRODUCT_VENDORS_PATH . '/templates/emails/';
-		$this->template_html    = 'order-email-to-vendor.php';
-		$this->template_plain   = 'plain/order-email-to-vendor.php';
+		$this->template_base    = WC_PRODUCT_VENDORS_TEMPLATES_PATH;
+		$this->template_html    = 'emails/order-email-to-vendor.php';
+		$this->template_plain   = 'emails/plain/order-email-to-vendor.php';
 
 		// Triggers for this email
 		add_action( 'woocommerce_order_status_pending_to_processing_notification', array( $this, 'trigger' ) );
@@ -186,9 +186,9 @@ class WC_Product_Vendors_Order_Email_To_Vendor extends WC_Email {
 		}
 
 		if ( 'html' === $this->get_email_type() ) {
-			$template_path = WC_PRODUCT_VENDORS_PATH . '/templates/emails/order-email-addresses-to-vendor.php';
+			$template_path = WC_PRODUCT_VENDORS_TEMPLATES_PATH . 'emails/order-email-addresses-to-vendor.php';
 		} elseif ( 'plain' === $this->get_email_type() ) {
-			$template_path = WC_PRODUCT_VENDORS_PATH . '/templates/emails/plain/order-email-addresses-to-vendor.php';
+			$template_path = WC_PRODUCT_VENDORS_TEMPLATES_PATH . 'emails/plain/order-email-addresses-to-vendor.php';
 		}
 
 		return $template_path;
@@ -208,7 +208,7 @@ class WC_Product_Vendors_Order_Email_To_Vendor extends WC_Email {
 	 */
 	public function render_order_details_table( $order, $sent_to_admin, $plain_text, $email, $this_vendor ) {
 		if ( $plain_text ) {
-			wc_get_template( 'plain/email-order-details.php', array(
+			wc_get_template( 'emails/plain/email-order-details.php', array(
 				'order'         => $order,
 				'this_vendor'   => $this->vendor,
 				'sent_to_admin' => $sent_to_admin,
@@ -216,7 +216,7 @@ class WC_Product_Vendors_Order_Email_To_Vendor extends WC_Email {
 				'email'         => $email
 			), 'woocommerce-product-vendors/', $this->template_base );
 		} else {
-			wc_get_template( 'email-order-details.php', array(
+			wc_get_template( 'emails/email-order-details.php', array(
 				'order'         => $order,
 				'this_vendor'   => $this->vendor,
 				'sent_to_admin' => $sent_to_admin,

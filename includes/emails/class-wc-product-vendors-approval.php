@@ -15,9 +15,9 @@ class WC_Product_Vendors_Approval extends WC_Email {
 		$this->heading          = __( 'Vendor Approval', 'woocommerce-product-vendors' );
 		$this->subject          = __( '[{site_title}] Vendor Approval', 'woocommerce-product-vendors' );
 
-		$this->template_base    = WC_PRODUCT_VENDORS_PATH . '/templates/emails/';
-		$this->template_html    = 'vendor-approval.php';
-		$this->template_plain   = 'plain/vendor-approval.php';
+		$this->template_base    = WC_PRODUCT_VENDORS_TEMPLATES_PATH;
+		$this->template_html    = 'emails/vendor-approval.php';
+		$this->template_plain   = 'emails/plain/vendor-approval.php';
 
 		// Call parent constructor
 		parent::__construct();

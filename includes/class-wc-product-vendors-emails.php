@@ -45,6 +45,8 @@ class WC_Product_Vendors_Emails {
 		// send low stock email
 		add_action( 'woocommerce_low_stock', array( $self, 'send_low_stock_email' ) );
 
+		add_filter( 'woocommerce_template_directory', array( $self, 'template_directory' ), 10, 2 );
+
     	return true;
 	}
 
@@ -223,6 +225,44 @@ class WC_Product_Vendors_Emails {
 		}
 
 		return false;		
+	}
+
+	/**
+	 * Custom template directory.
+	 *
+	 * @access public
+	 * @since 2.0.14
+	 * @version 2.0.14
+	 * @param  string $directory
+	 * @param  string $template
+	 */
+	public function template_directory( $directory, $template ) {
+		$allowed_templates = array(
+			'emails/cancelled-order-email-to-vendor.php',
+			'emails/plain/cancelled-order-email-to-vendor.php',
+			'emails/email-order-details.php',
+			'emails/plain/email-order-details.php',
+			'emails/order-email-addresses-to-vendor.php',
+			'emails/plain/order-email-addresses-to-vendor.php',
+			'emails/order-email-to-vendor.php',
+			'emails/plain/order-email-to-vendor.php',
+			'emails/order-note-to-customer.php',
+			'emails/plain/order-note-to-customer.php',
+			'emails/product-added-notice.php',
+			'emails/plain/product-added-notice.php',
+			'emails/vendor-approval.php',
+			'emails/plain/vendor-approval.php',
+			'emails/vendor-registration-email-to-admin.php',
+			'emails/plain/vendor-registration-email-to-admin.php',
+			'emails/vendor-registration-email-to-vendor.php',
+			'emails/plain/vendor-registration-email-to-vendor.php',
+		);
+
+		if ( in_array( $template, $allowed_templates ) ) {
+			return 'woocommerce-product-vendors';
+		}
+
+		return $directory;
 	}
 }
 
