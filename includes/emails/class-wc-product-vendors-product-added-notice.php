@@ -18,9 +18,9 @@ class WC_Product_Vendors_Product_Added_Notice extends WC_Email {
 		$this->heading          = __( 'Product Added Notice', 'woocommerce-product-vendors' );
 		$this->subject          = __( '[{site_title}] New vendor Product', 'woocommerce-product-vendors' );
 
-		$this->template_base    = WC_PRODUCT_VENDORS_PATH . '/templates/emails/';
-		$this->template_html    = 'product-added-notice.php';
-		$this->template_plain   = 'plain/product-added-notice.php';
+		$this->template_base    = WC_PRODUCT_VENDORS_TEMPLATES_PATH;
+		$this->template_html    = 'emails/product-added-notice.php';
+		$this->template_plain   = 'emails/plain/product-added-notice.php';
 
 		// Triggers for this email
 

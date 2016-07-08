@@ -404,8 +404,8 @@ class WC_Product_Vendors_Vendor_Admin {
 		$vendor_data = WC_Product_Vendors_Utils::get_vendor_data_by_id( WC_Product_Vendors_Utils::get_logged_in_vendor() );
 
 		$current_user   = wp_get_current_user();
-		$user_firstname = get_user_meta( $current_user->ID, 'user_firstname', true );
-		$user_lastname  = get_user_meta( $current_user->ID, 'user_lastname', true );
+		$user_firstname = get_user_meta( $current_user->ID, 'first_name', true );
+		$user_lastname  = get_user_meta( $current_user->ID, 'last_name', true );
 
 		$message = sprintf( __( 'Vendor: %s', 'woocommerce-product-vendors' ), esc_html( $vendor_data['name'] ) ) . PHP_EOL;
 

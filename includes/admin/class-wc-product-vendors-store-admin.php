@@ -934,7 +934,7 @@ class WC_Product_Vendors_Store_Admin {
 	public function add_sold_by_order_item_detail( $item_id, $item, $product ) {
 		$sold_by = get_option( 'wcpv_vendor_settings_display_show_by', 'yes' );
 
-		if ( 'yes' === $sold_by ) {
+		if ( 'yes' === $sold_by && ! empty( $item['product_id'] ) && WC_Product_Vendors_Utils::is_vendor_product( $item['product_id'] ) ) {
 
 			$sold_by = WC_Product_Vendors_Utils::get_sold_by_link( $item['product_id'] );
 
@@ -1493,10 +1493,10 @@ class WC_Product_Vendors_Store_Admin {
 
 		foreach( $unpaid_commissions as $commission ) {
 			if ( ! isset( $commissions[ $commission->vendor_id ] ) ) {
-				$commissions[ $commission->vendor_id ] = (float) 0;
+				$commissions[ $commission->vendor_id ] = wc_format_decimal( 0, 2 );
 			}
 
-			$commissions[ $commission->vendor_id ] += (float) $commission->total_commission_amount;
+			$commissions[ $commission->vendor_id ] += wc_format_decimal( $commission->total_commission_amount, 2 );
 		}
 
 		$payout_note = apply_filters( 'wcpv_export_unpaid_commissions_note', sprintf( __( 'Total commissions earned from %1$s as of %2$s on %3$s', 'woocommerce-product-vendors' ), get_bloginfo( 'name', 'display' ), date( 'H:i:s' ), date( 'd-m-Y' ) ) );

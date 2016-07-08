@@ -15,9 +15,9 @@ class WC_Product_Vendors_Registration_Email_To_Vendor extends WC_Email {
 		$this->heading          = __( 'Vendor Registration', 'woocommerce-product-vendors' );
 		$this->subject          = __( '[{site_title}] Vendor Registration', 'woocommerce-product-vendors' );
 
-		$this->template_base    = WC_PRODUCT_VENDORS_PATH . '/templates/emails/';
-		$this->template_html    = 'vendor-registration-email-to-vendor.php';
-		$this->template_plain   = 'plain/vendor-registration-email-to-vendor.php';
+		$this->template_base    = WC_PRODUCT_VENDORS_TEMPLATES_PATH;
+		$this->template_html    = 'emails/vendor-registration-email-to-vendor.php';
+		$this->template_plain   = 'emails/plain/vendor-registration-email-to-vendor.php';
 
 		// Call parent constructor
 		parent::__construct();
