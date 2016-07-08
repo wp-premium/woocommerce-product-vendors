@@ -18,9 +18,9 @@ class WC_Product_Vendors_Cancelled_Order_Email_To_Vendor extends WC_Email {
 		$this->heading          = __( 'Cancelled Order', 'woocommerce-product-vendors' );
 		$this->subject          = __( '[{site_title}] Cancelled order ({order_number}) - {order_date}', 'woocommerce-product-vendors' );
 
-		$this->template_base    = WC_PRODUCT_VENDORS_PATH . '/templates/emails/';
-		$this->template_html    = 'cancelled-order-email-to-vendor.php';
-		$this->template_plain   = 'plain/cancelled-order-email-to-vendor.php';
+		$this->template_base    = WC_PRODUCT_VENDORS_TEMPLATES_PATH;
+		$this->template_html    = 'emails/cancelled-order-email-to-vendor.php';
+		$this->template_plain   = 'emails/plain/cancelled-order-email-to-vendor.php';
 
 		// Triggers for this email
 		add_action( 'woocommerce_order_status_processing_to_cancelled_notification', array( $this, 'trigger' ) );
@@ -208,9 +208,9 @@ class WC_Product_Vendors_Cancelled_Order_Email_To_Vendor extends WC_Email {
 		}
 
 		if ( 'html' === $this->get_email_type() ) {
-			$template_path = WC_PRODUCT_VENDORS_PATH . '/templates/emails/order-email-addresses-to-vendor.php';
+			$template_path = WC_PRODUCT_VENDORS_TEMPLATES_PATH . 'emails/order-email-addresses-to-vendor.php';
 		} elseif ( 'plain' === $this->get_email_type() ) {
-			$template_path = WC_PRODUCT_VENDORS_PATH . '/templates/emails/plain/order-email-addresses-to-vendor.php';
+			$template_path = WC_PRODUCT_VENDORS_TEMPLATES_PATH . 'emails/plain/order-email-addresses-to-vendor.php';
 		}
 
 		return $template_path;

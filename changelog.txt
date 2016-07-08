@@ -1,5 +1,11 @@
 *** Product Vendors Changelog ***
 
+2016.07.07 - version 2.0.14
+* Fix - Export unpaid commissions triggered an error.
+* Fix - Vendor user first and last name not showing in the support form emails.
+* Fix - Change load order of text domain so all strings can be translated.
+* Fix - Email templates were not being overridden.
+
 2016.06.28 - version 2.0.13
 * Update - When registered user is applying to be a vendor, set their role to pending vendor.
 * Fix - Vendor switcher is not showing on the admin bar.

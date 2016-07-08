@@ -18,9 +18,9 @@ class WC_Product_Vendors_Order_Note_To_Customer extends WC_Email {
 		$this->heading          = __( 'Order Note', 'woocommerce-product-vendors' );
 		$this->subject          = __( '[{site_title}] Order note ({order_number}) - {order_date}', 'woocommerce-product-vendors' );
 
-		$this->template_base    = WC_PRODUCT_VENDORS_PATH . '/templates/emails/';
-		$this->template_html    = 'order-note-to-customer.php';
-		$this->template_plain   = 'plain/order-note-to-customer.php';
+		$this->template_base    = WC_PRODUCT_VENDORS_TEMPLATES_PATH;
+		$this->template_html    = 'emails/order-note-to-customer.php';
+		$this->template_plain   = 'emails/plain/order-note-to-customer.php';
 
 		// Triggers for this email
 		add_action( 'wcpv_customer_order_note_notification', array( $this, 'trigger' ), 10, 3 );

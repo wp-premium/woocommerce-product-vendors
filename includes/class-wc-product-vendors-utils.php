@@ -202,7 +202,7 @@ class WC_Product_Vendors_Utils {
 			$name = $term[0]->name;
 		}
 
-		return array( 'link' => $link, 'name' => $name );
+		return array( 'link' => apply_filters( 'wcpv_sold_by_link', $link, $post_id, $term ), 'name' => $name );
 	}
 
 	/**

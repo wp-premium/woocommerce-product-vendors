@@ -194,6 +194,22 @@ class WC_Product_Vendors_Commission {
 	}
 
 	/**
+	 * Gets the list of unpaid commissions
+	 *
+	 * @access public
+	 * @since 2.0.0
+	 * @version 2.0.0
+	 * @return array $commissions
+	 */
+	public function get_unpaid_commission_data() {
+		global $wpdb;
+		
+		$commissions = $wpdb->get_results( "SELECT * FROM {$this->table_name} WHERE `commission_status` = 'unpaid'" );
+
+		return $commissions;
+	}
+
+	/**
 	 * Deletes a commission record
 	 *
 	 * @access public
