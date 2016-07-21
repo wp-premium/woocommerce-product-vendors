@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: WooCommerce Product Vendors
- * Version: 2.0.14
+ * Version: 2.0.15
  * Plugin URI: https://www.woothemes.com/products/product-vendors/
  * Description: Set up a multi-vendor marketplace that allows vendors to manage their own products and earn commissions.  Run stores similar to Amazon or Etsy.
  * Author: WooThemes
@@ -111,7 +111,7 @@ class WC_Product_Vendors {
 	private function define_constants() {
 		global $wpdb;
 
-		define( 'WC_PRODUCT_VENDORS_VERSION', '2.0.14' );
+		define( 'WC_PRODUCT_VENDORS_VERSION', '2.0.15' );
 		define( 'WC_PRODUCT_VENDORS_PATH', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
 		define( 'WC_PRODUCT_VENDORS_TEMPLATES_PATH', untrailingslashit( plugin_dir_path( __FILE__ ) ) . '/templates/' );
 		define( 'WC_PRODUCT_VENDORS_PLUGIN_URL', untrailingslashit( plugins_url( basename( plugin_dir_path( __FILE__ ) ), basename( __FILE__ ) ) ) );
