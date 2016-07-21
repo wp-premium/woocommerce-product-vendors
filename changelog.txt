@@ -1,5 +1,9 @@
 *** Product Vendors Changelog ***
 
+2016.07.18 - version 2.0.15
+* Tweak - Scroll to the message of the form on vendor registration.
+* Fix - Undefined enable_bookings notice in settings.
+
 2016.07.07 - version 2.0.14
 * Fix - Export unpaid commissions triggered an error.
 * Fix - Vendor user first and last name not showing in the support form emails.

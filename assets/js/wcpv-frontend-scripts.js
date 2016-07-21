@@ -5,6 +5,8 @@ jQuery( document ).ready( function( $ ) {
 	$.wc_product_vendors_vendor_frontend = {
 
 		init: function() {
+			var topOfForm = $( '.wcpv-shortcode-registration-form' ).position();
+
 			$( document.body ).on( 'submit', 'form.wcpv-shortcode-registration-form', function( e ) {
 				e.preventDefault();
 
@@ -27,7 +29,8 @@ jQuery( document ).ready( function( $ ) {
 						$( document.body ).trigger( 'wcpv_vendor_registration_on_success' );
 
 						form.before( '<p class="wcpv-shortcode-registration-success wcpv-registration-message">' + wcpv_registration_local.success + '</p>' );
-
+						form.fadeOut( 'fast' );
+						
 						// clear all fields
 						$( 'input, textarea', form ).not( 'input[type="submit"]' ).val( '' );
 					} else {
@@ -40,6 +43,8 @@ jQuery( document ).ready( function( $ ) {
 						form.before( '<div class="wcpv-shortcode-registration-form-errors wcpv-registration-message">' + errors + '</div' );
 
 					}
+
+					$( 'html, body' ).scrollTop( topOfForm.top - 50 );
 				});
 			});
 		}
