@@ -956,13 +956,17 @@ class WC_Product_Vendors_Utils {
 	 *
 	 * @access public
 	 * @since 2.0.0
-	 * @version 2.0.0
+	 * @version 2.0.15
 	 * @return array $post_type_args
 	 */
 	public static function is_bookings_enabled() {
 		$vendor_data = get_term_meta( WC_Product_Vendors_Utils::get_logged_in_vendor(), 'vendor_data', true );
 
-		if ( ! empty( $vendor_data ) && 'yes' === $vendor_data['enable_bookings'] && class_exists( 'WC_Bookings' ) ) {
+		if ( empty( $vendor_data ) ) {
+			return false;
+		}
+
+		if ( ! empty( $vendor_data['enable_bookings'] ) && 'yes' === $vendor_data['enable_bookings'] && class_exists( 'WC_Bookings' ) ) {
 			return true;
 		}
 
