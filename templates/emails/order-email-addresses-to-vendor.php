@@ -1,4 +1,11 @@
 <?php
+/**
+ * Order email addresses to vendor.
+ *
+ * @version 2.0.0
+ * @since 2.0.0
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }

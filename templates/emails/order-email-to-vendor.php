@@ -1,9 +1,9 @@
 <?php
 /**
- * Order email to vendor
+ * Order email to vendor.
  *
- * @author   WooThemes
- * @version  2.0.2
+ * @version 2.0.0
+ * @since 2.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

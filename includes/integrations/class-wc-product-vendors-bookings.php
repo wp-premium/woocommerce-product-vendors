@@ -67,7 +67,7 @@ class WC_Product_Vendors_Bookings {
 		add_filter( 'views_edit-wc_booking', array( $this, 'booking_status_views' ) );
 
 		// setup dashboard widget
-		add_action( 'wp_dashboard_setup', array( $this, 'add_vendor_dashboard_widget' ) );
+		add_action( 'wp_dashboard_setup', array( $this, 'add_vendor_dashboard_widget' ), 99999 );
 
 		// redirect the page after creating bookings
 		add_filter( 'wp_redirect', array( $this, 'create_booking_redirect' ) );
@@ -354,7 +354,17 @@ class WC_Product_Vendors_Bookings {
 		$global_rules          = get_option( 'wc_global_booking_availability', array() );
 		add_filter( 'pre_option_wc_global_booking_availability', array( $this, 'before_display_global_availability' ), 10, 2 );
 
-		if ( $vendor = WC_Product_Vendors_Utils::is_vendor_product( $booking->id ) ) {
+		// to prevent duplicate queries from bookings, cache vendor data into
+		// super global
+		if ( ! isset( $GLOBALS['wcpv_is_vendor_booking_product_' . $booking->id] ) ) {
+			$GLOBALS['wcpv_is_vendor_booking_product_' . $booking->id] = false;
+
+			if ( $vendor = WC_Product_Vendors_Utils::is_vendor_product( $booking->id ) ) {
+				$GLOBALS['wcpv_is_vendor_booking_product_' . $booking->id] = $vendor;
+			}
+		}
+
+		if ( $vendor = $GLOBALS['wcpv_is_vendor_booking_product_' . $booking->id] ) {
 			// filter rules that belong to this vendor's product
 			if ( ! empty( $global_rules ) ) {
 				foreach( $global_rules as $rule ) {

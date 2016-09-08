@@ -18,6 +18,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
  */
 class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 	private $vendor_id;
+	private $vendor_data;
 
 	/**
 	 * Init
@@ -36,7 +37,8 @@ class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 			'ajax'      => false,
 		) );
 
-		$this->vendor_id = WC_Product_Vendors_Utils::get_logged_in_vendor();
+		$this->vendor_id   = WC_Product_Vendors_Utils::get_logged_in_vendor();
+		$this->vendor_data = WC_Product_Vendors_Utils::get_vendor_data_from_user();
 
     	return true;
 	}
@@ -374,8 +376,10 @@ class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 			case 'order_date' :
 				$order = wc_get_order( absint( $item->order_id ) );
 
+				$timezone = ! empty( $this->vendor_data['timezone'] ) ? sanitize_text_field( $this->vendor_data['timezone'] ) : '';
+
 				if ( is_a( $order, 'WC_Order' ) ) {
-					return WC_Product_Vendors_Utils::format_date( sanitize_text_field( $order->order_date ) );
+					return WC_Product_Vendors_Utils::format_date( sanitize_text_field( $order->order_date ), $timezone );
 				}
 
 				return __( 'N/A', 'woocommerce-product-vendors' );
@@ -405,6 +409,10 @@ class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 
 					if ( ! empty( $attributes ) ) {
 						foreach( $attributes as $name => $value ) {
+							if ( version_compare( WC_VERSION, '2.6.0', '>=' ) ) {
+								$name = wc_attribute_label( wc_sanitize_taxonomy_name( $name ) );
+							}
+
 							$var_attributes .= sprintf( __( '<br /><small>( %s: %s )</small>', 'woocommerce-product-vendors' ), $name, $value );
 						}
 					}
@@ -449,7 +457,9 @@ class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 				return $status;
 
 			case 'paid_date' :
-				return WC_Product_Vendors_Utils::format_date( sanitize_text_field( $item->paid_date ) );
+				$timezone = ! empty( $this->vendor_data['timezone'] ) ? sanitize_text_field( $this->vendor_data['timezone'] ) : '';
+
+				return WC_Product_Vendors_Utils::format_date( sanitize_text_field( $item->paid_date ), $timezone );
 
 			case 'fulfillment_status' :
 				$status = WC_Product_Vendors_Utils::get_fulfillment_status( $item->order_item_id );
@@ -575,6 +585,8 @@ class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 
 		foreach( $ids as $id => $order_item_id ) {
 			WC_Product_Vendors_Utils::set_fulfillment_status( absint( $order_item_id ), $this->current_action() );
+
+			WC_Product_Vendors_Utils::send_fulfill_status_email( $this->vendor_data, $this->current_action(), $order_item_id );
 
 			$processed++;
 		}

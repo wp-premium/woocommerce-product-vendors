@@ -18,15 +18,15 @@ class WC_Product_Vendors_Vendor_Dashboard {
 	 *
 	 * @access public
 	 * @since 2.0.0
-	 * @version 2.0.0
+	 * @version 2.0.16
 	 * @return bool
 	 */
 	public function __construct() {
-		// setup the vendor admin pages
+		// setup the vendor admin dashboard
 		add_action( 'admin_init', array( $this, 'setup_vendor_dashboard' ) );
 
 		// setup dashboard widget
-		add_action( 'wp_dashboard_setup', array( $this, 'add_vendor_dashboard_widget' ) );
+		add_action( 'wp_dashboard_setup', array( $this, 'setup_vendor_dashboard_widget' ), 9999 );
 
 		return true;
 	}
@@ -42,21 +42,7 @@ class WC_Product_Vendors_Vendor_Dashboard {
 	public function setup_vendor_dashboard() {
 		// remove the color scheme picker in profile
 		remove_action( 'admin_color_scheme_picker', 'admin_color_scheme_picker' );
-
-		// remove all dashboard widgets
-		remove_meta_box( 'dashboard_incoming_links', 'dashboard', 'normal' );
-		remove_meta_box( 'dashboard_plugins', 'dashboard', 'normal' );
-		remove_meta_box( 'dashboard_primary', 'dashboard', 'normal' );
-		remove_meta_box( 'dashboard_secondary', 'dashboard', 'normal' );
-		remove_meta_box( 'dashboard_incoming_links', 'dashboard', 'normal' );
-		remove_meta_box( 'dashboard_quick_press', 'dashboard', 'side' );
-		remove_meta_box( 'dashboard_recent_drafts', 'dashboard', 'side' );
-		remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'normal' );
-		remove_meta_box( 'dashboard_right_now', 'dashboard', 'normal' );
-		remove_meta_box( 'dashboard_activity', 'dashboard', 'normal');
-		remove_meta_box( 'woocommerce_dashboard_recent_reviews', 'dashboard', 'normal' );
-		remove_meta_box( 'woocommerce_dashboard_status', 'dashboard', 'normal' );
-
+		
 		// remove welcome panel
 		remove_action( 'welcome_panel', 'wp_welcome_panel' );
 
@@ -94,14 +80,29 @@ class WC_Product_Vendors_Vendor_Dashboard {
 	}
 
 	/**
-	 * Add dashboard widgets for vendors
+	 * Setup dashboard widgets for vendors
 	 *
 	 * @access public
 	 * @since 2.0.0
-	 * @version 2.0.0
+	 * @version 2.0.16
 	 * @return bool
 	 */
-	public function add_vendor_dashboard_widget() {
+	public function setup_vendor_dashboard_widget() {
+		global $wp_meta_boxes;
+
+		if ( apply_filters( 'wcpv_remove_vendor_dashboard_widgets', true ) ) {
+			// remove all dashboard widgets
+			$wp_meta_boxes['dashboard']['normal']['high']    = array();
+			$wp_meta_boxes['dashboard']['normal']['core']    = array();
+			$wp_meta_boxes['dashboard']['normal']['default'] = array();
+			$wp_meta_boxes['dashboard']['normal']['low']     = array();
+			
+			$wp_meta_boxes['dashboard']['side']['high']      = array();
+			$wp_meta_boxes['dashboard']['side']['core']      = array();
+			$wp_meta_boxes['dashboard']['side']['default']   = array();
+			$wp_meta_boxes['dashboard']['side']['low']       = array();
+		}
+
 		wp_add_dashboard_widget(
 			'wcpv_vendor_sales_dashboard_widget',
 			__( 'Sales Summary', 'woocommerce-product-vendors' ),

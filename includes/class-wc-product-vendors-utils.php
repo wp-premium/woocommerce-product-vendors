@@ -556,20 +556,87 @@ class WC_Product_Vendors_Utils {
 	}
 
 	/**
+	 * Converts a GMT date into the correct format for the blog.
+	 *
+	 * Requires and returns a date in the Y-m-d H:i:s format. If there is a
+	 * timezone_string available, the returned date is in that timezone, otherwise
+	 * it simply adds the value of gmt_offset. Return format can be overridden
+	 * using the $format parameter
+	 *
+	 * @since 2.0.16
+	 * @version 2.0.16
+	 * @param string $string The date to be converted.
+	 * @param string $format The format string for the returned date (default is Y-m-d H:i:s)
+	 * @return string Formatted date relative to the timezone / GMT offset.
+	 */
+	public static function get_date_from_gmt( $string, $format = 'Y-m-d H:i:s', $timezone_string ) {
+		$tz = $timezone_string;
+
+		if ( empty( $timezone_string ) ) {
+			$tz = get_option( 'timezone_string' );
+		}
+
+		if ( $tz && ( ! preg_match( '/UTC-/', $tz ) && ! preg_match( '/UTC+/', $tz ) ) ) {
+			$datetime = date_create( $string, new DateTimeZone( 'UTC' ) );
+			
+			if ( ! $datetime ) {
+				return date( $format, 0 );
+			}
+
+			$datetime->setTimezone( new DateTimeZone( $tz ) );
+			$string_localtime = $datetime->format( $format );
+		} else {
+			if ( ! preg_match('#([0-9]{1,4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})#', $string, $matches) ) {
+				return date( $format, 0 );
+			}
+
+			$string_time = gmmktime( $matches[4], $matches[5], $matches[6], $matches[2], $matches[3], $matches[1] );
+			$string_localtime = gmdate( $format, $string_time + get_option( 'gmt_offset' ) * HOUR_IN_SECONDS );
+		}
+
+		return $string_localtime;
+	}
+
+	/**
+	 * Gets the default timezone string from blog setting
+	 *
+	 * @access public
+	 * @since 2.0.0
+	 * @version 2.0.16
+	 * @return string $tzstring
+	 */
+	public static function get_default_timezone_string() {
+		$current_offset = get_option( 'gmt_offset' );
+		$tzstring       = get_option( 'timezone_string' );
+
+		if ( 0 == $current_offset ) {
+			$tzstring = 'UTC+0';
+		} elseif ( $current_offset < 0 ) {
+			$tzstring = 'UTC' . $current_offset;
+		} else {
+			$tzstring = 'UTC+' . $current_offset;
+		}
+
+		return $tzstring;
+	}
+
+	/**
 	 * Formats the order and payout dates to be consistent
 	 *
 	 * @access public
 	 * @since 2.0.0
-	 * @version 2.0.0
-	 * @param string $date
+	 * @version 2.0.16
+	 * @param string $sql_date
 	 * @return string $date
 	 */
-	public static function format_date( $date ) {
-		if ( '0000-00-00 00:00:00' !== $date ) {
-			$date = date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( $date ) );
+	public static function format_date( $sql_date, $timezone = '' ) {
+		$date = '0000-00-00 00:00:00';
+
+		if ( '0000-00-00 00:00:00' !== $sql_date ) {
+			$date = self::get_date_from_gmt( $sql_date, get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $timezone );
 		}
 
-		return apply_filters( 'wcpv_date_format', $date );
+		return apply_filters( 'wcpv_date_format', $date, $sql_date );
 	}
 
 	/**
@@ -931,6 +998,77 @@ class WC_Product_Vendors_Utils {
 		$status = $wpdb->get_var( $wpdb->prepare( $sql, $status, $order_item_id, '_fulfillment_status' ) );
 
 		return true;
+	}
+
+	/**
+	 * Trigger fulfillment status email
+	 *
+	 * @access public
+	 * @since 2.0.16
+	 * @version 2.0.16
+	 * @param array $vendor_data
+	 * @param string $status
+	 * @param int $order_item_id
+	 * @return bool
+	 */
+	public static function send_fulfill_status_email( $vendor_data = null, $status = '', $order_item_id = '' ) {
+		$emails = WC()->mailer()->get_emails();
+
+		if ( ! empty( $emails ) ) {
+			$emails[ 'WC_Product_Vendors_Order_Fulfill_Status_To_Admin' ]->trigger( $vendor_data, $status, $order_item_id );
+		}
+		
+		return true;
+	}
+
+	/**
+	 * Gets an order by the order item id
+	 *
+	 * @access public
+	 * @since 2.0.16
+	 * @version 2.0.16
+	 * @param int $order_item_id
+	 * @return bool
+	 */
+	public static function get_order_by_order_item_id( $order_item_id = null ) {
+		$order = $order_item_id;
+
+		global $wpdb;
+
+		$sql = "SELECT `order_id` FROM {$wpdb->prefix}woocommerce_order_items";
+		$sql .= " WHERE `order_item_id` = %d";
+
+		$order_id = $wpdb->get_var( $wpdb->prepare( $sql, $order_item_id ) );
+
+		if ( $order_id ) {
+			return wc_get_order( $order_id );
+		}
+
+		return $order;
+	}
+
+	/**
+	 * Gets the order item name by order item id
+	 *
+	 * @access public
+	 * @since 2.0.16
+	 * @version 2.0.16
+	 * @param int $order_item_id
+	 * @return string $order_item_name
+	 */
+	public static function get_order_item_name( $order_item_id = null ) {
+		if ( null === $order_item_id  ) {
+			return '';
+		}
+
+		global $wpdb;
+
+		$sql = "SELECT `order_item_name` FROM {$wpdb->prefix}woocommerce_order_items";
+		$sql .= " WHERE `order_item_id` = %d";
+
+		$order_item_name = $wpdb->get_var( $wpdb->prepare( $sql, $order_item_id ) );
+
+		return $order_item_name;
 	}
 
 	/**

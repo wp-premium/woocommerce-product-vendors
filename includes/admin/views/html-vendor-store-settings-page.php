@@ -1,4 +1,5 @@
 <?php
+// version 2.0.16
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -57,7 +58,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<td>
 						<input type="text" name="vendor_data[email]" value="<?php echo esc_attr( $email ); ?>" />
 
-						<p><?php esc_html_e( 'Enter the email for this vendor.  This is the email where all notifications are sent such as new orders and customer inquiries.  You may enter more than one email separating each with a comma.', 'woocommerce-product-vendors' ); ?></p>
+						<p><?php esc_html_e( 'Enter the email for this vendor. This is the email where all notifications are sent such as new orders and customer inquiries.  You may enter more than one email separating each with a comma.', 'woocommerce-product-vendors' ); ?></p>
 					</td>
 				</tr>
 
@@ -77,7 +78,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<td>
 						<input type="text" disabled="disabled" value="<?php echo esc_attr( $vendor_commission ); ?>" />
 
-						<p><?php esc_html_e( 'Default commission you will receive per product sale.  Please note product level commission can override this.  Check your product to confirm.', 'woocommerce-product-vendors' ); ?></p>
+						<p><?php esc_html_e( 'Default commission you will receive per product sale. Please note product level commission can override this.  Check your product to confirm.', 'woocommerce-product-vendors' ); ?></p>
+					</td>
+				</tr>
+
+				<tr class="form-field">
+					<th scope="row" valign="top"><label for="wcpv-vendor-timezone"><?php esc_html_e( 'Timezone', 'woocommerce-product-vendors' ); ?></label></th>
+					
+					<td>
+						<select id="wcpv-vendor-timezone" name="vendor_data[timezone]" aria-describedby="timezone-description" class="wc-enhanced-select" style="width:20%">
+							<?php echo wp_timezone_choice( $tzstring ); ?>
+						</select>
+
+						<p><?php esc_html_e( 'Set the local timezone.', 'woocommerce-product-vendors' ); ?></p>
 					</td>
 				</tr>
 			</tbody>

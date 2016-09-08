@@ -63,6 +63,12 @@ class WC_Product_Vendors_Shortcodes {
 	 * @return html $form
 	 */
 	public function render_registration_shortcode( $atts ) {
+		// don't show this form to admins to prevent their admin roles
+		// being changed to vendor preventing access
+		if ( current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
 		// no need to show vendor this form
 		if ( WC_Product_Vendors_Utils::is_vendor() ) {
 			return sprintf( __( 'Great! You\'re already a vendor! Perhaps you want to go to the %sVendor Dashboard?%s', 'woocommerce-product-vendors' ), '<a href="' . esc_url( admin_url() ) . '">', '</a>' );
