@@ -1,4 +1,9 @@
 <?php
+/**
+ * Create vendor fields page template ( store admin )
+ *
+ * @version 2.0.16
+ */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -84,6 +89,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<input type="email" id="wcpv-vendor-paypal" name="vendor_data[paypal]" value="" />
 		
 		<p><?php esc_html_e( 'Scheduled commission payouts will be using this PayPal email to receive payments.', 'woocommerce-product-vendors' ); ?></p>
+	</div>
+
+	<div>
+		<label for="wcpv-vendor-timezone"><?php esc_html_e( 'Timezone', 'woocommerce-product-vendors' ); ?></label>
+		<select id="wcpv-vendor-timezone" name="vendor_data[timezone]" aria-describedby="timezone-description" class="wc-enhanced-select" style="width:50%">
+			<?php echo wp_timezone_choice( $tzstring ); ?>
+		</select>
+
+		<p><?php esc_html_e( 'Set the local timezone.', 'woocommerce-product-vendors' ); ?></p>
 	</div>
 
 	<div class="form-field term-per-product-shipping">

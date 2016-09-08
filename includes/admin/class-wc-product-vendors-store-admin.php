@@ -318,10 +318,12 @@ class WC_Product_Vendors_Store_Admin {
 	 *
 	 * @access public
 	 * @since 2.0.0
-	 * @version 2.0.0
+	 * @version 2.0.16
 	 * @return bool
 	 */
 	public function add_vendor_fields() {
+		$tzstring = WC_Product_Vendors_Utils::get_default_timezone_string();
+
 		include_once( 'views/html-create-vendor-fields-page.php' );
 
 		return true;
@@ -332,7 +334,7 @@ class WC_Product_Vendors_Store_Admin {
 	 *
 	 * @access public
 	 * @since 2.0.0
-	 * @version 2.0.0
+	 * @version 2.0.16
 	 * @param object $taxonomy
 	 * @return bool
 	 */
@@ -353,8 +355,13 @@ class WC_Product_Vendors_Store_Admin {
 		$per_product_shipping = ! empty( $vendor_data['per_product_shipping'] ) ? $vendor_data['per_product_shipping'] : 'no';
 		$enable_bookings      = ! empty( $vendor_data['enable_bookings'] ) ? $vendor_data['enable_bookings'] : 'no';
 		$admins               = ! empty( $vendor_data['admins'] ) ? $vendor_data['admins'] : '';
+		$tzstring             = ! empty( $vendor_data['timezone'] ) ? $vendor_data['timezone'] : '';
 
 		$selected_admins = array();
+
+		if ( empty( $tzstring ) ) {
+			$tzstring = WC_Product_Vendors_Utils::get_default_timezone_string();
+		}
 
 		if ( ! empty( $admins ) ) {
 			$admin_ids = array_filter( array_map( 'absint', explode( ',', $vendor_data['admins'] ) ) );

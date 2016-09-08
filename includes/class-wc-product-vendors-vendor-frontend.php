@@ -72,7 +72,7 @@ class WC_Product_Vendors_Vendor_Frontend {
 	public function add_section() {
 		if ( WC_Product_Vendors_Utils::auth_vendor_user() ) {
 
-			printf( '<a href="%s" title="%s" class="button">%s</a>', esc_url( admin_url() ), esc_attr( __( 'Vendor Dashboard', 'woocommerce-product-vendors' ) ), __( 'Vendor Dashboard', 'woocommerce-product-vendors' ) );
+			printf( '<a href="%s" title="%s" class="button vendor-dashboard-link">%s</a>', esc_url( admin_url() ), esc_attr( __( 'Vendor Dashboard', 'woocommerce-product-vendors' ) ), __( 'Vendor Dashboard', 'woocommerce-product-vendors' ) );
 		}
 
 		return true;

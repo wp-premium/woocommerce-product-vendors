@@ -22,7 +22,7 @@ class WC_Product_Vendors_Order {
 	 *
 	 * @access public
 	 * @since 2.0.0
-	 * @version 2.0.0
+	 * @version 2.0.16
 	 * @return bool
 	 */
 	public function __construct( WC_Product_Vendors_Commission $commission ) {

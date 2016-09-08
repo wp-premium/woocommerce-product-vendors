@@ -1,4 +1,10 @@
 <?php
+/**
+ * Vendor registration email to vendor (plain text).
+ *
+ * @version 2.0.0
+ * @since 2.0.0
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly

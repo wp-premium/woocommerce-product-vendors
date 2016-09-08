@@ -78,7 +78,7 @@ class WC_Product_Vendors_Vendor_Admin {
 		add_filter( 'months_dropdown_results', array( $self, 'product_months_filter' ), 11, 2 );
 
 		// registers vendor menus
-		add_action( 'admin_menu', array( $self, 'register_vendor_menus' ), 99 );
+		add_action( 'admin_menu', array( $self, 'register_vendor_menus' ), 999 );
 
 		// remove product meta boxes
 		add_action( 'add_meta_boxes', array( $self, 'remove_product_meta_boxes' ), 99 );
@@ -1008,6 +1008,10 @@ class WC_Product_Vendors_Vendor_Admin {
 			remove_menu_page( 'tools.php' );
 			remove_menu_page( 'edit-comments.php' );
 			remove_menu_page( 'edit.php?post_type=shop_order' );
+			remove_menu_page( 'jetpack' );
+			remove_submenu_page( 'jetpack', 'jetpack_admin_page' );
+			remove_submenu_page( null, 'jetpack_connect_user' );
+			remove_submenu_page( 'jetpack', 'jetpack_manage_modules' );
 
 			if ( ! WC_Product_Vendors_Utils::auth_vendor_user() ) {
 				remove_menu_page( 'wc-reports' );
@@ -1240,7 +1244,7 @@ class WC_Product_Vendors_Vendor_Admin {
 		}
 
 		// logo image
-		$logo             = ! empty( $vendor_data['logo'] ) ? $vendor_data['logo'] : '';
+		$logo = ! empty( $vendor_data['logo'] ) ? $vendor_data['logo'] : '';
 		
 		$hide_remove_image_link = '';
 		
@@ -1254,6 +1258,11 @@ class WC_Product_Vendors_Vendor_Admin {
 		$email             = ! empty( $vendor_data['email'] ) ? $vendor_data['email'] : '';
 		$paypal            = ! empty( $vendor_data['paypal'] ) ? $vendor_data['paypal'] : '';
 		$vendor_commission = ! empty( $vendor_data['commission'] ) ? $vendor_data['commission'] : get_option( 'wcpv_vendor_settings_default_commission', '0' );
+		$tzstring          = ! empty( $vendor_data['timezone'] ) ? $vendor_data['timezone'] : '';
+
+		if ( empty( $tzstring ) ) {
+			$tzstring = WC_Product_Vendors_Utils::get_default_timezone_string();
+		}
 
 		include_once( 'views/html-vendor-store-settings-page.php' );
 

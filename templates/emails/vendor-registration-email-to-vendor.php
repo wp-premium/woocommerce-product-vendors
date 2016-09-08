@@ -1,9 +1,9 @@
 <?php
 /**
- * Vendor registration email to vendor
+ * Vendor registration email to vendor.
  *
- * @author 		WooThemes
- * @version     2.0.0
+ * @version 2.0.0
+ * @since 2.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

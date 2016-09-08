@@ -17,6 +17,8 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
  * @version  2.0.0
  */
 class WC_Product_Vendors_Vendor_Order_Detail_List extends WP_List_Table {
+	private $vendor_data;
+
 	/**
 	 * Init
 	 *
@@ -33,6 +35,8 @@ class WC_Product_Vendors_Vendor_Order_Detail_List extends WP_List_Table {
 			'plural'    => 'orders',
 			'ajax'      => false,
 		) );
+
+		$this->vendor_data = WC_Product_Vendors_Utils::get_vendor_data_from_user();
 
     	return true;
 	}
@@ -136,7 +140,7 @@ class WC_Product_Vendors_Vendor_Order_Detail_List extends WP_List_Table {
 	 * @return mixed
 	 */
 	public function column_cb( $item ) {
-		return sprintf( '<input type="checkbox" name="ids[]" value="%d" /><input type="hidden" name="order_item_ids[%d]" value="%d" />', $item->id, $item->id, $item->order_item_id );
+		return sprintf( '<input type="checkbox" name="ids[%d]" value="%d" /><input type="hidden" name="order_item_ids[%d]" value="%d" />', $item->id, $item->order_item_id, $item->id, $item->order_item_id );
 	}
 
 	/**
@@ -166,6 +170,10 @@ class WC_Product_Vendors_Vendor_Order_Detail_List extends WP_List_Table {
 
 					if ( ! empty( $attributes ) ) {
 						foreach( $attributes as $name => $value ) {
+							if ( version_compare( WC_VERSION, '2.6.0', '>=' ) ) {
+								$name = wc_attribute_label( wc_sanitize_taxonomy_name( $name ) );
+							}
+							
 							$var_attributes .= sprintf( __( '<br /><small>( %s: %s )</small>', 'woocommerce-product-vendors' ), $name, $value );
 						}
 					}
@@ -208,10 +216,12 @@ class WC_Product_Vendors_Vendor_Order_Detail_List extends WP_List_Table {
 				return $status;
 
 			case 'paid_date' :
-				return WC_Product_Vendors_Utils::format_date( sanitize_text_field( $item->paid_date ) );
+				$timezone = ! empty( $this->vendor_data['timezone'] ) ? sanitize_text_field( $this->vendor_data['timezone'] ) : '';
+
+				return WC_Product_Vendors_Utils::format_date( sanitize_text_field( $item->paid_date ), $timezone );
 
 			case 'fulfillment_status' :
-				$status = $this->get_fulfillment_status( $item->order_item_id );
+				$status = WC_Product_Vendors_Utils::get_fulfillment_status( $item->order_item_id );
 				$product = wc_get_product( $item->product_id );
 
 				if ( is_object( $product ) && ( $product->is_virtual() || $product->is_downloadable() || 'booking' === $product->product_type ) ) {
@@ -316,59 +326,14 @@ class WC_Product_Vendors_Vendor_Order_Detail_List extends WP_List_Table {
 
 		$order_item_ids = $_REQUEST['order_item_ids'];
 		
-		foreach( $ids as $id ) {
-			$this->set_fulfillment_status( absint( $order_item_ids[ $id ] ), $this->current_action() );
+		foreach( $ids as $id => $order_item_id ) {
+			WC_Product_Vendors_Utils::set_fulfillment_status( absint( $order_item_ids[ $id ] ), $this->current_action() );
+
+			WC_Product_Vendors_Utils::send_fulfill_status_email( $this->vendor_data, $this->current_action(), $order_item_id );
 		}
 
 		WC_Product_Vendors_Utils::clear_reports_transients();
 		
-		return true;
-	}
-
-	/**
-	 * Get fulfillment status of an order item
-	 *
-	 * @access public
-	 * @since 2.0.0
-	 * @version 2.0.0
-	 * @param int $order_item_id
-	 * @return string $status
-	 */
-	public function get_fulfillment_status( $order_item_id ) {
-		global $wpdb;
-
-		if ( empty( $order_item_id ) ) {
-			return;
-		}
-
-		$sql = "SELECT `meta_value` FROM {$wpdb->prefix}woocommerce_order_itemmeta";
-		$sql .= " WHERE `order_item_id` = %d";
-		$sql .= " AND `meta_key` = %s";
-
-		$status = $wpdb->get_var( $wpdb->prepare( $sql, $order_item_id, '_fulfillment_status' ) );
-
-		return $status;
-	}
-
-	/**
-	 * Set fulfillment status of an order item
-	 *
-	 * @access public
-	 * @since 2.0.0
-	 * @version 2.0.0
-	 * @param int $order_item_id
-	 * @param string $status
-	 * @return bool
-	 */
-	public function set_fulfillment_status( $order_item_id, $status ) {
-		global $wpdb;
-
-		$sql = "UPDATE {$wpdb->prefix}woocommerce_order_itemmeta";
-		$sql .= " SET `meta_value` = %s";
-		$sql .= " WHERE `order_item_id` = %d AND `meta_key` = %s";
-
-		$status = $wpdb->get_var( $wpdb->prepare( $sql, $status, $order_item_id, '_fulfillment_status' ) );
-
 		return true;
 	}
 
