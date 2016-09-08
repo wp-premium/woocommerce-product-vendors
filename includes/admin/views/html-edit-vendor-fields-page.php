@@ -1,4 +1,10 @@
 <?php
+/**
+ * Edit vendor fields page template ( store admin )
+ *
+ * @version 2.0.16
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -10,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<td>
 		<textarea name="vendor_data[notes]"><?php echo esc_textarea( $notes ); ?></textarea>
 
-		<p><?php esc_html_e( 'Enter any notes about this vendor.  Only seen by store owners.', 'woocommerce-product-vendors' ); ?></p>
+		<p><?php esc_html_e( 'Enter any notes about this vendor. Only seen by store owners.', 'woocommerce-product-vendors' ); ?></p>
 	</td>
 </tr>
 
@@ -57,7 +63,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<td>
 		<input type="text" name="vendor_data[email]" value="<?php echo esc_attr( $email ); ?>" />
 
-		<p><?php esc_html_e( 'Enter the email for this vendor.  This is the email where all notifications are sent such as new orders and customer inquiries.  You may enter more than one email separating each with a comma.', 'woocommerce-product-vendors' ); ?></p>
+		<p><?php esc_html_e( 'Enter the email for this vendor. This is the email where all notifications are sent such as new orders and customer inquiries.  You may enter more than one email separating each with a comma.', 'woocommerce-product-vendors' ); ?></p>
 	</td>
 </tr>
 
@@ -77,7 +83,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<td>
 		<input type="number" id="wcpv-vendor-commission" name="vendor_data[commission]" value="<?php echo esc_attr( $commission ); ?>" step="any" min="0" />
 
-		<p><?php esc_html_e( 'This is the commission amount the vendor will receive.  Product level commission can be set which will override this commission.', 'woocommerce-product-vendors' ); ?></p>
+		<p><?php esc_html_e( 'This is the commission amount the vendor will receive. Product level commission can be set which will override this commission.', 'woocommerce-product-vendors' ); ?></p>
 	</td>
 </tr>
 
@@ -110,6 +116,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<input type="email" id="wcpv-vendor-paypal" name="vendor_data[paypal]" value="<?php echo esc_attr( $paypal ); ?>" />
 
 		<p><?php esc_html_e( 'Scheduled commission payouts will be using this PayPal email to receive payments.', 'woocommerce-product-vendors' ); ?></p>
+	</td>
+</tr>
+
+<tr class="form-field">
+	<th scope="row" valign="top"><label for="wcpv-vendor-timezone"><?php esc_html_e( 'Timezone', 'woocommerce-product-vendors' ); ?></label></th>
+	
+	<td>
+		<select id="wcpv-vendor-timezone" name="vendor_data[timezone]" aria-describedby="timezone-description" class="wc-enhanced-select" style="width:20%">
+			<?php echo wp_timezone_choice( $tzstring ); ?>
+		</select>
+
+		<p><?php esc_html_e( 'Set the local timezone.', 'woocommerce-product-vendors' ); ?></p>
 	</td>
 </tr>
 

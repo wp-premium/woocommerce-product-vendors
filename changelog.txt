@@ -1,5 +1,18 @@
 *** Product Vendors Changelog ***
 
+2016.09.07 - version 2.0.18
+* Fix - Product attribute names were not formatted correctly after WC 2.6.
+
+2016.08.31 - version 2.0.17
+* Fix - UTC timezone offset causes errors as it is not handled properly.
+* Tweak - Performance with Bookings compatibility.
+
+2016.08.24 - version 2.0.16
+* Fix - Hide vendor registration form from admins to prevent inadvertent role switching.
+* Fix - JetPack settings and widgets were showing for vendors.
+* Add - Vendor timezone option in vendor settings.
+* Add - Fulfillment status update notification email to admin.
+
 2016.07.18 - version 2.0.15
 * Tweak - Scroll to the message of the form on vendor registration.
 * Fix - Undefined enable_bookings notice in settings.

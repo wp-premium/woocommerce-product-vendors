@@ -55,24 +55,26 @@ class WC_Product_Vendors_Emails {
 	 *
 	 * @access public
 	 * @since 2.0.0
-	 * @version 2.0.0
+	 * @version 2.0.16
 	 * @param array $classes
 	 * @return array $classes
 	 */
 	public function add_email_classes( $classes ) {
-		$classes['WC_Product_Vendors_Registration_Email_To_Admin'] = include( 'emails/class-wc-product-vendors-registration-email-to-admin.php' );
-
-		$classes['WC_Product_Vendors_Registration_Email_To_Vendor'] = include( 'emails/class-wc-product-vendors-registration-email-to-vendor.php' );
-
-		$classes['WC_Product_Vendors_Order_Email_To_Vendor'] = include( 'emails/class-wc-product-vendors-order-email-to-vendor.php' );
-
+		$classes['WC_Product_Vendors_Registration_Email_To_Admin']     = include( 'emails/class-wc-product-vendors-registration-email-to-admin.php' );
+		
+		$classes['WC_Product_Vendors_Registration_Email_To_Vendor']    = include( 'emails/class-wc-product-vendors-registration-email-to-vendor.php' );
+		
+		$classes['WC_Product_Vendors_Order_Email_To_Vendor']           = include( 'emails/class-wc-product-vendors-order-email-to-vendor.php' );
+		
 		$classes['WC_Product_Vendors_Cancelled_Order_Email_To_Vendor'] = include( 'emails/class-wc-product-vendors-cancelled-order-email-to-vendor.php' );
-
-		$classes['WC_Product_Vendors_Approval'] = include( 'emails/class-wc-product-vendors-approval.php' );
-
-		$classes['WC_Product_Vendors_Product_Added_Notice'] = include( 'emails/class-wc-product-vendors-product-added-notice.php' );
-
-		$classes['WC_Product_Vendors_Order_Note_To_Customer'] = include( 'emails/class-wc-product-vendors-order-note-to-customer.php' );
+		
+		$classes['WC_Product_Vendors_Approval']                        = include( 'emails/class-wc-product-vendors-approval.php' );
+		
+		$classes['WC_Product_Vendors_Product_Added_Notice']            = include( 'emails/class-wc-product-vendors-product-added-notice.php' );
+		
+		$classes['WC_Product_Vendors_Order_Note_To_Customer']          = include( 'emails/class-wc-product-vendors-order-note-to-customer.php' );
+		
+		$classes['WC_Product_Vendors_Order_Fulfill_Status_To_Admin']   = include( 'emails/class-wc-product-vendors-order-fulfill-status-to-admin.php' );
 
 		return $classes;
 	}

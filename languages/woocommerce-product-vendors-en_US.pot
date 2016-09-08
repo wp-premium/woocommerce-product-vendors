@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce Product Vendors\n"
-"POT-Creation-Date: 2016-06-01 16:16-0800\n"
-"PO-Revision-Date: 2016-06-01 16:16-0800\n"
+"POT-Creation-Date: 2016-08-24 08:02-0800\n"
+"PO-Revision-Date: 2016-08-24 08:02-0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_US\n"
@@ -20,8 +20,8 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
 #: includes/admin/class-wc-product-vendors-store-admin.php:211
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:482
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:565
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:521
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:604
 msgid ""
 "Thanks for registering to become a vendor.  Your application is being "
 "reviewed at this time."
@@ -29,8 +29,8 @@ msgstr ""
 
 #: includes/admin/class-wc-product-vendors-store-admin.php:212
 #: includes/admin/class-wc-product-vendors-store-admin.php:213
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:566
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:567
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:605
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:606
 msgid "Add Logo"
 msgstr ""
 
@@ -95,7 +95,7 @@ msgid "Searching&hellip;"
 msgstr ""
 
 #: includes/admin/class-wc-product-vendors-store-admin.php:247
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:583
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:622
 msgid "Select an option&hellip;"
 msgstr ""
 
@@ -104,73 +104,73 @@ msgstr ""
 msgid "Products awaiting review"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:431
+#: includes/admin/class-wc-product-vendors-store-admin.php:438
 msgid "Admins"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:434
+#: includes/admin/class-wc-product-vendors-store-admin.php:441
 msgid "Products"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:437
-#: includes/admin/views/html-create-vendor-fields-page.php:13
-#: includes/admin/views/html-edit-vendor-fields-page.php:8
+#: includes/admin/class-wc-product-vendors-store-admin.php:444
+#: includes/admin/views/html-create-vendor-fields-page.php:18
+#: includes/admin/views/html-edit-vendor-fields-page.php:14
 msgid "Notes"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:440
+#: includes/admin/class-wc-product-vendors-store-admin.php:447
 #: includes/shipping/per-product/class-wc-product-vendors-per-product-shipping-importer.php:306
 msgid "Vendor ID"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:493
+#: includes/admin/class-wc-product-vendors-store-admin.php:500
 msgid "Managed Vendors"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:598
-#: includes/admin/class-wc-product-vendors-store-admin.php:658
+#: includes/admin/class-wc-product-vendors-store-admin.php:605
+#: includes/admin/class-wc-product-vendors-store-admin.php:665
 msgid "Vendor Commission"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:598
-#: includes/admin/class-wc-product-vendors-store-admin.php:969
-#: includes/admin/class-wc-product-vendors-store-admin.php:1028
-#: includes/admin/class-wc-product-vendors-store-admin.php:1162
+#: includes/admin/class-wc-product-vendors-store-admin.php:605
+#: includes/admin/class-wc-product-vendors-store-admin.php:1047
+#: includes/admin/class-wc-product-vendors-store-admin.php:1181
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:423
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:1113
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:1149
-#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:120
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:325
-#: includes/admin/views/html-create-vendor-fields-page.php:60
-#: includes/admin/views/html-edit-vendor-fields-page.php:75
-#: includes/admin/views/html-vendor-store-settings-page.php:75
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1158
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1196
+#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:124
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:327
+#: includes/admin/views/html-create-vendor-fields-page.php:65
+#: includes/admin/views/html-edit-vendor-fields-page.php:81
+#: includes/admin/views/html-vendor-store-settings-page.php:76
 msgid "Commission"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:617
+#: includes/admin/class-wc-product-vendors-store-admin.php:624
 msgid "Commissions"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:661
+#: includes/admin/class-wc-product-vendors-store-admin.php:668
 #: includes/admin/views/html-vendor-orders-page.php:12
 msgid "Search results for"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:670
+#: includes/admin/class-wc-product-vendors-store-admin.php:677
 #: includes/admin/views/html-vendor-orders-page.php:21
 msgid "Search Order #"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:693
-#: includes/admin/class-wc-product-vendors-store-admin.php:1161
+#: includes/admin/class-wc-product-vendors-store-admin.php:700
+#: includes/admin/class-wc-product-vendors-store-admin.php:1180
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:421
 #: includes/integrations/views/html-bookings-global-availability-settings.php:81
 #: includes/widgets/class-wc-product-vendors-vendor-widget.php:101
+#: templates/emails/order-fulfill-status-to-admin.php:21
 msgid "Vendor"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:733
-#: includes/admin/class-wc-product-vendors-store-admin.php:1345
+#: includes/admin/class-wc-product-vendors-store-admin.php:740
+#: includes/admin/class-wc-product-vendors-store-admin.php:1364
 #: includes/admin/reports/store/class-wc-product-vendors-store-reports.php:61
 #: includes/class-wc-product-vendors-taxonomy.php:53
 #: includes/class-wc-product-vendors-taxonomy.php:114
@@ -178,15 +178,15 @@ msgstr ""
 msgid "Vendors"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:752
+#: includes/admin/class-wc-product-vendors-store-admin.php:759
 msgid "Payments"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:758
+#: includes/admin/class-wc-product-vendors-store-admin.php:765
 msgid "Payout Schedule"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:759
+#: includes/admin/class-wc-product-vendors-store-admin.php:766
 msgid ""
 "Choose the frequency of commission payout for vendors.  Any commission that "
 "is unpaid will follow the schedule set here.  Note that by saving this "
@@ -194,30 +194,30 @@ msgid ""
 "today's date."
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:764
+#: includes/admin/class-wc-product-vendors-store-admin.php:771
 msgid "Manual"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:765
+#: includes/admin/class-wc-product-vendors-store-admin.php:772
 #: includes/class-wc-product-vendors-payout-scheduler.php:56
 msgid "Weekly"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:766
+#: includes/admin/class-wc-product-vendors-store-admin.php:773
 #: includes/class-wc-product-vendors-payout-scheduler.php:57
 msgid "Bi-Weekly"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:767
+#: includes/admin/class-wc-product-vendors-store-admin.php:774
 #: includes/class-wc-product-vendors-payout-scheduler.php:58
 msgid "Monthly"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:774
+#: includes/admin/class-wc-product-vendors-store-admin.php:781
 msgid "PayPal Mass Payments Environment"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:776
+#: includes/admin/class-wc-product-vendors-store-admin.php:783
 msgid ""
 "PayPal Mass Payments sandbox mode can be used to test payouts.  You will "
 "need API credentials for this.  Please refer to <a href=\"https://developer."
@@ -225,150 +225,159 @@ msgid ""
 "\"PayPal Documentation\">PayPal Documentation</a>"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:780
+#: includes/admin/class-wc-product-vendors-store-admin.php:787
 msgid "Sandbox"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:781
+#: includes/admin/class-wc-product-vendors-store-admin.php:788
 msgid "Live"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:787
+#: includes/admin/class-wc-product-vendors-store-admin.php:794
 msgid "(Sandbox) PayPal Mass Payments API Client ID"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:788
-#: includes/admin/class-wc-product-vendors-store-admin.php:806
+#: includes/admin/class-wc-product-vendors-store-admin.php:795
+#: includes/admin/class-wc-product-vendors-store-admin.php:813
 msgid "Enter the API Client ID."
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:796
+#: includes/admin/class-wc-product-vendors-store-admin.php:803
 msgid "(Sandbox) PayPal Mass Payments API Client Secret"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:797
-#: includes/admin/class-wc-product-vendors-store-admin.php:815
+#: includes/admin/class-wc-product-vendors-store-admin.php:804
+#: includes/admin/class-wc-product-vendors-store-admin.php:822
 msgid "Enter the API Client Secret."
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:805
+#: includes/admin/class-wc-product-vendors-store-admin.php:812
 msgid "PayPal Mass Payments API Client ID"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:814
+#: includes/admin/class-wc-product-vendors-store-admin.php:821
 msgid "PayPal Mass Payments API Client Secret"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:823
+#: includes/admin/class-wc-product-vendors-store-admin.php:830
 msgid "Default Commission"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:824
+#: includes/admin/class-wc-product-vendors-store-admin.php:831
 msgid ""
 "Enter a default commission that works globally for all vendors as a fallback "
 "if commission is not set per vendor level.  Enter a positive number."
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:833
-#: includes/admin/views/html-create-vendor-fields-page.php:67
-#: includes/admin/views/html-edit-vendor-fields-page.php:85
+#: includes/admin/class-wc-product-vendors-store-admin.php:840
+#: includes/admin/views/html-create-vendor-fields-page.php:72
+#: includes/admin/views/html-edit-vendor-fields-page.php:91
 msgid "Commission Type"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:834
-#: includes/admin/views/html-create-vendor-fields-page.php:73
-#: includes/admin/views/html-edit-vendor-fields-page.php:93
+#: includes/admin/class-wc-product-vendors-store-admin.php:841
+#: includes/admin/views/html-create-vendor-fields-page.php:78
+#: includes/admin/views/html-edit-vendor-fields-page.php:99
 msgid ""
 "Choose whether the commission amount will be a fixed amount or a percentage "
 "of the cost."
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:839
-#: includes/admin/views/html-create-vendor-fields-page.php:69
-#: includes/admin/views/html-edit-vendor-fields-page.php:89
+#: includes/admin/class-wc-product-vendors-store-admin.php:846
+#: includes/admin/views/html-create-vendor-fields-page.php:74
+#: includes/admin/views/html-edit-vendor-fields-page.php:95
 msgid "Percentage"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:840
-#: includes/admin/views/html-create-vendor-fields-page.php:70
-#: includes/admin/views/html-edit-vendor-fields-page.php:90
+#: includes/admin/class-wc-product-vendors-store-admin.php:847
+#: includes/admin/class-wc-product-vendors-store-admin.php:970
+#: includes/admin/class-wc-product-vendors-store-admin.php:1038
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1150
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1187
+#: includes/admin/views/html-create-vendor-fields-page.php:75
+#: includes/admin/views/html-edit-vendor-fields-page.php:96
 msgid "Fixed"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:851
+#: includes/admin/class-wc-product-vendors-store-admin.php:858
 msgid "Display"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:857
+#: includes/admin/class-wc-product-vendors-store-admin.php:864
 msgid "Show [Sold By]"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:858
+#: includes/admin/class-wc-product-vendors-store-admin.php:865
 msgid "Enable this to show [Sold By Vendor Name] for each product."
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:866
+#: includes/admin/class-wc-product-vendors-store-admin.php:873
 msgid "Show Vendor Review"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:867
+#: includes/admin/class-wc-product-vendors-store-admin.php:874
 msgid "Enable this to show vendor's overall review rating on vendor's page."
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:875
+#: includes/admin/class-wc-product-vendors-store-admin.php:882
 msgid "Show Vendor Logo"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:876
+#: includes/admin/class-wc-product-vendors-store-admin.php:883
 msgid "Enable this to show vendor's logo on vendor's page."
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:884
+#: includes/admin/class-wc-product-vendors-store-admin.php:891
 msgid "Show Vendor Profile"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:885
+#: includes/admin/class-wc-product-vendors-store-admin.php:892
 msgid "Enable this to show vendor's profile on vendor's page."
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:941
+#: includes/admin/class-wc-product-vendors-store-admin.php:948
 #: includes/class-wc-product-vendors-vendor-frontend.php:98
 #: includes/class-wc-product-vendors-vendor-frontend.php:121
 #: includes/class-wc-product-vendors-vendor-frontend.php:171
 msgid "Sold By:"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:969
+#: includes/admin/class-wc-product-vendors-store-admin.php:980
+#, php-format
+msgid "Commission %s:"
+msgstr ""
+
+#: includes/admin/class-wc-product-vendors-store-admin.php:982
 msgid "Enter a default commission for this product. Enter a positive number."
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:1028
+#: includes/admin/class-wc-product-vendors-store-admin.php:1047
 msgid ""
 "Enter a commission for this product variation.  Enter a positive number."
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:1109
+#: includes/admin/class-wc-product-vendors-store-admin.php:1128
 msgid "Pass shipping/tax"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:1111
+#: includes/admin/class-wc-product-vendors-store-admin.php:1130
 msgid ""
 "Check box to pass the shipping and tax charges for this product to the "
 "vendor."
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:1163
+#: includes/admin/class-wc-product-vendors-store-admin.php:1182
 msgid "Toggle Pass shipping/tax"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:1182
-#: includes/admin/class-wc-product-vendors-store-admin.php:1188
-#: includes/admin/class-wc-product-vendors-store-admin.php:1448
-#: includes/admin/class-wc-product-vendors-store-admin.php:1472
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:275
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:279
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:324
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:328
+#: includes/admin/class-wc-product-vendors-store-admin.php:1201
+#: includes/admin/class-wc-product-vendors-store-admin.php:1207
+#: includes/admin/class-wc-product-vendors-store-admin.php:1467
+#: includes/admin/class-wc-product-vendors-store-admin.php:1491
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:314
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:318
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:363
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:367
 #: includes/admin/class-wc-product-vendors-vendor-order-notes.php:44
 #: includes/admin/class-wc-product-vendors-vendor-order-notes.php:48
 #: includes/admin/class-wc-product-vendors-vendor-order-notes.php:52
@@ -379,76 +388,77 @@ msgstr ""
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:1220
+#: includes/admin/class-wc-product-vendors-store-admin.php:1239
 msgid "Pass Shipping/Tax to Vendor?"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:1225
+#: includes/admin/class-wc-product-vendors-store-admin.php:1244
 msgid "— No Change —"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:1226
+#: includes/admin/class-wc-product-vendors-store-admin.php:1245
 #: includes/integrations/views/html-booking-availability-fields.php:160
 msgid "Yes"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:1227
+#: includes/admin/class-wc-product-vendors-store-admin.php:1246
 #: includes/integrations/views/html-booking-availability-fields.php:159
 msgid "No"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:1251
+#: includes/admin/class-wc-product-vendors-store-admin.php:1270
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:426
-#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:123
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:328
+#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:127
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:330
+#: templates/emails/order-fulfill-status-to-admin.php:24
 msgid "Fulfillment Status"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:1255
+#: includes/admin/class-wc-product-vendors-store-admin.php:1274
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:424
-#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:121
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:326
+#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:125
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:328
 msgid "Commission Status"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:1349
+#: includes/admin/class-wc-product-vendors-store-admin.php:1368
 msgid "No Change"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:1350
+#: includes/admin/class-wc-product-vendors-store-admin.php:1369
 msgid "No Vendor"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:1490
+#: includes/admin/class-wc-product-vendors-store-admin.php:1509
 #, php-format
 msgid "Total commissions earned from %1$s as of %2$s on %3$s"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:1542
+#: includes/admin/class-wc-product-vendors-store-admin.php:1561
 msgid "Product Vendor Transients Cleared"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:1546
+#: includes/admin/class-wc-product-vendors-store-admin.php:1565
 msgid "Product Vendors Transients"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:1547
+#: includes/admin/class-wc-product-vendors-store-admin.php:1566
 msgid "Clear all transients/cache"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-store-admin.php:1548
+#: includes/admin/class-wc-product-vendors-store-admin.php:1567
 msgid ""
 "This will clear all Product Vendors related transients/caches such as "
 "reports."
 msgstr ""
 
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:175
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:165
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:167
 msgid "Show All"
 msgstr ""
 
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:236
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:221
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:223
 msgid "Filter"
 msgstr ""
 
@@ -471,13 +481,13 @@ msgid "Export All Unpaid Commissions"
 msgstr ""
 
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:322
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:261
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:263
 msgid "Show all dates"
 msgstr ""
 
 #. translators: 1: month name, 2: 4-digit year
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:340
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:279
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:281
 #, php-format
 msgid "%1$s %2$d"
 msgstr ""
@@ -487,17 +497,17 @@ msgid "Show all Statuses"
 msgstr ""
 
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:362
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:301
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:303
 msgid "Unpaid"
 msgstr ""
 
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:363
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:302
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:304
 msgid "Paid"
 msgstr ""
 
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:364
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:303
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:305
 msgid "Void"
 msgstr ""
 
@@ -506,33 +516,33 @@ msgid "Show all Vendors"
 msgstr ""
 
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:418
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:954
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:320
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:993
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:322
 #: includes/integrations/class-wc-product-vendors-bookings.php:138
 msgid "Order"
 msgstr ""
 
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:419
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:321
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:323
 msgid "Order Status"
 msgstr ""
 
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:420
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:322
-#: includes/class-wc-product-vendors-commission.php:368
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:324
+#: includes/class-wc-product-vendors-commission.php:384
 msgid "Order Date"
 msgstr ""
 
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:422
-#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:119
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:324
+#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:123
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:326
 #: templates/emails/email-order-details.php:19
 msgid "Product"
 msgstr ""
 
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:425
-#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:122
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:327
+#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:126
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:329
 msgid "Paid Date"
 msgstr ""
 
@@ -545,14 +555,14 @@ msgstr ""
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:538
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:559
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:569
-#: includes/admin/class-wc-product-vendors-vendor-dashboard.php:255
-#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:218
-#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:228
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:371
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:381
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:435
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:459
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:469
+#: includes/admin/class-wc-product-vendors-vendor-dashboard.php:256
+#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:224
+#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:234
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:373
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:385
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:439
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:465
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:475
 #: includes/integrations/class-wc-product-vendors-bookings.php:159
 #: includes/integrations/class-wc-product-vendors-bookings.php:170
 #: includes/integrations/class-wc-product-vendors-bookings.php:181
@@ -564,51 +574,51 @@ msgid "Vendor Not Found"
 msgstr ""
 
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:512
-#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:169
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:408
+#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:173
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:412
 #, php-format
 msgid "<br /><small>( %s: %s )</small>"
 msgstr ""
 
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:521
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:418
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:422
 #, php-format
 msgid "%s %s: %s"
 msgstr ""
 
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:531
-#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:189
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:428
+#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:193
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:432
 msgid "Product Not Found"
 msgstr ""
 
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:541
-#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:197
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:438
+#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:201
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:442
 msgid "UNPAID"
 msgstr ""
 
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:545
-#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:201
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:442
+#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:205
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:446
 msgid "PAID"
 msgstr ""
 
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:549
-#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:205
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:446
+#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:209
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:450
 msgid "VOID"
 msgstr ""
 
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:563
-#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:222
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:463
+#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:228
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:469
 msgid "UNFULFILLED"
 msgstr ""
 
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:566
-#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:225
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:466
+#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:231
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:472
 msgid "FULFILLED"
 msgstr ""
 
@@ -633,14 +643,14 @@ msgid "Mark Void"
 msgstr ""
 
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:651
-#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:285
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:542
+#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:291
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:548
 msgid "Mark Fulfilled"
 msgstr ""
 
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:652
-#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:286
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:543
+#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:292
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:549
 msgid "Mark Unfulfilled"
 msgstr ""
 
@@ -649,7 +659,7 @@ msgid "Delete Commission"
 msgstr ""
 
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:734
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:582
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:590
 #, php-format
 msgid "%d item processed."
 msgid_plural "%d items processed"
@@ -657,8 +667,8 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: includes/admin/class-wc-product-vendors-store-commission-list.php:796
-#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:423
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:637
+#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:384
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:645
 msgid "Select All"
 msgstr ""
 
@@ -671,226 +681,227 @@ msgstr ""
 msgid "Vendor Switcher (%s)"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:336
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:375
 msgid "Please provide a question."
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:340
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:379
 msgid "You must be an authorize vendor user to submit a support question."
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:371
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:410
+#: templates/emails/plain/order-fulfill-status-to-admin.php:21
 #, php-format
 msgid "Vendor: %s"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:373
-#: templates/emails/plain/vendor-registration-email-to-admin.php:16
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:412
+#: templates/emails/plain/vendor-registration-email-to-admin.php:22
 #, php-format
 msgid "First Name: %s"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:375
-#: templates/emails/plain/vendor-registration-email-to-admin.php:17
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:414
+#: templates/emails/plain/vendor-registration-email-to-admin.php:23
 #, php-format
 msgid "Last Name: %s"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:377
-#: templates/emails/plain/vendor-registration-email-to-admin.php:15
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:416
+#: templates/emails/plain/vendor-registration-email-to-admin.php:21
 #, php-format
 msgid "Email: %s"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:379
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:418
 msgid "Question:"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:383
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:422
 msgid "Vendor Support Question"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:571
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:610
 msgid "Your question has been submitted.  You will be contacted shortly."
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:694
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:733
 msgid "You are not allowed to edit this item."
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:807
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:846
 msgid "Show all product types"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:825
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:864
 msgid "Grouped product"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:828
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:867
 msgid "External/Affiliate product"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:831
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:870
 msgid "Variable product"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:834
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:873
 msgid "Simple product"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:852
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:891
 msgid "Downloadable"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:860
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:899
 msgid "Virtual"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:950
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:997
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:989
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1040
 #: includes/admin/reports/vendor/class-wc-product-vendors-vendor-reports.php:38
 #: includes/admin/views/html-vendor-orders-page.php:9
 msgid "Orders"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:957
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:996
 msgid "Reports"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:959
-#: includes/admin/views/html-vendor-store-settings-page.php:9
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:998
+#: includes/admin/views/html-vendor-store-settings-page.php:10
 msgid "Store Settings"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:961
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1000
 #: templates/vendor-support-form.php:15
 msgid "Support"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:1394
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1451
 msgid "Customer Billing Address"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:1397
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:1450
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1454
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1507
 msgid "First name"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:1401
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:1454
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1458
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1511
 msgid "Last name"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:1405
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:1458
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1462
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1515
 msgid "Company"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:1409
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:1462
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1466
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1519
 msgid "Address 1"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:1413
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:1466
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1470
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1523
 msgid "Address 2"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:1417
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:1470
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1474
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1527
 msgid "City"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:1421
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:1474
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1478
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1531
 msgid "Postcode"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:1425
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:1478
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1482
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1535
 msgid "Country"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:1429
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:1482
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1486
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1539
 msgid "Select a country&hellip;"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:1432
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:1485
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1489
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1542
 msgid "State/County"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:1433
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:1486
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1490
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1543
 msgid "State/County or state code"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:1437
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1494
 msgid "Telephone"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:1441
-#: templates/emails/vendor-registration-email-to-admin.php:14
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1498
+#: templates/emails/vendor-registration-email-to-admin.php:21
 #: templates/shortcode-registration-form.php:40
 msgid "Email"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:1447
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1504
 msgid "Customer Shipping Address"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-admin.php:1573
+#: includes/admin/class-wc-product-vendors-vendor-admin.php:1635
 msgid "Products awaiting fulfillment"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-dashboard.php:107
+#: includes/admin/class-wc-product-vendors-vendor-dashboard.php:108
 msgid "Sales Summary"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-dashboard.php:247
+#: includes/admin/class-wc-product-vendors-vendor-dashboard.php:248
 #, php-format
 msgid "<strong>%s</strong> net sales this month"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-dashboard.php:265
+#: includes/admin/class-wc-product-vendors-vendor-dashboard.php:266
 #, php-format
 msgid "%s top seller this month (sold %d)"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-dashboard.php:272
+#: includes/admin/class-wc-product-vendors-vendor-dashboard.php:273
 #, php-format
 msgid "<strong>%s</strong> commission this month"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-dashboard.php:279
+#: includes/admin/class-wc-product-vendors-vendor-dashboard.php:280
 #, php-format
 msgid "<strong>%s product</strong> awaiting fulfillment"
 msgid_plural "<strong>%s products</strong> awaiting fulfillment"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-wc-product-vendors-vendor-dashboard.php:285
+#: includes/admin/class-wc-product-vendors-vendor-dashboard.php:286
 #, php-format
 msgid "<strong>%s product</strong> low in stock"
 msgid_plural "<strong>%s products</strong> low in stock"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-wc-product-vendors-vendor-dashboard.php:291
+#: includes/admin/class-wc-product-vendors-vendor-dashboard.php:292
 #, php-format
 msgid "<strong>%s product</strong> out of stock"
 msgid_plural "<strong>%s products</strong> out of stock"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:179
+#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:183
 #, php-format
 msgid "<br />%s: %s"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:270
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:527
+#: includes/admin/class-wc-product-vendors-vendor-order-detail-list.php:276
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:533
 msgid "No orders found."
 msgstr ""
 
@@ -936,74 +947,74 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:300
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:302
 msgid "Show all Commission Statuses"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:323
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:325
 msgid "Shipping"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:389
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:393
 msgid "Via"
 msgstr ""
 
-#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:392
+#: includes/admin/class-wc-product-vendors-vendor-orders-list.php:396
 msgid "Not Found"
 msgstr ""
 
 #: includes/admin/reports/store/class-wc-product-vendors-store-report-sales-by-date.php:171
-#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:164
+#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:167
 #, php-format
 msgid "%s average daily sales"
 msgstr ""
 
 #: includes/admin/reports/store/class-wc-product-vendors-store-report-sales-by-date.php:175
-#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:168
+#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:171
 #, php-format
 msgid "%s average monthly sales"
 msgstr ""
 
 #: includes/admin/reports/store/class-wc-product-vendors-store-report-sales-by-date.php:180
-#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:173
+#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:176
 #, php-format
 msgid "%s gross sales in this period"
 msgstr ""
 
 #: includes/admin/reports/store/class-wc-product-vendors-store-report-sales-by-date.php:181
-#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:174
+#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:177
 msgid ""
 "This is the sum of the order totals after any refunds and including shipping "
 "and taxes."
 msgstr ""
 
 #: includes/admin/reports/store/class-wc-product-vendors-store-report-sales-by-date.php:187
-#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:180
+#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:183
 #, php-format
 msgid "%s net sales in this period"
 msgstr ""
 
 #: includes/admin/reports/store/class-wc-product-vendors-store-report-sales-by-date.php:188
-#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:181
+#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:184
 msgid ""
 "This is the sum of the order totals after any refunds and excluding shipping "
 "and taxes."
 msgstr ""
 
 #: includes/admin/reports/store/class-wc-product-vendors-store-report-sales-by-date.php:202
-#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:195
+#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:198
 #, php-format
 msgid "%s orders placed"
 msgstr ""
 
 #: includes/admin/reports/store/class-wc-product-vendors-store-report-sales-by-date.php:208
-#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:201
+#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:204
 #, php-format
 msgid "%s items purchased"
 msgstr ""
 
 #: includes/admin/reports/store/class-wc-product-vendors-store-report-sales-by-date.php:214
-#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:207
+#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:210
 #, php-format
 msgid "%s charged for shipping"
 msgstr ""
@@ -1014,76 +1025,75 @@ msgid "%s total commission (vendors)"
 msgstr ""
 
 #: includes/admin/reports/store/class-wc-product-vendors-store-report-sales-by-date.php:221
-#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:214
 msgid ""
 "This is the sum of the commission including shipping and taxes if applicable."
 msgstr ""
 
 #: includes/admin/reports/store/class-wc-product-vendors-store-report-sales-by-date.php:234
-#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:227
+#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:237
 #: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-product.php:136
 msgid "Year"
 msgstr ""
 
 #: includes/admin/reports/store/class-wc-product-vendors-store-report-sales-by-date.php:235
-#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:228
+#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:238
 #: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-product.php:137
 msgid "Last Month"
 msgstr ""
 
 #: includes/admin/reports/store/class-wc-product-vendors-store-report-sales-by-date.php:236
-#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:229
+#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:239
 #: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-product.php:138
 msgid "This Month"
 msgstr ""
 
 #: includes/admin/reports/store/class-wc-product-vendors-store-report-sales-by-date.php:237
-#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:230
+#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:240
 #: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-product.php:139
 msgid "Last 7 Days"
 msgstr ""
 
 #: includes/admin/reports/store/class-wc-product-vendors-store-report-sales-by-date.php:267
-#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:260
+#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:271
 #: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-product.php:354
 msgid "Date"
 msgstr ""
 
 #: includes/admin/reports/store/class-wc-product-vendors-store-report-sales-by-date.php:273
-#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:266
+#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:277
 #: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-product.php:357
 #: includes/shipping/per-product/class-wc-product-vendors-per-product-shipping-admin.php:155
 msgid "Export CSV"
 msgstr ""
 
 #: includes/admin/reports/store/class-wc-product-vendors-store-report-sales-by-date.php:403
-#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:387
+#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:401
 msgid "Number of orders"
 msgstr ""
 
 #: includes/admin/reports/store/class-wc-product-vendors-store-report-sales-by-date.php:411
-#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:395
+#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:409
 #: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-product.php:472
 msgid "Number of items sold"
 msgstr ""
 
 #: includes/admin/reports/store/class-wc-product-vendors-store-report-sales-by-date.php:419
-#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:403
+#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:417
 msgid "Shipping amount"
 msgstr ""
 
 #: includes/admin/reports/store/class-wc-product-vendors-store-report-sales-by-date.php:429
-#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:413
+#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:427
 msgid "Average sales amount"
 msgstr ""
 
 #: includes/admin/reports/store/class-wc-product-vendors-store-report-sales-by-date.php:439
-#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:423
+#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:437
 msgid "Gross Sales amount"
 msgstr ""
 
 #: includes/admin/reports/store/class-wc-product-vendors-store-report-sales-by-date.php:449
-#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:433
+#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:447
 msgid "Net Sales amount"
 msgstr ""
 
@@ -1135,13 +1145,34 @@ msgstr ""
 msgid "No out of stock products found."
 msgstr ""
 
-#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:213
+#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:216
 #, php-format
-msgid "%s total commission"
+msgid "%s total earned commission"
 msgstr ""
 
-#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:443
-#: includes/class-wc-product-vendors-commission.php:378
+#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:217
+msgid ""
+"This is the sum of the earned commission including shipping and taxes if "
+"applicable."
+msgstr ""
+
+#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:223
+#, php-format
+msgid "%s total paid commission"
+msgstr ""
+
+#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:224
+msgid ""
+"This is the sum of the commission paid including shipping and taxes if "
+"applicable."
+msgstr ""
+
+#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:457
+msgid "Total Earned Commission Amount"
+msgstr ""
+
+#: includes/admin/reports/vendor/class-wc-product-vendors-vendor-report-sales-by-date.php:467
+#: includes/class-wc-product-vendors-commission.php:394
 msgid "Total Commission Amount"
 msgstr ""
 
@@ -1214,7 +1245,7 @@ msgid ""
 msgstr ""
 
 #: includes/admin/updates/views/html-update-notice-2.0.0.php:7
-#: includes/admin/views/html-vendor-store-settings-page.php:87
+#: includes/admin/views/html-vendor-store-settings-page.php:100
 msgid "Update"
 msgstr ""
 
@@ -1228,134 +1259,141 @@ msgid ""
 "Are you sure you wish to run the updater now?"
 msgstr ""
 
-#: includes/admin/views/html-create-vendor-fields-page.php:8
+#: includes/admin/views/html-create-vendor-fields-page.php:13
 msgid "Additional Settings"
 msgstr ""
 
-#: includes/admin/views/html-create-vendor-fields-page.php:16
-#: includes/admin/views/html-edit-vendor-fields-page.php:13
+#: includes/admin/views/html-create-vendor-fields-page.php:21
 msgid "Enter any notes about this vendor.  Only seen by store owners."
 msgstr ""
 
-#: includes/admin/views/html-create-vendor-fields-page.php:20
-#: includes/admin/views/html-edit-vendor-fields-page.php:18
-#: includes/admin/views/html-vendor-store-settings-page.php:18
+#: includes/admin/views/html-create-vendor-fields-page.php:25
+#: includes/admin/views/html-edit-vendor-fields-page.php:24
+#: includes/admin/views/html-vendor-store-settings-page.php:19
 msgid "Vendor Logo"
 msgstr ""
 
-#: includes/admin/views/html-create-vendor-fields-page.php:22
-#: includes/admin/views/html-edit-vendor-fields-page.php:22
-#: includes/admin/views/html-vendor-store-settings-page.php:22
+#: includes/admin/views/html-create-vendor-fields-page.php:27
+#: includes/admin/views/html-edit-vendor-fields-page.php:28
+#: includes/admin/views/html-vendor-store-settings-page.php:23
 msgid "Upload Logo"
 msgstr ""
 
-#: includes/admin/views/html-create-vendor-fields-page.php:28
-#: includes/admin/views/html-edit-vendor-fields-page.php:33
-#: includes/admin/views/html-vendor-store-settings-page.php:33
+#: includes/admin/views/html-create-vendor-fields-page.php:33
+#: includes/admin/views/html-edit-vendor-fields-page.php:39
+#: includes/admin/views/html-vendor-store-settings-page.php:34
 msgid "Click to remove image"
 msgstr ""
 
-#: includes/admin/views/html-create-vendor-fields-page.php:32
-#: includes/admin/views/html-edit-vendor-fields-page.php:38
-#: includes/admin/views/html-vendor-store-settings-page.php:38
+#: includes/admin/views/html-create-vendor-fields-page.php:37
+#: includes/admin/views/html-edit-vendor-fields-page.php:44
+#: includes/admin/views/html-vendor-store-settings-page.php:39
 msgid "Vendor Profile"
 msgstr ""
 
-#: includes/admin/views/html-create-vendor-fields-page.php:42
-#: includes/admin/views/html-edit-vendor-fields-page.php:50
-#: includes/admin/views/html-vendor-store-settings-page.php:50
+#: includes/admin/views/html-create-vendor-fields-page.php:47
+#: includes/admin/views/html-edit-vendor-fields-page.php:56
+#: includes/admin/views/html-vendor-store-settings-page.php:51
 msgid "Enter the profile information you would like for customer to see."
 msgstr ""
 
-#: includes/admin/views/html-create-vendor-fields-page.php:46
-#: includes/admin/views/html-edit-vendor-fields-page.php:55
-#: includes/admin/views/html-vendor-store-settings-page.php:55
+#: includes/admin/views/html-create-vendor-fields-page.php:51
+#: includes/admin/views/html-edit-vendor-fields-page.php:61
+#: includes/admin/views/html-vendor-store-settings-page.php:56
 msgid "Vendor Email"
 msgstr ""
 
-#: includes/admin/views/html-create-vendor-fields-page.php:49
-#: includes/admin/views/html-edit-vendor-fields-page.php:60
-#: includes/admin/views/html-vendor-store-settings-page.php:60
+#: includes/admin/views/html-create-vendor-fields-page.php:54
 msgid ""
 "Enter the email for this vendor.  This is the email where all notifications "
 "are sent such as new orders and customer inquiries.  You may enter more than "
 "one email separating each with a comma."
 msgstr ""
 
-#: includes/admin/views/html-create-vendor-fields-page.php:53
-#: includes/admin/views/html-edit-vendor-fields-page.php:65
+#: includes/admin/views/html-create-vendor-fields-page.php:58
+#: includes/admin/views/html-edit-vendor-fields-page.php:71
 msgid "Vendor Admins"
 msgstr ""
 
-#: includes/admin/views/html-create-vendor-fields-page.php:53
-#: includes/admin/views/html-edit-vendor-fields-page.php:65
+#: includes/admin/views/html-create-vendor-fields-page.php:58
+#: includes/admin/views/html-edit-vendor-fields-page.php:71
 msgid "Additional access level can be set individually per vendor user."
 msgstr ""
 
-#: includes/admin/views/html-create-vendor-fields-page.php:54
-#: includes/admin/views/html-edit-vendor-fields-page.php:68
+#: includes/admin/views/html-create-vendor-fields-page.php:59
+#: includes/admin/views/html-edit-vendor-fields-page.php:74
 msgid "Search for Users"
 msgstr ""
 
-#: includes/admin/views/html-create-vendor-fields-page.php:56
-#: includes/admin/views/html-edit-vendor-fields-page.php:70
+#: includes/admin/views/html-create-vendor-fields-page.php:61
+#: includes/admin/views/html-edit-vendor-fields-page.php:76
 msgid "A list of users who can manage this vendor."
 msgstr ""
 
-#: includes/admin/views/html-create-vendor-fields-page.php:60
-#: includes/admin/views/html-edit-vendor-fields-page.php:80
+#: includes/admin/views/html-create-vendor-fields-page.php:65
 msgid ""
 "This is the commission amount the vendor will receive.  Product level "
 "commission can be set which will override this commission."
 msgstr ""
 
-#: includes/admin/views/html-create-vendor-fields-page.php:63
-#: includes/admin/views/html-edit-vendor-fields-page.php:75
+#: includes/admin/views/html-create-vendor-fields-page.php:68
+#: includes/admin/views/html-edit-vendor-fields-page.php:81
 msgid "Enter a positive number."
 msgstr ""
 
-#: includes/admin/views/html-create-vendor-fields-page.php:77
-#: includes/admin/views/html-edit-vendor-fields-page.php:98
+#: includes/admin/views/html-create-vendor-fields-page.php:82
+#: includes/admin/views/html-edit-vendor-fields-page.php:104
 msgid "Instant Payout"
 msgstr ""
 
-#: includes/admin/views/html-create-vendor-fields-page.php:79
-#: includes/admin/views/html-edit-vendor-fields-page.php:102
+#: includes/admin/views/html-create-vendor-fields-page.php:84
+#: includes/admin/views/html-edit-vendor-fields-page.php:108
 msgid ""
 "Pay commission to vendor instantly when order is paid. (Uses PayPal Mass "
 "Payments)"
 msgstr ""
 
-#: includes/admin/views/html-create-vendor-fields-page.php:83
-#: includes/admin/views/html-edit-vendor-fields-page.php:107
-#: includes/admin/views/html-vendor-store-settings-page.php:65
+#: includes/admin/views/html-create-vendor-fields-page.php:88
+#: includes/admin/views/html-edit-vendor-fields-page.php:113
+#: includes/admin/views/html-vendor-store-settings-page.php:66
 msgid "PayPal Email"
 msgstr ""
 
-#: includes/admin/views/html-create-vendor-fields-page.php:86
-#: includes/admin/views/html-edit-vendor-fields-page.php:112
+#: includes/admin/views/html-create-vendor-fields-page.php:91
+#: includes/admin/views/html-edit-vendor-fields-page.php:118
 msgid ""
 "Scheduled commission payouts will be using this PayPal email to receive "
 "payments."
 msgstr ""
 
-#: includes/admin/views/html-create-vendor-fields-page.php:90
-#: includes/admin/views/html-edit-vendor-fields-page.php:117
+#: includes/admin/views/html-create-vendor-fields-page.php:95
+#: includes/admin/views/html-edit-vendor-fields-page.php:123
+#: includes/admin/views/html-vendor-store-settings-page.php:86
+msgid "Timezone"
+msgstr ""
+
+#: includes/admin/views/html-create-vendor-fields-page.php:100
+#: includes/admin/views/html-edit-vendor-fields-page.php:130
+#: includes/admin/views/html-vendor-store-settings-page.php:93
+msgid "Set the local timezone."
+msgstr ""
+
+#: includes/admin/views/html-create-vendor-fields-page.php:104
+#: includes/admin/views/html-edit-vendor-fields-page.php:135
 msgid "Show Per Product Shipping Rules"
 msgstr ""
 
-#: includes/admin/views/html-create-vendor-fields-page.php:92
-#: includes/admin/views/html-edit-vendor-fields-page.php:122
+#: includes/admin/views/html-create-vendor-fields-page.php:106
+#: includes/admin/views/html-edit-vendor-fields-page.php:140
 msgid "When enabled, vendor can edit per product shipping rules."
 msgstr ""
 
-#: includes/admin/views/html-create-vendor-fields-page.php:96
-#: includes/admin/views/html-edit-vendor-fields-page.php:128
+#: includes/admin/views/html-create-vendor-fields-page.php:110
+#: includes/admin/views/html-edit-vendor-fields-page.php:146
 msgid "Enable Bookings Feature"
 msgstr ""
 
-#: includes/admin/views/html-create-vendor-fields-page.php:98
-#: includes/admin/views/html-edit-vendor-fields-page.php:133
+#: includes/admin/views/html-create-vendor-fields-page.php:112
 msgid ""
 "Enable to allow vendors to create bookable products such as booking classes "
 "or lessons. ( WooCommerce Bookings sold seperately )"
@@ -1403,6 +1441,30 @@ msgstr ""
 msgid ""
 "This setting determines if this vendor user can manage customers which "
 "includes their own existing customers and create new customers."
+msgstr ""
+
+#: includes/admin/views/html-edit-vendor-fields-page.php:19
+msgid "Enter any notes about this vendor. Only seen by store owners."
+msgstr ""
+
+#: includes/admin/views/html-edit-vendor-fields-page.php:66
+#: includes/admin/views/html-vendor-store-settings-page.php:61
+msgid ""
+"Enter the email for this vendor. This is the email where all notifications "
+"are sent such as new orders and customer inquiries.  You may enter more than "
+"one email separating each with a comma."
+msgstr ""
+
+#: includes/admin/views/html-edit-vendor-fields-page.php:86
+msgid ""
+"This is the commission amount the vendor will receive. Product level "
+"commission can be set which will override this commission."
+msgstr ""
+
+#: includes/admin/views/html-edit-vendor-fields-page.php:151
+msgid ""
+"Enable to allow vendors to create bookable products such as booking classes "
+"or lessons. ( WooCommerce Bookings sold separately )"
 msgstr ""
 
 #: includes/admin/views/html-vendor-order-page.php:12
@@ -1466,13 +1528,13 @@ msgstr ""
 msgid "Order Items"
 msgstr ""
 
-#: includes/admin/views/html-vendor-store-settings-page.php:70
+#: includes/admin/views/html-vendor-store-settings-page.php:71
 msgid "PayPal email account where you will receive your commission."
 msgstr ""
 
-#: includes/admin/views/html-vendor-store-settings-page.php:80
+#: includes/admin/views/html-vendor-store-settings-page.php:81
 msgid ""
-"Default commission you will receive per product sale.  Please note product "
+"Default commission you will receive per product sale. Please note product "
 "level commission can override this.  Check your product to confirm."
 msgstr ""
 
@@ -1487,76 +1549,76 @@ msgid ""
 "help."
 msgstr ""
 
-#: includes/class-wc-product-vendors-commission.php:367
+#: includes/class-wc-product-vendors-commission.php:383
 msgid "Order ID"
 msgstr ""
 
-#: includes/class-wc-product-vendors-commission.php:369
-#: templates/emails/vendor-registration-email-to-admin.php:17
+#: includes/class-wc-product-vendors-commission.php:385
+#: templates/emails/vendor-registration-email-to-admin.php:24
 #: templates/shortcode-registration-form.php:54
 msgid "Vendor Name"
 msgstr ""
 
-#: includes/class-wc-product-vendors-commission.php:370
+#: includes/class-wc-product-vendors-commission.php:386
 msgid "Product Name"
 msgstr ""
 
-#: includes/class-wc-product-vendors-commission.php:371
+#: includes/class-wc-product-vendors-commission.php:387
 msgid "Variation Attributes"
 msgstr ""
 
-#: includes/class-wc-product-vendors-commission.php:372
+#: includes/class-wc-product-vendors-commission.php:388
 msgid "Product Amount"
 msgstr ""
 
-#: includes/class-wc-product-vendors-commission.php:373
+#: includes/class-wc-product-vendors-commission.php:389
 msgid "Product Quantity"
 msgstr ""
 
-#: includes/class-wc-product-vendors-commission.php:374
+#: includes/class-wc-product-vendors-commission.php:390
 msgid "Product Shipping Amount"
 msgstr ""
 
-#: includes/class-wc-product-vendors-commission.php:375
+#: includes/class-wc-product-vendors-commission.php:391
 msgid "Product Shipping Tax Amount"
 msgstr ""
 
-#: includes/class-wc-product-vendors-commission.php:376
+#: includes/class-wc-product-vendors-commission.php:392
 msgid "Product Tax Amount"
 msgstr ""
 
-#: includes/class-wc-product-vendors-commission.php:377
+#: includes/class-wc-product-vendors-commission.php:393
 msgid "Product Commission Amount"
 msgstr ""
 
-#: includes/class-wc-product-vendors-commission.php:379
+#: includes/class-wc-product-vendors-commission.php:395
 msgid "Commission Paid Status"
 msgstr ""
 
-#: includes/class-wc-product-vendors-commission.php:380
+#: includes/class-wc-product-vendors-commission.php:396
 msgid "Commission Paid Date"
 msgstr ""
 
-#: includes/class-wc-product-vendors-emails.php:191
+#: includes/class-wc-product-vendors-emails.php:195
 #, php-format
 msgid "%s is out of stock."
 msgstr ""
 
-#: includes/class-wc-product-vendors-emails.php:193
+#: includes/class-wc-product-vendors-emails.php:197
 msgid "Product Out of Stock"
 msgstr ""
 
-#: includes/class-wc-product-vendors-emails.php:218
+#: includes/class-wc-product-vendors-emails.php:222
 #, php-format
 msgid "%s is low in stock."
 msgstr ""
 
-#: includes/class-wc-product-vendors-emails.php:218
+#: includes/class-wc-product-vendors-emails.php:222
 #, php-format
 msgid "There are %d left"
 msgstr ""
 
-#: includes/class-wc-product-vendors-emails.php:220
+#: includes/class-wc-product-vendors-emails.php:224
 msgid "Product Low in Stock"
 msgstr ""
 
@@ -1566,11 +1628,11 @@ msgid ""
 "the latest version!"
 msgstr ""
 
-#: includes/class-wc-product-vendors-install.php:316
+#: includes/class-wc-product-vendors-install.php:317
 msgid "WooCommerce Product Vendors Installed &#8211; To get started,"
 msgstr ""
 
-#: includes/class-wc-product-vendors-install.php:316
+#: includes/class-wc-product-vendors-install.php:317
 msgid "configure your vendor settings"
 msgstr ""
 
@@ -1634,11 +1696,11 @@ msgstr ""
 msgid "Vendor Description is a required field."
 msgstr ""
 
-#: includes/class-wc-product-vendors-registration.php:227
+#: includes/class-wc-product-vendors-registration.php:228
 msgid "Same as your account login"
 msgstr ""
 
-#: includes/class-wc-product-vendors-registration.php:228
+#: includes/class-wc-product-vendors-registration.php:229
 msgid "Same as your account password"
 msgstr ""
 
@@ -1654,7 +1716,7 @@ msgstr ""
 msgid "Pending Vendor"
 msgstr ""
 
-#: includes/class-wc-product-vendors-shortcodes.php:68
+#: includes/class-wc-product-vendors-shortcodes.php:74
 #, php-format
 msgid ""
 "Great! You're already a vendor! Perhaps you want to go to the %sVendor "
@@ -1761,6 +1823,7 @@ msgstr ""
 #: includes/emails/class-wc-product-vendors-approval.php:93
 #: includes/emails/class-wc-product-vendors-cancelled-order-email-to-vendor.php:228
 #: includes/emails/class-wc-product-vendors-order-email-to-vendor.php:240
+#: includes/emails/class-wc-product-vendors-order-fulfill-status-to-admin.php:110
 #: includes/emails/class-wc-product-vendors-order-note-to-customer.php:149
 #: includes/emails/class-wc-product-vendors-product-added-notice.php:116
 #: includes/emails/class-wc-product-vendors-registration-email-to-admin.php:108
@@ -1771,6 +1834,7 @@ msgstr ""
 #: includes/emails/class-wc-product-vendors-approval.php:95
 #: includes/emails/class-wc-product-vendors-cancelled-order-email-to-vendor.php:230
 #: includes/emails/class-wc-product-vendors-order-email-to-vendor.php:242
+#: includes/emails/class-wc-product-vendors-order-fulfill-status-to-admin.php:112
 #: includes/emails/class-wc-product-vendors-order-note-to-customer.php:151
 #: includes/emails/class-wc-product-vendors-product-added-notice.php:118
 #: includes/emails/class-wc-product-vendors-registration-email-to-admin.php:110
@@ -1781,6 +1845,7 @@ msgstr ""
 #: includes/emails/class-wc-product-vendors-approval.php:99
 #: includes/emails/class-wc-product-vendors-cancelled-order-email-to-vendor.php:234
 #: includes/emails/class-wc-product-vendors-order-email-to-vendor.php:246
+#: includes/emails/class-wc-product-vendors-order-fulfill-status-to-admin.php:123
 #: includes/emails/class-wc-product-vendors-order-note-to-customer.php:155
 #: includes/emails/class-wc-product-vendors-product-added-notice.php:129
 #: includes/emails/class-wc-product-vendors-registration-email-to-admin.php:121
@@ -1791,6 +1856,7 @@ msgstr ""
 #: includes/emails/class-wc-product-vendors-approval.php:101
 #: includes/emails/class-wc-product-vendors-cancelled-order-email-to-vendor.php:236
 #: includes/emails/class-wc-product-vendors-order-email-to-vendor.php:248
+#: includes/emails/class-wc-product-vendors-order-fulfill-status-to-admin.php:125
 #: includes/emails/class-wc-product-vendors-order-note-to-customer.php:157
 #: includes/emails/class-wc-product-vendors-product-added-notice.php:131
 #: includes/emails/class-wc-product-vendors-registration-email-to-admin.php:123
@@ -1804,6 +1870,7 @@ msgstr ""
 #: includes/emails/class-wc-product-vendors-approval.php:106
 #: includes/emails/class-wc-product-vendors-cancelled-order-email-to-vendor.php:241
 #: includes/emails/class-wc-product-vendors-order-email-to-vendor.php:253
+#: includes/emails/class-wc-product-vendors-order-fulfill-status-to-admin.php:130
 #: includes/emails/class-wc-product-vendors-order-note-to-customer.php:162
 #: includes/emails/class-wc-product-vendors-product-added-notice.php:136
 #: includes/emails/class-wc-product-vendors-registration-email-to-admin.php:128
@@ -1814,6 +1881,7 @@ msgstr ""
 #: includes/emails/class-wc-product-vendors-approval.php:108
 #: includes/emails/class-wc-product-vendors-cancelled-order-email-to-vendor.php:243
 #: includes/emails/class-wc-product-vendors-order-email-to-vendor.php:255
+#: includes/emails/class-wc-product-vendors-order-fulfill-status-to-admin.php:132
 #: includes/emails/class-wc-product-vendors-order-note-to-customer.php:164
 #: includes/emails/class-wc-product-vendors-product-added-notice.php:138
 #: includes/emails/class-wc-product-vendors-registration-email-to-admin.php:130
@@ -1827,6 +1895,7 @@ msgstr ""
 #: includes/emails/class-wc-product-vendors-approval.php:113
 #: includes/emails/class-wc-product-vendors-cancelled-order-email-to-vendor.php:248
 #: includes/emails/class-wc-product-vendors-order-email-to-vendor.php:260
+#: includes/emails/class-wc-product-vendors-order-fulfill-status-to-admin.php:137
 #: includes/emails/class-wc-product-vendors-order-note-to-customer.php:169
 #: includes/emails/class-wc-product-vendors-product-added-notice.php:143
 #: includes/emails/class-wc-product-vendors-registration-email-to-admin.php:135
@@ -1837,6 +1906,7 @@ msgstr ""
 #: includes/emails/class-wc-product-vendors-approval.php:115
 #: includes/emails/class-wc-product-vendors-cancelled-order-email-to-vendor.php:250
 #: includes/emails/class-wc-product-vendors-order-email-to-vendor.php:262
+#: includes/emails/class-wc-product-vendors-order-fulfill-status-to-admin.php:139
 #: includes/emails/class-wc-product-vendors-order-note-to-customer.php:171
 #: includes/emails/class-wc-product-vendors-product-added-notice.php:145
 #: includes/emails/class-wc-product-vendors-registration-email-to-admin.php:137
@@ -1845,12 +1915,14 @@ msgid "Choose which format of email to send."
 msgstr ""
 
 #: includes/emails/class-wc-product-vendors-approval.php:118
+#: includes/emails/class-wc-product-vendors-order-fulfill-status-to-admin.php:142
 #: includes/emails/class-wc-product-vendors-registration-email-to-admin.php:140
 #: includes/emails/class-wc-product-vendors-registration-email-to-vendor.php:118
 msgid "HTML"
 msgstr ""
 
 #: includes/emails/class-wc-product-vendors-approval.php:118
+#: includes/emails/class-wc-product-vendors-order-fulfill-status-to-admin.php:142
 #: includes/emails/class-wc-product-vendors-registration-email-to-admin.php:140
 #: includes/emails/class-wc-product-vendors-registration-email-to-vendor.php:118
 msgid "Plain"
@@ -1900,6 +1972,39 @@ msgstr ""
 msgid "New Order email sent to vendor(s)."
 msgstr ""
 
+#: includes/emails/class-wc-product-vendors-order-fulfill-status-to-admin.php:12
+msgid "Order Fulfill Status Notification (Admin)"
+msgstr ""
+
+#: includes/emails/class-wc-product-vendors-order-fulfill-status-to-admin.php:13
+msgid ""
+"When a vendor updates the fulfillment status of an item, this notification "
+"email will be sent to the admin."
+msgstr ""
+
+#: includes/emails/class-wc-product-vendors-order-fulfill-status-to-admin.php:15
+msgid "Fulfillment Status Notification"
+msgstr ""
+
+#: includes/emails/class-wc-product-vendors-order-fulfill-status-to-admin.php:16
+msgid "[{site_title}] Fulfillment Status Notification"
+msgstr ""
+
+#: includes/emails/class-wc-product-vendors-order-fulfill-status-to-admin.php:116
+#: includes/emails/class-wc-product-vendors-product-added-notice.php:122
+#: includes/emails/class-wc-product-vendors-registration-email-to-admin.php:114
+msgid "Recipient(s)"
+msgstr ""
+
+#: includes/emails/class-wc-product-vendors-order-fulfill-status-to-admin.php:118
+#: includes/emails/class-wc-product-vendors-product-added-notice.php:124
+#: includes/emails/class-wc-product-vendors-registration-email-to-admin.php:116
+#, php-format
+msgid ""
+"Enter recipients (comma separated) for this email. Defaults to <code>%s</"
+"code>."
+msgstr ""
+
 #: includes/emails/class-wc-product-vendors-order-note-to-customer.php:15
 msgid "Order Note to Customer (Vendors)"
 msgstr ""
@@ -1929,19 +2034,6 @@ msgstr ""
 
 #: includes/emails/class-wc-product-vendors-product-added-notice.php:19
 msgid "[{site_title}] New vendor Product"
-msgstr ""
-
-#: includes/emails/class-wc-product-vendors-product-added-notice.php:122
-#: includes/emails/class-wc-product-vendors-registration-email-to-admin.php:114
-msgid "Recipient(s)"
-msgstr ""
-
-#: includes/emails/class-wc-product-vendors-product-added-notice.php:124
-#: includes/emails/class-wc-product-vendors-registration-email-to-admin.php:116
-#, php-format
-msgid ""
-"Enter recipients (comma separated) for this email. Defaults to <code>%s</"
-"code>."
 msgstr ""
 
 #: includes/emails/class-wc-product-vendors-registration-email-to-admin.php:12
@@ -2366,21 +2458,21 @@ msgid "Upload file and import"
 msgstr ""
 
 #: includes/shipping/per-product/class-wc-product-vendors-per-product-shipping-method.php:21
-msgid "Per Product"
+msgid "Vendors Per Product Shipping"
 msgstr ""
 
 #: includes/shipping/per-product/class-wc-product-vendors-per-product-shipping-method.php:22
 msgid ""
 "Per product shipping allows you to define different shipping costs for "
-"products, based on customer location."
+"products per vendor, based on customer location."
 msgstr ""
 
 #: includes/shipping/per-product/class-wc-product-vendors-per-product-shipping-method.php:50
-msgid "Standalone Method"
+msgid "Enable Shipping Method"
 msgstr ""
 
 #: includes/shipping/per-product/class-wc-product-vendors-per-product-shipping-method.php:52
-msgid "Enable per-product shipping as a standalone shipping method"
+msgid "Enable per-product shipping method for vendors"
 msgstr ""
 
 #: includes/shipping/per-product/class-wc-product-vendors-per-product-shipping-method.php:56
@@ -2468,7 +2560,7 @@ msgid ""
 msgstr ""
 
 #: templates/emails/cancelled-order-email-to-vendor.php:18
-#: templates/emails/plain/cancelled-order-email-to-vendor.php:8
+#: templates/emails/plain/cancelled-order-email-to-vendor.php:15
 #, php-format
 msgid "The order #%d from %s has been cancelled. The order was as follows:"
 msgstr ""
@@ -2485,8 +2577,8 @@ msgstr ""
 msgid "Product Image"
 msgstr ""
 
-#: templates/emails/order-email-addresses-to-vendor.php:10
-#: templates/emails/plain/order-email-addresses-to-vendor.php:7
+#: templates/emails/order-email-addresses-to-vendor.php:17
+#: templates/emails/plain/order-email-addresses-to-vendor.php:14
 msgid "Shipping Address"
 msgstr ""
 
@@ -2500,13 +2592,30 @@ msgstr ""
 msgid "Order #%s"
 msgstr ""
 
+#: templates/emails/order-fulfill-status-to-admin.php:16
+#: templates/emails/plain/order-fulfill-status-to-admin.php:15
+msgid "Hello! A vendor has updated an order item fulfillment status."
+msgstr ""
+
+#: templates/emails/order-fulfill-status-to-admin.php:18
+msgid "Order Information:"
+msgstr ""
+
+#: templates/emails/order-fulfill-status-to-admin.php:22
+msgid "Order Number"
+msgstr ""
+
+#: templates/emails/order-fulfill-status-to-admin.php:23
+msgid "Order Item"
+msgstr ""
+
 #: templates/emails/order-note-to-customer.php:16
-#: templates/emails/plain/order-note-to-customer.php:8
+#: templates/emails/plain/order-note-to-customer.php:15
 msgid "Hello, a note has just been added to your order:"
 msgstr ""
 
 #: templates/emails/order-note-to-customer.php:20
-#: templates/emails/plain/order-note-to-customer.php:16
+#: templates/emails/plain/order-note-to-customer.php:23
 msgid "For your reference, your order details are shown below."
 msgstr ""
 
@@ -2520,115 +2629,134 @@ msgstr ""
 msgid "Cost: %s"
 msgstr ""
 
-#: templates/emails/plain/order-email-to-vendor.php:8
+#: templates/emails/plain/order-email-to-vendor.php:15
 #, php-format
 msgid "You have received an order from %s."
 msgstr ""
 
-#: templates/emails/plain/order-email-to-vendor.php:12
+#: templates/emails/plain/order-email-to-vendor.php:19
 #, php-format
 msgid "Order number: %s"
 msgstr ""
 
-#: templates/emails/plain/order-email-to-vendor.php:13
+#: templates/emails/plain/order-email-to-vendor.php:20
 msgid "jS F Y"
 msgstr ""
 
-#: templates/emails/plain/product-added-notice.php:8
+#: templates/emails/plain/order-fulfill-status-to-admin.php:17
+msgid "Order Information"
+msgstr ""
+
+#: templates/emails/plain/order-fulfill-status-to-admin.php:22
+#, php-format
+msgid "Order Number: %d"
+msgstr ""
+
+#: templates/emails/plain/order-fulfill-status-to-admin.php:23
+#, php-format
+msgid "Order Item: %s"
+msgstr ""
+
+#: templates/emails/plain/order-fulfill-status-to-admin.php:24
+#, php-format
+msgid "Fulfillment Status: %s"
+msgstr ""
+
+#: templates/emails/plain/product-added-notice.php:15
 #: templates/emails/product-added-notice.php:16
 #, php-format
 msgid "Hello! A vendor ( %s ) has added a new product awaiting review."
 msgstr ""
 
-#: templates/emails/plain/vendor-approval.php:7
+#: templates/emails/plain/vendor-approval.php:14
 #: templates/emails/vendor-approval.php:14
 msgid "You have full administration access."
 msgstr ""
 
-#: templates/emails/plain/vendor-approval.php:10
+#: templates/emails/plain/vendor-approval.php:17
 #: templates/emails/vendor-approval.php:17
 msgid "You have limited management access."
 msgstr ""
 
-#: templates/emails/plain/vendor-approval.php:15
+#: templates/emails/plain/vendor-approval.php:22
 #: templates/emails/vendor-approval.php:23
 msgid "Hello! You have been approved to be a vendor on this store."
 msgstr ""
 
-#: templates/emails/plain/vendor-approval.php:21
+#: templates/emails/plain/vendor-approval.php:28
 #: templates/emails/vendor-approval.php:27
 msgid ""
 "Please login to the site and visit your vendor dashboard to start managing "
 "your products."
 msgstr ""
 
-#: templates/emails/plain/vendor-approval.php:23
-#: templates/emails/plain/vendor-registration-email-to-vendor.php:17
+#: templates/emails/plain/vendor-approval.php:30
+#: templates/emails/plain/vendor-registration-email-to-vendor.php:23
 #: templates/emails/vendor-approval.php:30
 #: templates/emails/vendor-registration-email-to-vendor.php:23
 #, php-format
 msgid "Login Address: %s"
 msgstr ""
 
-#: templates/emails/plain/vendor-registration-email-to-admin.php:9
-#: templates/emails/vendor-registration-email-to-admin.php:9
+#: templates/emails/plain/vendor-registration-email-to-admin.php:15
+#: templates/emails/vendor-registration-email-to-admin.php:16
 msgid "Hello! A vendor has requested to be registered."
 msgstr ""
 
-#: templates/emails/plain/vendor-registration-email-to-admin.php:11
+#: templates/emails/plain/vendor-registration-email-to-admin.php:17
 msgid "Vendor Information"
 msgstr ""
 
-#: templates/emails/plain/vendor-registration-email-to-admin.php:18
+#: templates/emails/plain/vendor-registration-email-to-admin.php:24
 #, php-format
 msgid "Vendor Name: %s"
 msgstr ""
 
-#: templates/emails/plain/vendor-registration-email-to-admin.php:19
+#: templates/emails/plain/vendor-registration-email-to-admin.php:25
 msgid "Vendor Description:"
 msgstr ""
 
-#: templates/emails/plain/vendor-registration-email-to-vendor.php:9
+#: templates/emails/plain/vendor-registration-email-to-vendor.php:15
 #: templates/emails/vendor-registration-email-to-vendor.php:16
 msgid "Hello! Thank you for registering to become a vendor."
 msgstr ""
 
-#: templates/emails/plain/vendor-registration-email-to-vendor.php:11
+#: templates/emails/plain/vendor-registration-email-to-vendor.php:17
 msgid "Once your application has been approved, you will be able to login."
 msgstr ""
 
-#: templates/emails/plain/vendor-registration-email-to-vendor.php:13
+#: templates/emails/plain/vendor-registration-email-to-vendor.php:19
 #: templates/emails/vendor-registration-email-to-vendor.php:20
 msgid "Here is your login account information:"
 msgstr ""
 
-#: templates/emails/plain/vendor-registration-email-to-vendor.php:18
+#: templates/emails/plain/vendor-registration-email-to-vendor.php:24
 #: templates/emails/vendor-registration-email-to-vendor.php:24
 #, php-format
 msgid "Login Name: %s"
 msgstr ""
 
-#: templates/emails/plain/vendor-registration-email-to-vendor.php:19
+#: templates/emails/plain/vendor-registration-email-to-vendor.php:25
 #: templates/emails/vendor-registration-email-to-vendor.php:25
 #, php-format
 msgid "Login Password: %s"
 msgstr ""
 
-#: templates/emails/vendor-registration-email-to-admin.php:11
+#: templates/emails/vendor-registration-email-to-admin.php:18
 msgid "Vendor information:"
 msgstr ""
 
-#: templates/emails/vendor-registration-email-to-admin.php:15
+#: templates/emails/vendor-registration-email-to-admin.php:22
 #: templates/shortcode-registration-form.php:23
 msgid "First Name"
 msgstr ""
 
-#: templates/emails/vendor-registration-email-to-admin.php:16
+#: templates/emails/vendor-registration-email-to-admin.php:23
 #: templates/shortcode-registration-form.php:28
 msgid "Last Name"
 msgstr ""
 
-#: templates/emails/vendor-registration-email-to-admin.php:18
+#: templates/emails/vendor-registration-email-to-admin.php:25
 msgid "Vendor Description"
 msgstr ""
 
@@ -2678,7 +2806,7 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: woocommerce-product-vendors.php:272
+#: woocommerce-product-vendors.php:270
 #, php-format
 msgid ""
 "WooCommerce Product Vendors Plugin requires WooCommerce to be installed and "
