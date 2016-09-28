@@ -18,7 +18,7 @@ class WC_Product_Vendors_Roles_Caps {
 	 *
 	 * @access protected
 	 * @since 2.0.0
-	 * @version 2.0.0
+	 * @version 2.0.19
 	 * @return array
 	 */
 	protected function default_admin_vendor_caps() {
@@ -27,20 +27,20 @@ class WC_Product_Vendors_Roles_Caps {
 			'manage_product'            => true,
 			'edit_products'             => true,
 			'edit_published_products'   => true,
-			'publish_products'          => false,
 			'assign_product_terms'      => true,
 			'upload_files'              => true,
 			'read'                      => true,
 			'manage_bookings'           => true,
-			'view_woocommerce_reports'  => false,
 			'edit_others_products'      => true,
 			'view_vendor_sales_widget'  => true,
-			'edit_comment'              => false,
-			'edit_comments'             => false,
 			'delete_published_products' => true,
 			'delete_others_products'    => true,
 			'delete_posts'              => true,
 			'delete_others_posts'       => true,
+			'edit_comment'              => false,
+			'edit_comments'             => false,
+			'view_woocommerce_reports'  => false,
+			'publish_products'          => false,
 		) );
 	}
 
@@ -49,7 +49,7 @@ class WC_Product_Vendors_Roles_Caps {
 	 *
 	 * @access protected
 	 * @since 2.0.0
-	 * @version 2.0.0
+	 * @version 2.0.19
 	 * @return array
 	 */
 	protected function default_manager_vendor_caps() {
@@ -58,17 +58,17 @@ class WC_Product_Vendors_Roles_Caps {
 			'manage_product'           => true,
 			'edit_products'            => true,
 			'edit_published_products'  => true,
-			'publish_products'         => false,
 			'assign_product_terms'     => true,
 			'upload_files'             => true,
 			'read'                     => true,
 			'manage_bookings'          => true,
-			'view_woocommerce_reports' => false,
 			'edit_others_products'     => true,
-			'edit_comment'             => false,
-			'edit_comments'            => false,
 			'delete_posts'             => false,
 			'delete_product'           => false,
+			'edit_comment'             => false,
+			'edit_comments'            => false,
+			'view_woocommerce_reports' => false,
+			'publish_products'         => false,
 		) );
 	}
 

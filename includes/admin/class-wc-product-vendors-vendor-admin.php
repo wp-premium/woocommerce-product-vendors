@@ -59,7 +59,10 @@ class WC_Product_Vendors_Vendor_Admin {
 		// restrict products to only vendor's taxonomy and caps
 		add_filter( 'parse_query', array( $self, 'restrict_products' ), 11 );
 
-		// restrict attachments only to vendor
+		// restrict attachments only to vendor (list)
+		add_filter( 'parse_query', array( $self, 'restrict_attachments' ), 11 );
+
+		// restrict attachments only to vendor (grid)
 		add_filter( 'ajax_query_attachments_args', array( $self, 'restrict_attachments_ajax' ) );
 
 		// filter product list category page
@@ -733,6 +736,26 @@ class WC_Product_Vendors_Vendor_Admin {
 					wp_die( __( 'You are not allowed to edit this item.', 'woocommerce-product-vendors' ) );
 				}
 			}
+		}
+
+		return $query;
+	}
+
+	/**
+	 * Restrict attachments only the vendor has managed access to
+	 *
+	 * @access public
+	 * @since 2.0.19
+	 * @version 2.0.19
+	 * @param object $query original query object
+	 * @return bool
+	 */
+	public function restrict_attachments( $query ) {
+		global $current_screen;
+
+		if ( 'upload' === $current_screen->id && WC_Product_Vendors_Utils::auth_vendor_user() ) {
+			$query->query_vars['meta_key']   = '_wcpv_vendor';
+			$query->query_vars['meta_value'] = WC_Product_Vendors_Utils::get_logged_in_vendor();
 		}
 
 		return $query;

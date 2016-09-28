@@ -360,7 +360,13 @@ class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 		switch( $column_name ) {
 
 			case 'order_id' :
-				return '<a href="' . admin_url( 'admin.php?page=wcpv-vendor-order&id=' . absint( $item->order_id ) ) . '" class="wcpv-vendor-order-by-id">' . absint( $item->order_id ) . '</a>';
+				$order = get_post( absint( $item->order_id ) );
+
+				if ( is_object( $order ) ) {
+					return '<a href="' . admin_url( 'admin.php?page=wcpv-vendor-order&id=' . absint( $item->order_id ) ) . '" class="wcpv-vendor-order-by-id">' . absint( $item->order_id ) . '</a>';
+				}
+
+				return sprintf( '%s ' . __( 'Order Not Found', 'woocommerce-product-vendors' ), '#' . absint( $item->order_id ) );
 
 			case 'order_status' :
 				$order = wc_get_order( $item->order_id );
