@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: WooCommerce Product Vendors
- * Version: 2.0.18
+ * Version: 2.0.19
  * Plugin URI: https://woocommerce.com/products/product-vendors/
  * Description: Set up a multi-vendor marketplace that allows vendors to manage their own products and earn commissions. Run stores similar to Amazon or Etsy.
  * Author: Automattic
@@ -69,7 +69,7 @@ class WC_Product_Vendors {
 	 * @return bool
 	 */
 	public function __clone() {
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'woocommerce-product-vendors' ), '2.0.18' );
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'woocommerce-product-vendors' ), '2.0.19' );
 	}
 
 	/**
@@ -81,7 +81,7 @@ class WC_Product_Vendors {
 	 * @return bool
 	 */
 	public function __wakeup() {
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'woocommerce-product-vendors' ), '2.0.18' );
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'woocommerce-product-vendors' ), '2.0.19' );
 	}
 
 	/**
@@ -111,7 +111,7 @@ class WC_Product_Vendors {
 	private function define_constants() {
 		global $wpdb;
 
-		define( 'WC_PRODUCT_VENDORS_VERSION', '2.0.18' );
+		define( 'WC_PRODUCT_VENDORS_VERSION', '2.0.19' );
 		define( 'WC_PRODUCT_VENDORS_PATH', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
 		define( 'WC_PRODUCT_VENDORS_TEMPLATES_PATH', untrailingslashit( plugin_dir_path( __FILE__ ) ) . '/templates/' );
 		define( 'WC_PRODUCT_VENDORS_PLUGIN_URL', untrailingslashit( plugins_url( basename( plugin_dir_path( __FILE__ ) ), basename( __FILE__ ) ) ) );
