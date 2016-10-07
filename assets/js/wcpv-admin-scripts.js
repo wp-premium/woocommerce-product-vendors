@@ -147,7 +147,7 @@ jQuery( document ).ready( function( $ ) {
 									security: wcpv_admin_local.vendor_search_nonce
 					            };
 					        },
-					        results: function( data ) {console.log(data);
+					        results: function( data ) {
 					        	var terms = [];
 						        if ( data ) {
 									$.each( data, function( id, text ) {
@@ -197,20 +197,34 @@ jQuery( document ).ready( function( $ ) {
 				});
 			}
 
+			// js link download does not work in safari so we need to hide
+			// the export buttons.	
+			var testLink = document.createElement( 'a' );
+
+			if ( typeof testLink.download === 'undefined' ) {
+				$( '.wcpv-export-commissions-button' ).hide();
+				$( '.wcpv-export-unpaid-commissions-button' ).hide();
+				$( testLink ).remove();
+			}
+
 			function downloadCSV( fileName, urlData ) {
 
-				var aLink = document.createElement( 'a' ),
-					evt = document.createEvent( 'HTMLEvents' );
+				var aLink = document.createElement( 'a' );
 
-				evt.initEvent( 'click' );
 				aLink.download = fileName;
 				aLink.href = urlData;
-				aLink.dispatchEvent( evt );
+				$( aLink ).hide();
+				$( aLink ).addClass( 'pv-temp-download' );
+				$( 'body' ).append( aLink );
+				aLink.click();
 			}
 
 			// Export commissions for current view
 			$( document.body ).on( 'click', '.wcpv-export-commissions-button', function( e ) {
 				e.preventDefault();
+
+				// clear any appended download links first
+				$( '.pv-temp-download' ).remove();
 
 				// get the data to be rendered
 				var	data = {
@@ -232,6 +246,9 @@ jQuery( document ).ready( function( $ ) {
 			// Exports all unpaid commissions
 			$( document.body ).on( 'click', '.wcpv-export-unpaid-commissions-button', function( e ) {
 				e.preventDefault();
+
+				// clear any appended download links first
+				$( '.pv-temp-download' ).remove();
 
 				// get the data to be rendered
 				var	data = {
