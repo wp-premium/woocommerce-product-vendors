@@ -753,7 +753,7 @@ class WC_Product_Vendors_Vendor_Admin {
 	public function restrict_attachments( $query ) {
 		global $current_screen;
 
-		if ( 'upload' === $current_screen->id && WC_Product_Vendors_Utils::auth_vendor_user() ) {
+		if ( is_object( $current_screen ) && 'upload' === $current_screen->id && WC_Product_Vendors_Utils::auth_vendor_user() ) {
 			$query->query_vars['meta_key']   = '_wcpv_vendor';
 			$query->query_vars['meta_value'] = WC_Product_Vendors_Utils::get_logged_in_vendor();
 		}
