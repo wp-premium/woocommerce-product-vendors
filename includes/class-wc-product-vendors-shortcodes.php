@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Shortcodes Class. 
+ * Shortcodes Class.
  *
  * Registers all shortcodes.
  *
@@ -31,7 +31,7 @@ class WC_Product_Vendors_Shortcodes {
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
-    	return true;
+		return true;
 	}
 
 	/**
@@ -63,15 +63,13 @@ class WC_Product_Vendors_Shortcodes {
 	 * @return html $form
 	 */
 	public function render_registration_shortcode( $atts ) {
-		// don't show this form to admins to prevent their admin roles
-		// being changed to vendor preventing access
 		if ( current_user_can( 'manage_options' ) ) {
-			return;
+			return '<p class="woocommerce-message">' . __( 'Hey there! The vendor registration form is not showing since you\'re logged in as an Administrator. If you\'d like to verify the form is working, please log out and view this page again.', 'woocommerce-product-vendors' ) . '</p>';
 		}
 
 		// no need to show vendor this form
 		if ( WC_Product_Vendors_Utils::is_vendor() ) {
-			return sprintf( __( 'Great! You\'re already a vendor! Perhaps you want to go to the %sVendor Dashboard?%s', 'woocommerce-product-vendors' ), '<a href="' . esc_url( admin_url() ) . '">', '</a>' );
+			return sprintf( '<p class="woocommerce-message">' . __( 'Great! You\'re already a vendor! Perhaps you want to go to the %1$sVendor Dashboard?%2$s', 'woocommerce-product-vendors' ) . '</p>', '<a href="' . esc_url( admin_url() ) . '">', '</a>' );
 		}
 
 		ob_start();
@@ -94,9 +92,9 @@ class WC_Product_Vendors_Shortcodes {
 	 */
 	public function vendor_list_shortcode( $atts ) {
 		$atts = shortcode_atts( array(
-			'show_name'   => true,
-			'show_logo'   => false
-			), $atts, 'wcpv_vendor_list' );
+			'show_name' => true,
+			'show_logo' => false,
+		), $atts, 'wcpv_vendor_list' );
 
 		$args = array(
 			'hierarchical' => false,
@@ -108,10 +106,9 @@ class WC_Product_Vendors_Shortcodes {
 
 		// check if template has been overriden
 		if ( file_exists( get_stylesheet_directory() . '/woocommerce-product-vendors/shortcode-vendor-list.php' ) ) {
-			
 			include( get_stylesheet_directory() . '/woocommerce-product-vendors/shortcode-vendor-list.php' );
 
-		} else  {
+		} else {
 			include( plugin_dir_path( dirname( __FILE__ ) ) . 'templates/shortcode-vendor-list.php' );
 		}
 

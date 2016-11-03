@@ -2,7 +2,7 @@
 /**
  * Vendor approval.
  *
- * @version 2.0.0
+ * @version 2.0.21
  * @since 2.0.0
  */
 
@@ -27,7 +27,7 @@ if ( 'wc_product_vendors_admin_vendor' === $role ) {
 <p><?php esc_html_e( 'Please login to the site and visit your vendor dashboard to start managing your products.', 'woocommerce-product-vendors' ); ?></p>
 
 <ul>
-	<li><?php printf( __( 'Login Address: %s', 'woocommerce-product-vendors' ), admin_url() ); ?></li>
+	<li><?php printf( esc_html__( 'Login Address: %s', 'woocommerce-product-vendors' ), '<a href="' . esc_url( wp_login_url() ) . '">' . wp_login_url() . '</a>' ); ?></li>
 </ul>
 
 <?php do_action( 'woocommerce_email_footer', $email ); ?>

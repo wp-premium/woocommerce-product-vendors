@@ -19,7 +19,6 @@ class WC_Product_Vendors_Approval extends WC_Email {
 		$this->template_html    = 'emails/vendor-approval.php';
 		$this->template_plain   = 'emails/plain/vendor-approval.php';
 
-		// Call parent constructor
 		parent::__construct();
 	}
 
@@ -29,7 +28,7 @@ class WC_Product_Vendors_Approval extends WC_Email {
 	 * @access public
 	 * @return void
 	 */
-	public function trigger( $user_id, $new_role, $old_role ) {
+	public function trigger( $user_id, $new_role, $old_roles ) {
 		$userdata = get_userdata( $user_id );
 
 		$this->recipient = $userdata->user_email;
@@ -37,6 +36,8 @@ class WC_Product_Vendors_Approval extends WC_Email {
 		if ( ! $this->is_enabled() || ! $this->get_recipient() ) {
 			return;
 		}
+
+		update_user_meta( $user_id, '_wcpv_vendor_approval', 'yes' );
 
 		$this->role = $new_role;
 

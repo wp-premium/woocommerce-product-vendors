@@ -275,15 +275,17 @@ class WC_Product_Vendors_Registration {
 
 		$args = apply_filters( 'wcpv_shortcode_register_vendor_args', array(
 			'user_login'      => $username,
-			'user_pass'       => $password,
 			'user_email'      => $email,
+			'user_pass'       => $password,
 			'first_name'      => $firstname,
 			'last_name'       => $lastname,
 			'display_name'    => $firstname,
 			'role'            => 'wc_product_vendors_pending_vendor',
 		) );
 		
-		$user_id = wp_insert_user( $args );
+		$user_id            = wp_insert_user( $args );
+		$user               = get_user_by( 'id', $user_id );
+		$password_reset_key = get_password_reset_key( $user );
 
 		$term_args = apply_filters( 'wcpv_registration_term_args', array(
 			'description' => $vendor_desc,
@@ -302,9 +304,10 @@ class WC_Product_Vendors_Registration {
 			
 			update_term_meta( $term['term_id'], 'vendor_data', $vendor_data );
 
-			$args['user_id']     = $user_id;
-			$args['vendor_name'] = $vendor_name;
-			$args['vendor_desc'] = $vendor_desc;
+			$args['user_id']             = $user_id;
+			$args['vendor_name']         = $vendor_name;
+			$args['vendor_desc']         = $vendor_desc;
+			$args['password_reset_key']  = $password_reset_key;
 
 			do_action( 'wcpv_shortcode_registration_form_process', $args, $form_items );
 
