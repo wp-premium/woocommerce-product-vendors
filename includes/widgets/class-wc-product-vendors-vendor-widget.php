@@ -16,8 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 class WC_Product_Vendors_Vendor_Widget extends WP_Widget {
 	public function __construct() {
 		// Instantiate the parent object
-		parent::__construct( 
-			'wcpv_vendor_widget', 
+		parent::__construct(
+			'wcpv_vendor_widget',
 			__( 'Vendors', 'woocommerce-product-vendors' ),
 			array( 'description' => __( 'A widget to display vendor information in context.', 'woocommerce-product-vendors' ) )
 		);
@@ -42,7 +42,7 @@ class WC_Product_Vendors_Vendor_Widget extends WP_Widget {
 			$display_widget = true;
 
 			$vendor = WC_Product_Vendors_Utils::get_vendor_data_by_id( $instance['vendor'] );
-		}	
+		}
 
 		if ( $display_widget && $vendor ) {
 			$html = '';
@@ -52,16 +52,26 @@ class WC_Product_Vendors_Vendor_Widget extends WP_Widget {
 			if ( ! empty( $instance['title'] ) ) {
 				$html .= $args['before_title'] . apply_filters( 'widget_title', esc_html( $instance['title'] ) ) . $args['after_title'];
 			}
-			
+
 			$html .= '<h3 class="wcpv-widget-vendor-title">' . esc_html( $vendor['name'] ) . '</h3>' . PHP_EOL;
-			
+
 			$logo = wp_get_attachment_image( absint( $vendor['logo'] ), 'medium' );
 
 			if ( $logo ) {
 				$html .= $logo . PHP_EOL;
 			}
 
-			$html .= '<p>' . esc_html( $vendor['profile'] ) . '</p>' . PHP_EOL;
+			$allowed_html = array(
+				'a' => array(
+					'href'  => array(),
+					'title' => array(),
+				),
+				'br'     => array(),
+				'em'     => array(),
+				'strong' => array(),
+			);
+
+			$html .= '<p>' . wp_kses( $vendor['profile'], $allowed_html ) . '</p>' . PHP_EOL;
 
 			$link = get_term_link( $vendor['term_id'], WC_PRODUCT_VENDORS_TAXONOMY );
 
@@ -103,10 +113,10 @@ class WC_Product_Vendors_Vendor_Widget extends WP_Widget {
 				<option value="current" <?php selected( 'current', $instance['vendor'] ); ?>><?php esc_html_e( 'Current Vendor', 'woocommerce-product-vendors' ); ?></option>
 
 				<?php
-				foreach( $vendors as $vendor ) {
+				foreach ( $vendors as $vendor ) {
 				?>
 					<option value="<?php echo esc_attr( $vendor->term_id ); ?>" <?php selected( $vendor->term_id, $instance['vendor'] ); ?>><?php echo esc_html( $vendor->name ); ?></option>
-				<?php	
+				<?php
 				}
 				?>
 			</select><br /><br />

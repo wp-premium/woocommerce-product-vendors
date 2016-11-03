@@ -109,7 +109,7 @@ class WC_Product_Vendors_Vendor_Admin {
 
 		// add a commission field for the product variation
 		add_action( 'woocommerce_product_after_variable_attributes', array( $self, 'add_product_commission_field_variation' ), 10, 3 );
-		
+
 		// add ajax to handle vendor switching
 		add_action( 'wp_ajax_wc_product_vendors_switch', array( $self, 'vendor_switch_ajax' ) );
 
@@ -149,7 +149,7 @@ class WC_Product_Vendors_Vendor_Admin {
 
 		$self->order_notes = new WC_Product_Vendors_Vendor_Order_Notes();
 
-    	return true;
+		return true;
 	}
 
 	/**
@@ -167,7 +167,7 @@ class WC_Product_Vendors_Vendor_Admin {
 	public function reset_vendor_cookie( $logged_in_cookie, $expire, $expiration, $user_id ) {
 		if ( WC_Product_Vendors_Utils::is_vendor( $user_id ) ) {
 			$authenticate = new WC_Product_Vendors_Authentication();
-			
+
 			$vendor = WC_Product_Vendors_Utils::get_vendor_data_from_user();
 
 			if ( ! empty( $vendor ) ) {
@@ -201,8 +201,8 @@ class WC_Product_Vendors_Vendor_Admin {
 
 		if ( ! empty( $vendors ) ) {
 			// loop through each vendor and build admin bar menu
-			foreach( $vendors as $vendor_id => $vendor_data ) {
-				$active = $vendor_id === absint( $current_vendor_id ) ? ' ( ' . __( 'Current', 'woocommerce-product-vendors' ) . ' )' : '';
+			foreach ( $vendors as $vendor_id => $vendor_data ) {
+				$active = absint( $current_vendor_id ) === $vendor_id ? ' ( ' . __( 'Current', 'woocommerce-product-vendors' ) . ' )' : '';
 
 				if ( ! empty( $active ) ) {
 					$current_active = $vendor_data['name'];
@@ -276,7 +276,7 @@ class WC_Product_Vendors_Vendor_Admin {
 
 		$current_nodes = $wp_admin_bar->get_nodes();
 
-		foreach( $current_nodes as $node_id => $node ) {
+		foreach ( $current_nodes as $node_id => $node ) {
 			// skip vendor specific nodes
 			if ( preg_match( '/^wcpv_vendor_[0-9]*/', $node_id ) ) {
 				continue;
@@ -324,7 +324,7 @@ class WC_Product_Vendors_Vendor_Admin {
 		$vendor = sanitize_text_field( $_POST['vendor'] );
 
 		// if current vendor matches clicked vendor do nothing
-		if ( $vendor === WC_Product_Vendors_Utils::get_logged_in_vendor() ) {
+		if ( WC_Product_Vendors_Utils::get_logged_in_vendor() === $vendor ) {
 			echo 'done';
 			exit;
 		}
@@ -387,7 +387,7 @@ class WC_Product_Vendors_Vendor_Admin {
 			// no errors, lets process the form
 			if ( empty( $errors ) ) {
 				$this->vendor_support_form_process( $form_items );
-				
+
 			} else {
 				wp_send_json( array( 'errors' => $errors ) );
 			}
@@ -580,14 +580,14 @@ class WC_Product_Vendors_Vendor_Admin {
 			$jquery_version = isset( $wp_scripts->registered['jquery-ui-core']->ver ) ? $wp_scripts->registered['jquery-ui-core']->ver : '1.9.2';
 
 			wp_enqueue_script( 'jquery-ui-datepicker' );
-		
+
 			wp_enqueue_style( 'jquery-ui-style', '//code.jquery.com/ui/' . $jquery_version . '/themes/smoothness/jquery-ui.css', array(), $jquery_version );
 
 			wp_enqueue_style( 'woocommerce_admin_styles' );
 			wp_enqueue_style( 'woocommerce_admin_print_reports_styles' );
 
 			wp_enqueue_script( 'woocommerce_admin' );
-			
+
 			wp_enqueue_script( 'wc-reports', WC()->plugin_url() . '/assets/js/admin/reports' . $suffix . '.js', array( 'jquery', 'jquery-ui-datepicker' ), WC_VERSION );
 
 			wp_enqueue_script( 'flot' );
@@ -612,7 +612,7 @@ class WC_Product_Vendors_Vendor_Admin {
 			'ajaxAddOrderNoteNonce'    => wp_create_nonce( '_wc_product_vendors_vendor_add_order_note_nonce' ),
 			'vendorSupportSuccess'     => __( 'Your question has been submitted.  You will be contacted shortly.', 'woocommerce-product-vendors' ),
 		) );
-		
+
 		// vendor settings page
 		if ( 'toplevel_page_wcpv-vendor-settings' === $current_screen->id ) {
 			wp_enqueue_script( 'wc-users', WC()->plugin_url() . '/assets/js/admin/users' . $suffix . '.js', array( 'jquery', 'wc-enhanced-select' ), WC_VERSION, true );
@@ -631,7 +631,7 @@ class WC_Product_Vendors_Vendor_Admin {
 		if ( 'toplevel_page_wcpv-vendor-support' === $current_screen->id ) {
 			wp_enqueue_script( 'jquery-blockui' );
 		}
-		
+
 		// vendor order detail page
 		if ( 'admin_page_wcpv-vendor-order' === $current_screen->id ) {
 			wp_enqueue_style( 'woocommerce_admin_styles' );
@@ -786,7 +786,7 @@ class WC_Product_Vendors_Vendor_Admin {
 				// set visibility to catalog/search
 				update_post_meta( $post_id, '_visibility', 'visible' );
 			}
-		}	
+		}
 
 		return true;
 	}
@@ -901,7 +901,7 @@ class WC_Product_Vendors_Vendor_Admin {
 						break;
 				}
 
-				$output .= "</option>";
+				$output .= '</option>';
 
 				if ( 'simple' === $term->name ) {
 
@@ -925,7 +925,7 @@ class WC_Product_Vendors_Vendor_Admin {
 
 			$output .= '</select>';
 		}
-		
+
 		return $output;
 	}
 
@@ -944,8 +944,8 @@ class WC_Product_Vendors_Vendor_Admin {
 			$new_views = array();
 
 			// remove the count from each status
-			foreach( $views as $k => $v ) {
-				$new_views[$k] = preg_replace( '/\(\d+\)/', '', $v );
+			foreach ( $views as $k => $v ) {
+				$new_views[ $k ] = preg_replace( '/\(\d+\)/', '', $v );
 			}
 
 			$views = $new_views;
@@ -992,7 +992,7 @@ class WC_Product_Vendors_Vendor_Admin {
 				WHERE post_type = %s
 				AND ID IN (%s)
 				ORDER BY post_date DESC
-			", $post_type, $product_ids ) );			
+			", $post_type, $product_ids ) );
 		}
 
 		return $months;
@@ -1013,7 +1013,7 @@ class WC_Product_Vendors_Vendor_Admin {
 
 			add_action( "load-$hook", array( $this, 'add_orders_screen_options' ) );
 
-			add_submenu_page( NULL, __( 'Order', 'woocommerce-product-vendors' ), NULL, 'manage_product', 'wcpv-vendor-order', array( $this, 'render_order_page' ) );
+			add_submenu_page( null, __( 'Order', 'woocommerce-product-vendors' ), null, 'manage_product', 'wcpv-vendor-order', array( $this, 'render_order_page' ) );
 
 			if ( WC_Product_Vendors_Utils::is_admin_vendor() ) {
 				add_menu_page( __( 'Reports', 'woocommerce-product-vendors' ), __( 'Reports', 'woocommerce-product-vendors' ), 'manage_product', 'wcpv-vendor-reports', array( $this, 'render_reports_page' ), 'dashicons-chart-bar', 7.77 );
@@ -1022,7 +1022,6 @@ class WC_Product_Vendors_Vendor_Admin {
 
 				add_menu_page( __( 'Support', 'woocommerce-product-vendors' ), __( 'Support', 'woocommerce-product-vendors' ), 'manage_product', 'wcpv-vendor-support', array( $this, 'render_support_page' ), 'dashicons-info', 61.77 );
 			}
-
 		}
 
 		// remove menu pages if logged in user without vendor
@@ -1135,7 +1134,9 @@ class WC_Product_Vendors_Vendor_Admin {
 
 		$order_list->prepare_items();
 
-		include_once( apply_filters( 'wcpv_vendor_order_page_template', 'views/html-vendor-order-page.php' ) );
+		$vendor_data = WC_Product_Vendors_Utils::get_vendor_data_from_user();
+
+		include_once( apply_filters( 'wcpv_vendor_order_page_template', dirname( __FILE__ ) . '/views/html-vendor-order-page.php' ) );
 	}
 
 	/**
@@ -1163,7 +1164,7 @@ class WC_Product_Vendors_Vendor_Admin {
 	public function add_product_commission_field_general() {
 		if ( WC_Product_Vendors_Utils::auth_vendor_user() ) {
 			global $post;
-			
+
 			$vendor_id        = WC_Product_Vendors_Utils::get_vendor_id_from_product( $post->ID );
 			$vendor_data      = WC_Product_Vendors_Utils::get_vendor_data_by_id( $vendor_id );
 			$commission_data  = WC_Product_Vendors_Utils::get_product_commission( $post->ID, $vendor_data );
@@ -1200,7 +1201,7 @@ class WC_Product_Vendors_Vendor_Admin {
 			$commission = get_post_meta( $variation->ID, '_wcpv_product_commission', true );
 
 			global $post;
-			
+
 			$vendor_id        = WC_Product_Vendors_Utils::get_vendor_id_from_product( $post->ID );
 			$vendor_data      = WC_Product_Vendors_Utils::get_vendor_data_by_id( $vendor_id );
 			$commission_data  = WC_Product_Vendors_Utils::get_product_commission( $post->ID, $vendor_data );
@@ -1263,20 +1264,20 @@ class WC_Product_Vendors_Vendor_Admin {
 					// grab the newly saved settings
 					$vendor_data = WC_Product_Vendors_Utils::get_vendor_data_from_user();
 				}
-			}	
+			}
 		}
 
 		// logo image
 		$logo = ! empty( $vendor_data['logo'] ) ? $vendor_data['logo'] : '';
-		
+
 		$hide_remove_image_link = '';
-		
+
 		$logo_image_url = wp_get_attachment_image_src( $logo, 'full' );
-		
+
 		if ( empty( $logo_image_url ) ) {
 			$hide_remove_image_link = 'display:none;';
 		}
-		
+
 		$profile           = ! empty( $vendor_data['profile'] ) ? $vendor_data['profile'] : '';
 		$email             = ! empty( $vendor_data['email'] ) ? $vendor_data['email'] : '';
 		$paypal            = ! empty( $vendor_data['paypal'] ) ? $vendor_data['paypal'] : '';
@@ -1323,10 +1324,10 @@ class WC_Product_Vendors_Vendor_Admin {
 	public function include_vendor_support_form() {
 		// check if template has been overriden
 		if ( file_exists( get_stylesheet_directory() . '/woocommerce-product-vendors/vendor-support-form.php' ) ) {
-			
+
 			include( get_stylesheet_directory() . '/woocommerce-product-vendors/vendor-support-form.php' );
 
-		} else  {
+		} else {
 			include( plugin_dir_path( dirname( dirname( __FILE__ ) ) ) . 'templates/vendor-support-form.php' );
 		}
 
@@ -1344,13 +1345,13 @@ class WC_Product_Vendors_Vendor_Admin {
 	public function unfulfilled_products_count() {
 		global $wpdb;
 
-		$sql = "SELECT COUNT( commission.id ) FROM " . WC_PRODUCT_VENDORS_COMMISSION_TABLE . " AS commission";
+		$sql = 'SELECT COUNT( commission.id ) FROM ' . WC_PRODUCT_VENDORS_COMMISSION_TABLE . ' AS commission';
 
 		$sql .= " INNER JOIN {$wpdb->prefix}woocommerce_order_itemmeta AS item_meta";
 
-		$sql .= " ON commission.order_item_id = item_meta.order_item_id";
+		$sql .= ' ON commission.order_item_id = item_meta.order_item_id';
 
-		$sql .= " WHERE 1=1";
+		$sql .= ' WHERE 1=1';
 
 		$sql .= " AND item_meta.meta_key = '_fulfillment_status'";
 
@@ -1360,7 +1361,7 @@ class WC_Product_Vendors_Vendor_Admin {
 
 		if ( false === ( $count = get_transient( 'wcpv_unfulfilled_products_' . WC_Product_Vendors_Utils::get_logged_in_vendor() ) ) ) {
 			$wpdb->query( 'SET SESSION SQL_BIG_SELECTS=1' );
-			
+
 			$count = $wpdb->get_var( $wpdb->prepare( $sql, WC_Product_Vendors_Utils::get_logged_in_vendor() ) );
 
 			set_transient( 'wcpv_unfulfilled_products_' . WC_Product_Vendors_Utils::get_logged_in_vendor(), $count, DAY_IN_SECONDS );
@@ -1384,7 +1385,7 @@ class WC_Product_Vendors_Vendor_Admin {
 			'key'     => '_wcpv_customer_of',
 			'value'   => WC_Product_Vendors_Utils::get_logged_in_vendor(),
 			'compare' => 'LIKE',
-			)
+			),
 		);
 
 		$query->set( 'meta_query', $meta );
@@ -1475,99 +1476,99 @@ class WC_Product_Vendors_Vendor_Admin {
 				'fields' => array(
 					'billing_first_name' => array(
 						'label'       => __( 'First name', 'woocommerce-product-vendors' ),
-						'description' => ''
+						'description' => '',
 					),
 					'billing_last_name' => array(
 						'label'       => __( 'Last name', 'woocommerce-product-vendors' ),
-						'description' => ''
+						'description' => '',
 					),
 					'billing_company' => array(
 						'label'       => __( 'Company', 'woocommerce-product-vendors' ),
-						'description' => ''
+						'description' => '',
 					),
 					'billing_address_1' => array(
 						'label'       => __( 'Address 1', 'woocommerce-product-vendors' ),
-						'description' => ''
+						'description' => '',
 					),
 					'billing_address_2' => array(
 						'label'       => __( 'Address 2', 'woocommerce-product-vendors' ),
-						'description' => ''
+						'description' => '',
 					),
 					'billing_city' => array(
 						'label'       => __( 'City', 'woocommerce-product-vendors' ),
-						'description' => ''
+						'description' => '',
 					),
 					'billing_postcode' => array(
 						'label'       => __( 'Postcode', 'woocommerce-product-vendors' ),
-						'description' => ''
+						'description' => '',
 					),
 					'billing_country' => array(
 						'label'       => __( 'Country', 'woocommerce-product-vendors' ),
 						'description' => '',
 						'class'       => 'js_field-country',
 						'type'        => 'select',
-						'options'     => array( '' => __( 'Select a country&hellip;', 'woocommerce-product-vendors' ) ) + WC()->countries->get_allowed_countries()
+						'options'     => array( '' => __( 'Select a country&hellip;', 'woocommerce-product-vendors' ) ) + WC()->countries->get_allowed_countries(),
 					),
 					'billing_state' => array(
 						'label'       => __( 'State/County', 'woocommerce-product-vendors' ),
 						'description' => __( 'State/County or state code', 'woocommerce-product-vendors' ),
-						'class'       => 'js_field-state'
+						'class'       => 'js_field-state',
 					),
 					'billing_phone' => array(
 						'label'       => __( 'Telephone', 'woocommerce-product-vendors' ),
-						'description' => ''
+						'description' => '',
 					),
 					'billing_email' => array(
 						'label'       => __( 'Email', 'woocommerce-product-vendors' ),
-						'description' => ''
-					)
-				)
+						'description' => '',
+					),
+				),
 			),
 			'shipping' => array(
 				'title' => __( 'Customer Shipping Address', 'woocommerce-product-vendors' ),
 				'fields' => array(
 					'shipping_first_name' => array(
 						'label'       => __( 'First name', 'woocommerce-product-vendors' ),
-						'description' => ''
+						'description' => '',
 					),
 					'shipping_last_name' => array(
 						'label'       => __( 'Last name', 'woocommerce-product-vendors' ),
-						'description' => ''
+						'description' => '',
 					),
 					'shipping_company' => array(
 						'label'       => __( 'Company', 'woocommerce-product-vendors' ),
-						'description' => ''
+						'description' => '',
 					),
 					'shipping_address_1' => array(
 						'label'       => __( 'Address 1', 'woocommerce-product-vendors' ),
-						'description' => ''
+						'description' => '',
 					),
 					'shipping_address_2' => array(
 						'label'       => __( 'Address 2', 'woocommerce-product-vendors' ),
-						'description' => ''
+						'description' => '',
 					),
 					'shipping_city' => array(
 						'label'       => __( 'City', 'woocommerce-product-vendors' ),
-						'description' => ''
+						'description' => '',
 					),
 					'shipping_postcode' => array(
 						'label'       => __( 'Postcode', 'woocommerce-product-vendors' ),
-						'description' => ''
+						'description' => '',
 					),
 					'shipping_country' => array(
 						'label'       => __( 'Country', 'woocommerce-product-vendors' ),
 						'description' => '',
 						'class'       => 'js_field-country',
 						'type'        => 'select',
-						'options'     => array( '' => __( 'Select a country&hellip;', 'woocommerce-product-vendors' ) ) + WC()->countries->get_allowed_countries()
+						'options'     => array( '' => __( 'Select a country&hellip;', 'woocommerce-product-vendors' ) ) + WC()->countries->get_allowed_countries(),
 					),
 					'shipping_state' => array(
 						'label'       => __( 'State/County', 'woocommerce-product-vendors' ),
 						'description' => __( 'State/County or state code', 'woocommerce-product-vendors' ),
-						'class'       => 'js_field-state'
-					)
-				)
-			)
+						'class'       => 'js_field-state',
+					),
+				),
+			),
 		) );
 		return $show_fields;
 	}
@@ -1602,9 +1603,9 @@ class WC_Product_Vendors_Vendor_Admin {
 							<?php if ( ! empty( $field['type'] ) && 'select' == $field['type'] ) : ?>
 								<select name="<?php echo esc_attr( $key ); ?>" id="<?php echo esc_attr( $key ); ?>" class="<?php echo ( ! empty( $field['class'] ) ? $field['class'] : '' ); ?>" style="width: 25em;">
 									<?php
-										$selected = esc_attr( get_user_meta( $user->ID, $key, true ) );
-										foreach ( $field['options'] as $option_key => $option_value ) : ?>
-										<option value="<?php echo esc_attr( $option_key ); ?>" <?php selected( $selected, $option_key, true ); ?>><?php echo esc_attr( $option_value ); ?></option>
+									$selected = esc_attr( get_user_meta( $user->ID, $key, true ) );
+									foreach ( $field['options'] as $option_key => $option_value ) : ?>
+									<option value="<?php echo esc_attr( $option_key ); ?>" <?php selected( $selected, $option_key, true ); ?>><?php echo esc_attr( $option_value ); ?></option>
 									<?php endforeach; ?>
 								</select>
 							<?php else : ?>
@@ -1653,9 +1654,9 @@ class WC_Product_Vendors_Vendor_Admin {
 		if ( WC_Product_Vendors_Utils::auth_vendor_user() ) {
 			$count = $this->unfulfilled_products_count();
 
-			foreach( $menu as $menu_key => $menu_data ) {
+			foreach ( $menu as $menu_key => $menu_data ) {
 				if ( 'wcpv-vendor-orders' === $menu_data[2] ) {
-					$menu[$menu_key][0] .= ' <span class="update-plugins count-' . esc_attr( absint( $count ) ) . '" title="' . esc_attr__( 'Products awaiting fulfillment', 'woocommerce-product-vendors' ) . '"><span class="plugin-count">' . number_format_i18n( $count ) . '</span></span>';
+					$menu[ $menu_key ][0] .= ' <span class="update-plugins count-' . esc_attr( absint( $count ) ) . '" title="' . esc_attr__( 'Products awaiting fulfillment', 'woocommerce-product-vendors' ) . '"><span class="plugin-count">' . number_format_i18n( $count ) . '</span></span>';
 				}
 			}
 		}

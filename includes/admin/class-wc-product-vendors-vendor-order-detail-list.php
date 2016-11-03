@@ -38,7 +38,7 @@ class WC_Product_Vendors_Vendor_Order_Detail_List extends WP_List_Table {
 
 		$this->vendor_data = WC_Product_Vendors_Utils::get_vendor_data_from_user();
 
-    	return true;
+		return true;
 	}
 
 	/**
@@ -60,7 +60,7 @@ class WC_Product_Vendors_Vendor_Order_Detail_List extends WP_List_Table {
 		$columns  = $this->get_columns();
 		$hidden   = $this->get_hidden_columns();
 		$sortable = $this->get_sortable_columns();
-		
+
 		$this->process_bulk_action();
 
 		$this->_column_headers = array( $columns, $hidden, $sortable );
@@ -70,12 +70,12 @@ class WC_Product_Vendors_Vendor_Order_Detail_List extends WP_List_Table {
 
 		$wpdb->query( 'SET SESSION SQL_BIG_SELECTS=1' );
 
-		$sql = "SELECT * FROM " . WC_PRODUCT_VENDORS_COMMISSION_TABLE;
+		$sql = 'SELECT * FROM ' . WC_PRODUCT_VENDORS_COMMISSION_TABLE;
 
-		$sql .= " WHERE 1=1";
+		$sql .= ' WHERE 1=1';
 
-		$sql .= " AND `vendor_id` = %d";
-		$sql .= " AND `order_id` = %d";
+		$sql .= ' AND `vendor_id` = %d';
+		$sql .= ' AND `order_id` = %d';
 
 		$data = $wpdb->get_results( $wpdb->prepare( $sql, $vendor_id, $order_id ) );
 
@@ -98,7 +98,7 @@ class WC_Product_Vendors_Vendor_Order_Detail_List extends WP_List_Table {
 		?>
 		<div class="tablenav <?php echo esc_attr( $which ); ?>">
 
-			<?php if ( $this->has_items() ): ?>
+			<?php if ( $this->has_items() ) : ?>
 			<div class="alignleft actions bulkactions">
 				<?php $this->bulk_actions( $which ); ?>
 			</div>
@@ -154,7 +154,7 @@ class WC_Product_Vendors_Vendor_Order_Detail_List extends WP_List_Table {
 	 * @return mixed
 	 */
 	public function column_default( $item, $column_name ) {
-		switch( $column_name ) {
+		switch ( $column_name ) {
 
 			case 'product_name' :
 				$quantity = absint( $item->product_quantity );
@@ -164,27 +164,25 @@ class WC_Product_Vendors_Vendor_Order_Detail_List extends WP_List_Table {
 
 				// check if product is a variable product
 				if ( ! empty( $item->variation_id ) ) {
-					$product = get_product( absint( $item->variation_id ) );
+					$product = wc_get_product( absint( $item->variation_id ) );
 
 					$attributes = maybe_unserialize( $item->variation_attributes );
 
 					if ( ! empty( $attributes ) ) {
-						foreach( $attributes as $name => $value ) {
+						foreach ( $attributes as $name => $value ) {
 							if ( version_compare( WC_VERSION, '2.6.0', '>=' ) ) {
 								$name = wc_attribute_label( wc_sanitize_taxonomy_name( $name ) );
 							}
-							
-							$var_attributes .= sprintf( __( '<br /><small>( %s: %s )</small>', 'woocommerce-product-vendors' ), $name, $value );
+
+							$var_attributes .= sprintf( __( '<br /><small>( %1$s: %2$s )</small>', 'woocommerce-product-vendors' ), $name, $value );
 						}
 					}
-
 				} else {
-					$product = get_product( absint( $item->product_id ) );
-
+					$product = wc_get_product( absint( $item->product_id ) );
 				}
 
 				if ( is_object( $product ) && $product->get_sku() ) {
-					$sku = sprintf( __( '<br />%s: %s', 'woocommerce-product-vendors' ), 'SKU', $product->get_sku() );  
+					$sku = sprintf( __( '<br />%1$s: %2$s', 'woocommerce-product-vendors' ), 'SKU', $product->get_sku() );
 				}
 
 				if ( is_object( $product ) ) {
@@ -233,7 +231,7 @@ class WC_Product_Vendors_Vendor_Order_Detail_List extends WP_List_Table {
 
 				} elseif ( $status && 'fulfilled' === $status ) {
 					$status = '<span class="wcpv-fulfilled-status">' . esc_html__( 'FULFILLED', 'woocommerce-product-vendors' ) . '</span>';
-				
+
 				} else {
 					$status = __( 'N/A', 'woocommerce-product-vendors' );
 				}
@@ -259,7 +257,7 @@ class WC_Product_Vendors_Vendor_Order_Detail_List extends WP_List_Table {
 
 		$new_hidden = array();
 
-		foreach( $hidden as $k => $v ) {
+		foreach ( $hidden as $k => $v ) {
 			if ( ! empty( $v ) ) {
 				$new_hidden[] = $v;
 			}
@@ -295,7 +293,7 @@ class WC_Product_Vendors_Vendor_Order_Detail_List extends WP_List_Table {
 			'fulfilled'   => __( 'Mark Fulfilled', 'woocommerce-product-vendors' ),
 			'unfulfilled' => __( 'Mark Unfulfilled', 'woocommerce-product-vendors' ),
 		);
-		
+
 		return $actions;
 	}
 
@@ -325,15 +323,15 @@ class WC_Product_Vendors_Vendor_Order_Detail_List extends WP_List_Table {
 		$ids = array_map( 'absint', $_REQUEST['ids'] );
 
 		$order_item_ids = $_REQUEST['order_item_ids'];
-		
-		foreach( $ids as $id => $order_item_id ) {
+
+		foreach ( $ids as $id => $order_item_id ) {
 			WC_Product_Vendors_Utils::set_fulfillment_status( absint( $order_item_ids[ $id ] ), $this->current_action() );
 
 			WC_Product_Vendors_Utils::send_fulfill_status_email( $this->vendor_data, $this->current_action(), $order_item_id );
 		}
 
 		WC_Product_Vendors_Utils::clear_reports_transients();
-		
+
 		return true;
 	}
 
@@ -384,10 +382,10 @@ class WC_Product_Vendors_Vendor_Order_Detail_List extends WP_List_Table {
 
 		if ( ! empty( $columns['cb'] ) ) {
 			static $cb_counter = 1;
-		
+
 			$columns['cb'] = '<label class="screen-reader-text" for="cb-select-all-' . $cb_counter . '">' . esc_html__( 'Select All', 'woocommerce-product-vendors' ) . '</label>'
 				. '<input id="cb-select-all-' . $cb_counter . '" type="checkbox" />';
-		
+
 			$cb_counter++;
 		}
 
@@ -409,7 +407,7 @@ class WC_Product_Vendors_Vendor_Order_Detail_List extends WP_List_Table {
 			}
 
 			if ( isset( $sortable[ $column_key ] ) ) {
-				list( $orderby, $desc_first ) = $sortable[$column_key];
+				list( $orderby, $desc_first ) = $sortable[ $column_key ];
 
 				if ( $current_orderby == $orderby ) {
 					$order = 'asc' == $current_order ? 'desc' : 'asc';

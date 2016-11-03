@@ -27,7 +27,7 @@ echo "\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\
 
 echo __( 'Please login to the site and visit your vendor dashboard to start managing your products.', 'woocommerce-product-vendors' ) . "\n\n";
 
-echo sprintf( __( 'Login Address: %s', 'woocommerce-product-vendors' ), admin_url() ) . "\n\n";
+echo sprintf( __( 'Login Address: %s', 'woocommerce-product-vendors' ), wp_login_url() ) . "\n\n";
 
 echo "\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\n";
 

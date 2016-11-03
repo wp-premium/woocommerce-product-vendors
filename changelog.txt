@@ -1,5 +1,12 @@
 *** Product Vendors Changelog ***
 
+2016.10.25 - version 2.0.21
+* Fix - Vendor widget not allowing simple HTML.
+* Fix - Vendor order date discrepancies between list and detail.
+* Fix - Order statuses were not translatable.
+* Fix - Prevent vendor approval from sending again if they're just changing admin roles.
+* Tweak - Vendor registration no longer sends password but request them to create their own.
+
 2016.09.28 - version 2.0.20
 * Fix - CSV Commission export buttons were not working.
 
