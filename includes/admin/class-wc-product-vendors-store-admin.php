@@ -34,21 +34,21 @@ class WC_Product_Vendors_Store_Admin {
 		add_filter( 'woocommerce_screen_ids', array( $self, 'add_screen_ids_to_wc' ) );
 
 		// add fields to taxonomy edit page
-		add_action( WC_PRODUCT_VENDORS_TAXONOMY . '_edit_form_fields' , array( $self , 'edit_vendor_fields' ) );
+		add_action( WC_PRODUCT_VENDORS_TAXONOMY . '_edit_form_fields' , array( $self, 'edit_vendor_fields' ) );
 
 		// add fields to taxonomy on create page
 		add_action( WC_PRODUCT_VENDORS_TAXONOMY . '_add_form_fields', array( $self, 'add_vendor_fields' ) );
 
 		// save custom fields from taxonomy
-		add_action( 'edited_' . WC_PRODUCT_VENDORS_TAXONOMY, array( $self , 'save_vendor_fields' ) );
+		add_action( 'edited_' . WC_PRODUCT_VENDORS_TAXONOMY, array( $self, 'save_vendor_fields' ) );
 		
 		// save custom fields from taxonomy
-		add_action( 'created_' . WC_PRODUCT_VENDORS_TAXONOMY, array( $self , 'save_vendor_fields' ) );
+		add_action( 'created_' . WC_PRODUCT_VENDORS_TAXONOMY, array( $self, 'save_vendor_fields' ) );
 
 		// modify taxonomy columns
 		add_filter( 'manage_edit-' . WC_PRODUCT_VENDORS_TAXONOMY . '_columns', array( $self, 'modify_vendor_columns' ) );
 
-		// modify taxonomy columns 
+		// modify taxonomy columns
 		add_filter( 'manage_' . WC_PRODUCT_VENDORS_TAXONOMY . '_custom_column', array( $self, 'render_vendor_columns' ), 10, 3 );
 
 		// add a new column to users
@@ -56,11 +56,11 @@ class WC_Product_Vendors_Store_Admin {
 
 		// modify user columns
 		add_action( 'manage_users_custom_column', array( $self, 'add_user_column_data' ), 10, 3 );
-		
+
 		// add vendor section to user profile
 		add_action( 'edit_user_profile', array( $self, 'add_product_vendor_user_profile_section' ) );
 		add_action( 'show_user_profile', array( $self, 'add_product_vendor_user_profile_section' ) );
-		
+
 		// save user profile
 		add_action( 'edit_user_profile_update', array( $self, 'save_product_vendor_user_profile_section' ) );
 
@@ -260,20 +260,35 @@ class WC_Product_Vendors_Store_Admin {
 	 * @version 2.0.0
 	 * @param int $user_id
 	 * @param string $new_role
-	 * @param string $old_role
+	 * @param array $old_roles
 	 * @return bool
 	 */
-	public function role_update( $user_id, $new_role, $old_role ) {
+	public function role_update( $user_id, $new_role, $old_roles ) {
 		if ( ! current_user_can( 'manage_vendors' ) ) {
 			return;
 		}
 
-		if ( $new_role !== $old_role && in_array( $new_role, array( 'wc_product_vendors_admin_vendor', 'wc_product_vendors_manager_vendor' ) ) ) {
+		$vendor_roles = array( 'wc_product_vendors_admin_vendor', 'wc_product_vendors_manager_vendor' );
+
+		$approved_already = get_user_meta( $user_id, '_wcpv_vendor_approval', true );
+
+		// Remove vendor approval if vendor role is changed to non vendor role.
+		foreach ( $old_roles as $old_role ) {
+			if ( in_array( $old_role, $vendor_roles ) && ! in_array( $new_role, $vendor_roles ) ) {
+				delete_user_meta( $user_id, '_wcpv_vendor_approval' );
+			}
+		}
+
+		if ( 
+			! in_array( $new_role, $old_roles ) && 
+			in_array( $new_role, $vendor_roles ) &&
+			'yes' !== $approved_already
+		) {
 
 			$emails = WC()->mailer()->get_emails();
 
 			if ( ! empty( $emails ) ) {
-				$emails[ 'WC_Product_Vendors_Approval' ]->trigger( $user_id, $new_role, $old_role );
+				$emails[ 'WC_Product_Vendors_Approval' ]->trigger( $user_id, $new_role, $old_roles );
 			}
 		}
 

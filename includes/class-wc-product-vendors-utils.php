@@ -45,7 +45,7 @@ class WC_Product_Vendors_Utils {
 			self::is_admin_vendor( $user_id ) ||
 			self::is_pending_vendor( $user_id )
 		) {
-			
+
 			return true;
 		}
 
@@ -65,13 +65,13 @@ class WC_Product_Vendors_Utils {
 		// if param not passed use current user
 		if ( null === $user_id ) {
 			$current_user = wp_get_current_user();
-		
+
 		} else {
 			$current_user = new WP_User( $user_id );
 		}
 
 		if ( is_object( $current_user ) && in_array( 'wc_product_vendors_pending_vendor', $current_user->roles ) ) {
-			
+
 			return true;
 		}
 
@@ -91,7 +91,7 @@ class WC_Product_Vendors_Utils {
 		// if param not passed use current user
 		if ( null === $user_id ) {
 			$current_user = wp_get_current_user();
-		
+
 		} else {
 			$current_user = new WP_User( $user_id );
 		}
@@ -117,13 +117,13 @@ class WC_Product_Vendors_Utils {
 		// if param not passed use current user
 		if ( null === $user_id ) {
 			$current_user = wp_get_current_user();
-		
+
 		} else {
 			$current_user = new WP_User( $user_id );
 		}
 
 		if ( is_object( $current_user ) && in_array( 'wc_product_vendors_manager_vendor', $current_user->roles ) ) {
-			
+
 			return true;
 		}
 
@@ -143,7 +143,7 @@ class WC_Product_Vendors_Utils {
 	public static function sanitize_multi_array( $item, $key ) {
 		$item = sanitize_text_field( $item );
 
-		return $item;		
+		return $item;
 	}
 
 	/**
@@ -192,7 +192,7 @@ class WC_Product_Vendors_Utils {
 
 		$name = wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES );
 
-		$link = get_permalink( woocommerce_get_page_id( 'shop' ) );
+		$link = get_permalink( wc_get_page_id( 'shop' ) );
 
 		$term = wp_get_post_terms( $post_id, WC_PRODUCT_VENDORS_TAXONOMY );
 
@@ -228,7 +228,7 @@ class WC_Product_Vendors_Utils {
 			$vendor_data['taxonomy']         = $vendor_term->taxonomy;
 			$vendor_data['description']      = $vendor_term->description;
 			$vendor_data['parent']           = $vendor_term->parent;
-			$vendor_data['count']            = $vendor_term->count;			
+			$vendor_data['count']            = $vendor_term->count;
 		}
 
 		return $vendor_data;
@@ -258,7 +258,7 @@ class WC_Product_Vendors_Utils {
 		$vendors = array();
 
 		// loop through to see which one has assigned passed in user
-		foreach( $terms as $term ) {
+		foreach ( $terms as $term ) {
 			$vendor_data = get_term_meta( $term->term_id, 'vendor_data', true );
 
 			if ( ! empty( $vendor_data['admins'] ) ) {
@@ -393,7 +393,7 @@ class WC_Product_Vendors_Utils {
 			return false;
 		}
 
-		if ( $product_terms[0] === self::get_logged_in_vendor() ) {
+		if ( self::get_logged_in_vendor() === $product_terms[0] ) {
 			return true;
 		}
 
@@ -413,9 +413,9 @@ class WC_Product_Vendors_Utils {
 		$current_user = wp_get_current_user();
 
 		$user_id = $current_user->ID;
-		
+
 		$vendor_id = self::_get_vendor_login_cookie();
-		
+
 		// if cookie is set and user can manage this vendor
 		if ( self::auth_vendor_user() ) {
 			if ( 'slug' === $type ) {
@@ -424,7 +424,6 @@ class WC_Product_Vendors_Utils {
 				if ( is_object( $term ) ) {
 					return $term->slug;
 				}
-
 			} elseif ( 'id' === $type ) {
 				return intval( $vendor_id );
 
@@ -433,7 +432,7 @@ class WC_Product_Vendors_Utils {
 
 				if ( is_object( $term ) ) {
 					return $term->name;
-				}				
+				}
 			}
 		}
 
@@ -451,7 +450,7 @@ class WC_Product_Vendors_Utils {
 	public static function is_edit_product_page() {
 		global $pagenow, $typenow;
 
-		if ( 'product' !== $typenow && 'post.php' !== $pagenow && empty( $_GET['action'] ) && $_GET['action'] !== 'edit' ) {
+		if ( 'product' !== $typenow && 'post.php' !== $pagenow && empty( $_GET['action'] ) && 'edit' !== $_GET['action'] ) {
 			return false;
 		}
 
@@ -473,7 +472,7 @@ class WC_Product_Vendors_Utils {
 		if ( empty( $term_id ) ) {
 			$term_id = self::get_logged_in_vendor();
 		}
-		
+
 		if ( ! empty( $term_id ) ) {
 			$args = array(
 				'post_type'      => 'product',
@@ -485,7 +484,7 @@ class WC_Product_Vendors_Utils {
 						'field'    => 'id',
 						'terms'    => $term_id,
 					),
-				),				
+				),
 			);
 
 			$query = new WP_Query( $args );
@@ -514,7 +513,7 @@ class WC_Product_Vendors_Utils {
 
 		$product_count = 0;
 
-		foreach( $product_ids as $product_id ) {
+		foreach ( $product_ids as $product_id ) {
 			$product = wc_get_product( $product_id );
 
 			// check if product has rating
@@ -552,7 +551,7 @@ class WC_Product_Vendors_Utils {
 
 		$rating_html .= '</div>';
 
-		return apply_filters( 'wcpv_vendor_get_rating_html', $rating_html, $rating );	
+		return apply_filters( 'wcpv_vendor_get_rating_html', $rating_html, $rating );
 	}
 
 	/**
@@ -578,7 +577,7 @@ class WC_Product_Vendors_Utils {
 
 		if ( $tz && ( ! preg_match( '/UTC-/', $tz ) && ! preg_match( '/UTC+/', $tz ) ) ) {
 			$datetime = date_create( $string, new DateTimeZone( 'UTC' ) );
-			
+
 			if ( ! $datetime ) {
 				return date( $format, 0 );
 			}
@@ -586,7 +585,7 @@ class WC_Product_Vendors_Utils {
 			$datetime->setTimezone( new DateTimeZone( $tz ) );
 			$string_localtime = $datetime->format( $format );
 		} else {
-			if ( ! preg_match('#([0-9]{1,4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})#', $string, $matches) ) {
+			if ( ! preg_match( '#([0-9]{1,4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})#', $string, $matches ) ) {
 				return date( $format, 0 );
 			}
 
@@ -700,7 +699,7 @@ class WC_Product_Vendors_Utils {
 	/**
 	 * Gets the commission for a product
 	 * Search order is: product variation level -> product parent level -> vendor level -> general vendors level
-	 *	
+	 *
 	 * @access public
 	 * @since 2.0.0
 	 * @version 2.0.0
@@ -718,7 +717,7 @@ class WC_Product_Vendors_Utils {
 
 			if ( ! empty( $commission ) || '0' == $commission ) {
 				return array( 'commission' => $commission, 'type' => $vendor_data['commission_type'] );
-			
+
 			// try to get the commission from the parent product
 			} else {
 				$parent_id = wp_get_post_parent_id( $product_id );
@@ -729,7 +728,6 @@ class WC_Product_Vendors_Utils {
 					return array( 'commission' => $commission, 'type' => $vendor_data['commission_type'] );
 				}
 			}
-
 		} else {
 			$commission = get_post_meta( $product_id, '_wcpv_product_commission', true );
 
@@ -767,23 +765,23 @@ class WC_Product_Vendors_Utils {
 	 */
 	public static function get_vendors_from_order( $order = null ) {
 		global $wpdb;
-		
+
 		if ( null === $order ) {
 			return null;
 		}
-		
+
 		$vendor_data = array();
 
 		$items = $order->get_items( 'line_item' );
 
 		if ( ! empty( $items ) ) {
-			
+
 			// get all product ids
-			foreach( $items as $item_id => $item ) {
-				$sql = "SELECT `meta_value`";
-				$sql .= " FROM {$wpdb->prefix}woocommerce_order_itemmeta";
-				$sql .= " WHERE `order_item_id` = %d";
-				$sql .= " AND `meta_key` = %s";
+			foreach ( $items as $item_id => $item ) {
+				$sql = 'SELECT `meta_value`';
+				$sql .= ' FROM {$wpdb->prefix}woocommerce_order_itemmeta';
+				$sql .= ' WHERE `order_item_id` = %d';
+				$sql .= ' AND `meta_key` = %s';
 
 				// get the product id of the order item
 				$product_id = $wpdb->get_var( $wpdb->prepare( $sql, $item_id, '_product_id' ) );
@@ -827,7 +825,7 @@ class WC_Product_Vendors_Utils {
 
 			$attr_names = '';
 
-			foreach( $attributes as $attr => $value ) {
+			foreach ( $attributes as $attr => $value ) {
 				$attr_names .= $attr . ':' . $value . '  ';
 			}
 
@@ -848,7 +846,7 @@ class WC_Product_Vendors_Utils {
 	public static function commission_table_exists() {
 		global $wpdb;
 
-		if ( $wpdb->get_var( "SHOW TABLES LIKE '" . WC_PRODUCT_VENDORS_COMMISSION_TABLE . "'" ) !== WC_PRODUCT_VENDORS_COMMISSION_TABLE ) {
+		if ( WC_PRODUCT_VENDORS_COMMISSION_TABLE !== $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', WC_PRODUCT_VENDORS_COMMISSION_TABLE ) ) ) {
 			return false;
 		}
 
@@ -970,8 +968,8 @@ class WC_Product_Vendors_Utils {
 		}
 
 		$sql = "SELECT `meta_value` FROM {$wpdb->prefix}woocommerce_order_itemmeta";
-		$sql .= " WHERE `order_item_id` = %d";
-		$sql .= " AND `meta_key` = %s";
+		$sql .= ' WHERE `order_item_id` = %d';
+		$sql .= ' AND `meta_key` = %s';
 
 		$status = $wpdb->get_var( $wpdb->prepare( $sql, $order_item_id, '_fulfillment_status' ) );
 
@@ -992,8 +990,8 @@ class WC_Product_Vendors_Utils {
 		global $wpdb;
 
 		$sql = "UPDATE {$wpdb->prefix}woocommerce_order_itemmeta";
-		$sql .= " SET `meta_value` = %s";
-		$sql .= " WHERE `order_item_id` = %d AND `meta_key` = %s";
+		$sql .= ' SET `meta_value` = %s';
+		$sql .= ' WHERE `order_item_id` = %d AND `meta_key` = %s';
 
 		$status = $wpdb->get_var( $wpdb->prepare( $sql, $status, $order_item_id, '_fulfillment_status' ) );
 
@@ -1015,9 +1013,9 @@ class WC_Product_Vendors_Utils {
 		$emails = WC()->mailer()->get_emails();
 
 		if ( ! empty( $emails ) ) {
-			$emails[ 'WC_Product_Vendors_Order_Fulfill_Status_To_Admin' ]->trigger( $vendor_data, $status, $order_item_id );
+			$emails['WC_Product_Vendors_Order_Fulfill_Status_To_Admin']->trigger( $vendor_data, $status, $order_item_id );
 		}
-		
+
 		return true;
 	}
 
@@ -1036,7 +1034,7 @@ class WC_Product_Vendors_Utils {
 		global $wpdb;
 
 		$sql = "SELECT `order_id` FROM {$wpdb->prefix}woocommerce_order_items";
-		$sql .= " WHERE `order_item_id` = %d";
+		$sql .= ' WHERE `order_item_id` = %d';
 
 		$order_id = $wpdb->get_var( $wpdb->prepare( $sql, $order_item_id ) );
 
@@ -1064,7 +1062,7 @@ class WC_Product_Vendors_Utils {
 		global $wpdb;
 
 		$sql = "SELECT `order_item_name` FROM {$wpdb->prefix}woocommerce_order_items";
-		$sql .= " WHERE `order_item_id` = %d";
+		$sql .= ' WHERE `order_item_id` = %d';
 
 		$order_item_name = $wpdb->get_var( $wpdb->prepare( $sql, $order_item_id ) );
 
@@ -1109,5 +1107,49 @@ class WC_Product_Vendors_Utils {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Formats the order status for localization
+	 *
+	 * @since 2.0.21
+	 * @version 2.0.21
+	 * @param string $order_status
+	 */
+	public static function format_order_status( $order_status = '' ) {
+		switch ( $order_status ) {
+			case 'pending':
+				$order_status = __( 'Pending', 'woocommerce-product-vendors' );
+				break;
+			case 'processing':
+				$order_status = __( 'Processing', 'woocommerce-product-vendors' );
+				break;
+			case 'on-hold':
+				$order_status = __( 'On-hold', 'woocommerce-product-vendors' );
+				break;
+			case 'completed':
+				$order_status = __( 'Completed', 'woocommerce-product-vendors' );
+				break;
+			case 'cancelled':
+				$order_status = __( 'Cancelled', 'woocommerce-product-vendors' );
+				break;
+			case 'refunded':
+				$order_status = __( 'Refunded', 'woocommerce-product-vendors' );
+				break;
+			case 'failed':
+				$order_status = __( 'Failed', 'woocommerce-product-vendors' );
+				break;
+			case 'pre-ordered':
+				$order_status = __( 'Pre-ordered', 'woocommerce-product-vendors' );
+				break;
+			case 'trash':
+				$order_status = __( 'Trash', 'woocommerce-product-vendors' );
+				break;
+			default:
+				$order_status = __( 'Unknown', 'woocommerce-product-vendors' );
+				break;
+		}
+
+		return $order_status;
 	}
 }

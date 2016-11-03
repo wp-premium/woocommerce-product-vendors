@@ -2,6 +2,8 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+$timezone = ! empty( $vendor_data['timezone'] ) ? sanitize_text_field( $vendor_data['timezone'] ) : '';
 ?>
 <div class="wrap">
 	<div id="poststuff">
@@ -28,12 +30,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 										<h4><?php esc_html_e( 'General Details', 'woocommerce-product-vendors' ); ?></h4>
 
 										<p class="form-field form-field-wide"><label for="order_date"><?php esc_html_e( 'Order date:', 'woocommerce-product-vendors' ) ?></label>
-											<input type="text" class="date-picker" name="order_date" id="order_date" maxlength="10" value="<?php echo date_i18n( 'Y-m-d', strtotime( $post->post_date ) ); ?>" disabled="disabled" />@<input type="text" class="hour" placeholder="<?php esc_attr_e( 'h', 'woocommerce-product-vendors' ) ?>" name="order_date_hour" id="order_date_hour" maxlength="2" size="2" value="<?php echo date_i18n( 'H', strtotime( $post->post_date ) ); ?>" disabled="disabled" />:<input type="text" class="minute" placeholder="<?php esc_attr_e( 'm', 'woocommerce-product-vendors' ) ?>" name="order_date_minute" id="order_date_minute" maxlength="2" size="2" value="<?php echo date_i18n( 'i', strtotime( $post->post_date ) ); ?>" disabled="disabled" />
+											<input type="text" class="date-picker" name="order_date" id="order_date" maxlength="10" value="<?php echo WC_Product_Vendors_Utils::format_date( sanitize_text_field( $post->post_date ), $timezone ); ?>" disabled="disabled" />
 										</p>
 
 										<p class="form-field form-field-wide wc-order-status"><label for="order_status"><?php esc_html_e( 'Order status:', 'woocommerce-product-vendors' ) ?></label>
 
-										<span class="wcpv-order-status-<?php echo esc_attr( $order->get_status() ); ?>"><?php echo esc_html( ucfirst( $order->get_status() ) ); ?></span></p>
+										<span class="wcpv-order-status-<?php echo esc_attr( $order->get_status() ); ?>"><?php echo esc_html( WC_Product_Vendors_Utils::format_order_status( $order->get_status() ) ); ?></span></p>
 									</div><!--.order_data_column-->
 
 									<div class="order_data_column">
@@ -45,7 +47,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 											} else {
 												echo '<p class="none_set"><strong>' . esc_html__( 'Address', 'woocommerce-product-vendors' ) . ':</strong> ' . esc_html__( 'No shipping address set.', 'woocommerce-product-vendors' ) . '</p>';
 											}
-										
+
 											$address = $order->get_address();
 
 											?>
@@ -70,7 +72,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 											} else {
 												echo '<p class="none_set"><strong>' . esc_html__( 'Address', 'woocommerce-product-vendors' ) . ':</strong> ' . esc_html__( 'No shipping address set.', 'woocommerce-product-vendors' ) . '</p>';
 											}
-										
+
 											$address = $order->get_address();
 
 											?>

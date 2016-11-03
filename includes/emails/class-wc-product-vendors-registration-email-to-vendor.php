@@ -34,9 +34,9 @@ class WC_Product_Vendors_Registration_Email_To_Vendor extends WC_Email {
 			return;
 		}
 
-		$this->user_login = $args['user_login'];
-		$this->user_pass  = $args['user_pass'];
-		$this->recipient  = $args['user_email'];
+		$this->user_login         = $args['user_login'];
+		$this->password_reset_key = $args['password_reset_key'];
+		$this->recipient          = $args['user_email'];
 		
 		$this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
 	}
@@ -50,12 +50,12 @@ class WC_Product_Vendors_Registration_Email_To_Vendor extends WC_Email {
 	public function get_content_html() {
 		ob_start();
 		wc_get_template( $this->template_html, array(
-			'user_login'    => $this->user_login,
-			'user_pass'     => $this->user_pass,
-			'email_heading' => $this->get_heading(),
-			'sent_to_admin' => true,
-			'plain_text'    => false,
-			'email'         => $this
+			'user_login'         => $this->user_login,
+			'password_reset_key' => $this->password_reset_key,
+			'email_heading'      => $this->get_heading(),
+			'sent_to_admin'      => true,
+			'plain_text'         => false,
+			'email'              => $this
 		), 'woocommerce-product-vendors/', $this->template_base );
 
 		return ob_get_clean();
@@ -70,12 +70,12 @@ class WC_Product_Vendors_Registration_Email_To_Vendor extends WC_Email {
 	public function get_content_plain() {
 		ob_start();
 		wc_get_template( $this->template_plain, array(
-			'user_login'    => $this->user_login,
-			'user_pass'     => $this->user_pass,
-			'email_heading' => $this->get_heading(),
-			'sent_to_admin' => true,
-			'plain_text'    => true,
-			'email'         => $this
+			'user_login'         => $this->user_login,
+			'password_reset_key' => $this->password_reset_key,
+			'email_heading'      => $this->get_heading(),
+			'sent_to_admin'      => true,
+			'plain_text'         => true,
+			'email'              => $this
 		), 'woocommerce-product-vendors/', $this->template_base );
 
 		return ob_get_clean();

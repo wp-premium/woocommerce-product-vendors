@@ -40,7 +40,7 @@ class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 		$this->vendor_id   = WC_Product_Vendors_Utils::get_logged_in_vendor();
 		$this->vendor_data = WC_Product_Vendors_Utils::get_vendor_data_from_user();
 
-    	return true;
+		return true;
 	}
 
 	/**
@@ -63,21 +63,21 @@ class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 		$columns  = $this->get_columns();
 		$hidden   = $this->get_hidden_columns();
 		$sortable = $this->get_sortable_columns();
-		
+
 		$this->process_bulk_action();
 
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 
-		$orderby = ! empty( $_REQUEST[ 'orderby' ] ) ? sanitize_text_field( $_REQUEST[ 'orderby' ] ) : 'order_id';
-		$order   = ( ! empty( $_REQUEST[ 'order' ] ) && $_REQUEST[ 'order' ] === 'asc' ) ? 'ASC' : 'DESC';
+		$orderby = ! empty( $_REQUEST['orderby'] ) ? sanitize_text_field( $_REQUEST['orderby'] ) : 'order_id';
+		$order   = ( ! empty( $_REQUEST['order'] ) && 'asc' === $_REQUEST['order'] ) ? 'ASC' : 'DESC';
 
 		$items_per_page = $this->get_items_per_page( 'orders_per_page', apply_filters( 'wcpv_orders_list_default_item_per_page', 20 ) );
 
 		$current_page = $this->get_pagenum();
-		
-		$sql = "SELECT COUNT(commission.id) FROM " . WC_PRODUCT_VENDORS_COMMISSION_TABLE . " AS commission";
 
-		$sql .= " WHERE 1=1";
+		$sql = 'SELECT COUNT(commission.id) FROM ' . WC_PRODUCT_VENDORS_COMMISSION_TABLE . ' AS commission';
+
+		$sql .= ' WHERE 1=1';
 
 		$sql .= " AND `vendor_id` = {$this->vendor_id}";
 
@@ -99,12 +99,12 @@ class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 				$sql .= $time_filter;
 			}
 
-			if ( ! empty( $_REQUEST['commission_status'] ) ) { 
+			if ( ! empty( $_REQUEST['commission_status'] ) ) {
 				$commission_status = esc_sql( $_REQUEST['commission_status'] );
 
 				$status_filter = " AND `commission_status` = '{$commission_status}'";
-				
-				$sql .= $status_filter; 
+
+				$sql .= $status_filter;
 			}
 		}
 
@@ -117,9 +117,9 @@ class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 
 		$offset = ( $current_page - 1 ) * $items_per_page;
 
-		$sql = "SELECT * FROM " . WC_PRODUCT_VENDORS_COMMISSION_TABLE . " AS commission";
+		$sql = 'SELECT * FROM ' . WC_PRODUCT_VENDORS_COMMISSION_TABLE . ' AS commission';
 
-		$sql .= " WHERE 1=1";
+		$sql .= ' WHERE 1=1';
 
 		$sql .= " AND `vendor_id` = {$this->vendor_id}";
 
@@ -135,7 +135,7 @@ class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 				$sql .= $time_filter;
 			}
 
-			if ( ! empty( $_REQUEST['commission_status'] ) ) { 
+			if ( ! empty( $_REQUEST['commission_status'] ) ) {
 				$sql .= $status_filter;
 			}
 		}
@@ -184,7 +184,7 @@ class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 		?>
 		<div class="tablenav <?php echo esc_attr( $which ); ?>">
 
-		<?php if ( $this->has_items() ): ?>
+		<?php if ( $this->has_items() ) : ?>
 		<div class="alignleft actions bulkactions">
 			<?php $this->bulk_actions( $which ); ?>
 		</div>
@@ -197,7 +197,7 @@ class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 		</div>
 		<?php
 	}
-	
+
 	/**
 	 * Adds filters to the table
 	 *
@@ -243,13 +243,13 @@ class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 		if ( ! WC_Product_Vendors_Utils::commission_table_exists() ) {
 			return;
 		}
-		
-		$months = $wpdb->get_results( "
+
+		$months = $wpdb->get_results( $wpdb->prepare( '
 			SELECT DISTINCT YEAR( commission.order_date ) AS year, MONTH( commission.order_date ) AS month
-			FROM " . WC_PRODUCT_VENDORS_COMMISSION_TABLE . " AS commission
-			WHERE commission.vendor_id = " . $this->vendor_id . "
+			FROM ' . WC_PRODUCT_VENDORS_COMMISSION_TABLE . ' AS commission
+			WHERE commission.vendor_id = %s
 			ORDER BY commission.order_date DESC
-		" );
+		', $this->vendor_id ) );
 
 		$month_count = count( $months );
 
@@ -257,7 +257,7 @@ class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 			return;
 		}
 
-		$m = isset( $_REQUEST[ 'm' ] ) ? (int) $_REQUEST[ 'm' ] : 0;
+		$m = isset( $_REQUEST['m'] ) ? (int) $_REQUEST['m'] : 0;
 		?>
 		<select name="m" id="filter-by-date">
 			<option<?php selected( $m, 0 ); ?> value='0'><?php esc_html_e( 'Show all dates', 'woocommerce-product-vendors' ); ?></option>
@@ -273,7 +273,7 @@ class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 				if ( '00' === $month || '0' === $year ) {
 					continue;
 				}
-				
+
 				printf( "<option %s value='%s'>%s</option>\n",
 					selected( $m, $year . $month, false ),
 					esc_attr( $arc_row->year . $month ),
@@ -296,7 +296,7 @@ class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 	 * @return bool
 	 */
 	public function status_dropdown( $post_type ) {
-		$commission_status = isset( $_REQUEST[ 'commission_status' ] ) ? sanitize_text_field( $_REQUEST[ 'commission_status' ] ) : '';
+		$commission_status = isset( $_REQUEST['commission_status'] ) ? sanitize_text_field( $_REQUEST['commission_status'] ) : '';
 	?>
 		<select name="commission_status">
 			<option <?php selected( $commission_status, '' ); ?> value=''><?php esc_html_e( 'Show all Commission Statuses', 'woocommerce-product-vendors' ); ?></option>
@@ -357,7 +357,7 @@ class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 	 * @return mixed
 	 */
 	public function column_default( $item, $column_name ) {
-		switch( $column_name ) {
+		switch ( $column_name ) {
 
 			case 'order_id' :
 				$order = get_post( absint( $item->order_id ) );
@@ -372,13 +372,13 @@ class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 				$order = wc_get_order( $item->order_id );
 
 				if ( is_object( $order ) ) {
-					$order_status = $order->get_status();
+					$order_status = WC_Product_Vendors_Utils::format_order_status( $order->get_status() );
 
-					return sprintf( '<span class="wcpv-order-status-%s">%s</span>', esc_attr( $order_status ), ucwords( $order_status ) );
+					return sprintf( '<span class="wcpv-order-status-%s">%s</span>', esc_attr( $order->get_status() ), $order_status );
 				} else {
 					return __( 'N/A', 'woocommerce-product-vendors' );
 				}
-				
+
 			case 'order_date' :
 				$order = wc_get_order( absint( $item->order_id ) );
 
@@ -409,27 +409,26 @@ class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 
 				// check if product is a variable product
 				if ( ! empty( $item->variation_id ) ) {
-					$product = get_product( absint( $item->variation_id ) );
+					$product = wc_get_product( absint( $item->variation_id ) );
 
 					$attributes = maybe_unserialize( $item->variation_attributes );
 
 					if ( ! empty( $attributes ) ) {
-						foreach( $attributes as $name => $value ) {
+						foreach ( $attributes as $name => $value ) {
 							if ( version_compare( WC_VERSION, '2.6.0', '>=' ) ) {
 								$name = wc_attribute_label( wc_sanitize_taxonomy_name( $name ) );
 							}
 
-							$var_attributes .= sprintf( __( '<br /><small>( %s: %s )</small>', 'woocommerce-product-vendors' ), $name, $value );
+							$var_attributes .= sprintf( __( '<br /><small>( %1$s: %2$s )</small>', 'woocommerce-product-vendors' ), $name, $value );
 						}
 					}
-
 				} else {
-					$product = get_product( absint( $item->product_id ) );
+					$product = wc_get_product( absint( $item->product_id ) );
 
 				}
 
 				if ( is_object( $product ) && $product->get_sku() ) {
-					$sku = sprintf( __( '%s %s: %s', 'woocommerce-product-vendors' ), '<br />', 'SKU', $product->get_sku() );  
+					$sku = sprintf( __( '%1$s %2$s: %3$s', 'woocommerce-product-vendors' ), '<br />', 'SKU', $product->get_sku() );
 				}
 
 				if ( is_object( $product ) ) {
@@ -480,7 +479,7 @@ class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 
 				} elseif ( $status && 'fulfilled' === $status ) {
 					$status = '<span class="wcpv-fulfilled-status">' . esc_html__( 'FULFILLED', 'woocommerce-product-vendors' ) . '</span>';
-				
+
 				} else {
 					$status = esc_html__( 'N/A', 'woocommerce-product-vendors' );
 				}
@@ -506,7 +505,7 @@ class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 
 		$new_hidden = array();
 
-		foreach( $hidden as $k => $v ) {
+		foreach ( $hidden as $k => $v ) {
 			if ( ! empty( $v ) ) {
 				$new_hidden[] = $v;
 			}
@@ -558,7 +557,7 @@ class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 			'fulfilled'   => __( 'Mark Fulfilled', 'woocommerce-product-vendors' ),
 			'unfulfilled' => __( 'Mark Unfulfilled', 'woocommerce-product-vendors' ),
 		);
-		
+
 		return $actions;
 	}
 
@@ -589,7 +588,7 @@ class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 
 		$processed = 0;
 
-		foreach( $ids as $id => $order_item_id ) {
+		foreach ( $ids as $id => $order_item_id ) {
 			WC_Product_Vendors_Utils::set_fulfillment_status( absint( $order_item_id ), $this->current_action() );
 
 			WC_Product_Vendors_Utils::send_fulfill_status_email( $this->vendor_data, $this->current_action(), $order_item_id );
@@ -600,7 +599,7 @@ class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 		echo '<div class="notice-success notice"><p>' . sprintf( _n( '%d item processed.', '%d items processed', $processed, 'woocommerce-product-vendors' ), $processed ) . '</p></div>';
 
 		WC_Product_Vendors_Utils::clear_reports_transients();
-		
+
 		return true;
 	}
 
@@ -651,10 +650,10 @@ class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 
 		if ( ! empty( $columns['cb'] ) ) {
 			static $cb_counter = 1;
-		
+
 			$columns['cb'] = '<label class="screen-reader-text" for="cb-select-all-' . $cb_counter . '">' . esc_html__( 'Select All', 'woocommerce-product-vendors' ) . '</label>'
 				. '<input id="cb-select-all-' . $cb_counter . '" type="checkbox" />';
-		
+
 			$cb_counter++;
 		}
 

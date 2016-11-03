@@ -183,6 +183,10 @@ class WC_Product_Vendors_Commission {
 		foreach( $commissions as $commission ) {
 			$order = wc_get_order( $commission->order_id );
 
+			if ( ! is_object( $order ) ) {
+				continue;
+			}
+			
 			$order_status = $order->get_status();
 
 			if ( 'completed' === $order_status || 'processing' === $order_status ) {

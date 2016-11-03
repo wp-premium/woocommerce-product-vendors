@@ -2,7 +2,7 @@
 /**
  * Vendor registration email to vendor.
  *
- * @version 2.0.0
+ * @version 2.0.21
  * @since 2.0.0
  */
 
@@ -20,9 +20,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 <p><?php esc_html_e( 'Here is your login account information:', 'woocommerce-product-vendors' ); ?></p>
 
 <ul>
-	<li><?php printf( esc_html__( 'Login Address: %s', 'woocommerce-product-vendors' ), admin_url() ); ?></li>
+	<li><?php printf( esc_html__( 'Login Address: %s', 'woocommerce-product-vendors' ), '<a href="' . esc_url( wp_login_url() ) . '">' . wp_login_url() . '</a>' ); ?></li>
 	<li><?php printf( esc_html__( 'Login Name: %s', 'woocommerce-product-vendors' ), $user_login ); ?></li>
-	<li><?php printf( esc_html__( 'Login Password: %s', 'woocommerce-product-vendors' ), $user_pass ); ?></li>
 </ul>
+
+<a class="link" href="<?php echo esc_url( add_query_arg( array( 'action' => 'rp', 'key' => $password_reset_key, 'login' => rawurlencode( $user_login ) ), wp_login_url() ) ); ?>">
+			<?php esc_html_e( 'Click here to set your password and gain access to your account.', 'woocommerce-product-vendors' ); ?></a>
 
 <?php do_action( 'woocommerce_email_footer', $email ); ?>
