@@ -1,5 +1,9 @@
 *** Product Vendors Changelog ***
 
+2016.11.09 - version 2.0.22
+* Fix - Database query error.
+* Fix - Vendor admin in mobile not seeing menu icon.
+
 2016.10.25 - version 2.0.21
 * Fix - Vendor widget not allowing simple HTML.
 * Fix - Vendor order date discrepancies between list and detail.

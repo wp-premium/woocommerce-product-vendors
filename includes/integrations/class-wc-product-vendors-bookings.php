@@ -72,6 +72,12 @@ class WC_Product_Vendors_Bookings {
 		// redirect the page after creating bookings
 		add_filter( 'wp_redirect', array( $this, 'create_booking_redirect' ) );
 
+		// clears any cache for the recent bookings on dashboard
+		add_action( 'save_post', array( $this, 'clear_recent_bookings_cache_on_save_post' ), 10, 2 );
+
+		// clears any cache for the recent bookings on dashboard
+		add_action( 'woocommerce_new_booking_order', array( $this, 'clear_recent_bookings_cache_on_create' ) );
+
 		return true;
 	}
 
@@ -112,7 +118,7 @@ class WC_Product_Vendors_Bookings {
 			);
 
 			$bookings = get_posts( apply_filters( 'wcpv_bookings_list_widget_args', $args ) );
-			
+
 			if ( ! empty( $bookings ) ) {
 				// filter out only bookings with products of the vendor
 				$bookings = array_filter( $bookings, array( $this, 'filter_booking_products' ) );
@@ -143,7 +149,7 @@ class WC_Product_Vendors_Bookings {
 
 			<tbody id="the-list">
 				<?php
-				foreach( $bookings as $booking ) {
+				foreach ( $bookings as $booking ) {
 					$booking_item = get_wc_booking( $booking->ID );
 					?>
 					<tr>
@@ -152,7 +158,7 @@ class WC_Product_Vendors_Bookings {
 						<td><a href="<?php echo get_edit_post_link( $booking_item->get_product()->id ); ?>" title="<?php esc_attr_e( 'Edit Product', 'woocommerce-product-vendors' ); ?>"><?php echo $booking_item->get_product()->post->post_title; ?></a></td>
 
 						<td>
-							<?php 
+							<?php
 							if ( $booking_item->has_persons() ) {
 								echo $booking_item->get_persons_total();
 							} else {
@@ -175,7 +181,7 @@ class WC_Product_Vendors_Bookings {
 							<?php
 							if ( $booking_item->get_order() ) {
 							?>
-								<a href="<?php echo admin_url( 'admin.php?page=wcpv-vendor-order&id=' . $booking_item->order_id ); ?>" title="<?php esc_attr_e( 'Order Detail', 'woocommerce-product-vendors' ); ?>"><?php printf( __( '#%d', 'woocommerce-product-vendors' ), $booking_item->order_id ); ?></a> &mdash; <?php echo $booking_item->get_order()->get_status(); ?>
+								<a href="<?php echo admin_url( 'admin.php?page=wcpv-vendor-order&id=' . $booking_item->order_id ); ?>" title="<?php esc_attr_e( 'Order Detail', 'woocommerce-product-vendors' ); ?>"><?php printf( __( '#%d', 'woocommerce-product-vendors' ), $booking_item->order_id ); ?></a> &mdash; <?php echo WC_Product_Vendors_Utils::format_order_status( $booking_item->get_order()->get_status() ); ?>
 							<?php
 							} else {
 								esc_html_e( 'N/A', 'woocommerce-product-vendors' );
@@ -212,7 +218,7 @@ class WC_Product_Vendors_Bookings {
 			return $item;
 		}
 	}
-	
+
 	/**
 	 * When saving global availability rules, save it in vendor meta as well
 	 *
@@ -288,7 +294,7 @@ class WC_Product_Vendors_Bookings {
 				$modified_old_values = array();
 
 				// add the rest of the rules back in
-				foreach( $old_values as $old_value ) {
+				foreach ( $old_values as $old_value ) {
 					// skip the ones that belongs to current vendor
 					if ( ! empty( $old_value['vendor'] ) && (int) WC_Product_Vendors_Utils::get_logged_in_vendor() === $old_value['vendor'] ) {
 						continue;
@@ -297,7 +303,7 @@ class WC_Product_Vendors_Bookings {
 					$modified_old_values[] = $old_value;
 				}
 			}
-			
+
 			$modified_values = array_merge( $modified_values, $modified_old_values );
 		}
 
@@ -321,7 +327,7 @@ class WC_Product_Vendors_Bookings {
 
 			$filtered_options = array();
 
-			foreach( $options as $option ) {
+			foreach ( $options as $option ) {
 				// only add the ones that belong to current vendor
 				if ( ! empty( $option['vendor'] ) && (int) WC_Product_Vendors_Utils::get_logged_in_vendor() === $option['vendor'] ) {
 					$filtered_options[] = $option;
@@ -344,7 +350,7 @@ class WC_Product_Vendors_Bookings {
 	 * @param int $for_resource
 	 * @param object $booking
 	 * @return array $availability_rules
-	 */	
+	 */
 	public function filter_availability_rules( $rules, $for_resource, $booking ) {
 		// Rule types
 		$resource_rules        = array();
@@ -356,18 +362,18 @@ class WC_Product_Vendors_Bookings {
 
 		// to prevent duplicate queries from bookings, cache vendor data into
 		// super global
-		if ( ! isset( $GLOBALS['wcpv_is_vendor_booking_product_' . $booking->id] ) ) {
-			$GLOBALS['wcpv_is_vendor_booking_product_' . $booking->id] = false;
+		if ( ! isset( $GLOBALS[ 'wcpv_is_vendor_booking_product_' . $booking->id ] ) ) {
+			$GLOBALS[ 'wcpv_is_vendor_booking_product_' . $booking->id ] = false;
 
 			if ( $vendor = WC_Product_Vendors_Utils::is_vendor_product( $booking->id ) ) {
-				$GLOBALS['wcpv_is_vendor_booking_product_' . $booking->id] = $vendor;
+				$GLOBALS[ 'wcpv_is_vendor_booking_product_' . $booking->id ] = $vendor;
 			}
 		}
 
-		if ( $vendor = $GLOBALS['wcpv_is_vendor_booking_product_' . $booking->id] ) {
+		if ( $vendor = $GLOBALS[ 'wcpv_is_vendor_booking_product_' . $booking->id ] ) {
 			// filter rules that belong to this vendor's product
 			if ( ! empty( $global_rules ) ) {
-				foreach( $global_rules as $rule ) {
+				foreach ( $global_rules as $rule ) {
 					if ( ! empty( $rule['vendor'] ) && $vendor[0]->term_id === $rule['vendor'] ) {
 						$filtered_global_rules[] = $rule;
 					}
@@ -376,7 +382,7 @@ class WC_Product_Vendors_Bookings {
 		} else {
 			// filter rules that don't belong to this vendor's product
 			if ( ! empty( $global_rules ) ) {
-				foreach( $global_rules as $rule ) {
+				foreach ( $global_rules as $rule ) {
 					if ( empty( $rule['vendor'] ) ) {
 						$filtered_global_rules[] = $rule;
 					}
@@ -398,7 +404,7 @@ class WC_Product_Vendors_Bookings {
 				}
 			}
 
-		// Standard handling
+			// Standard handling
 		} elseif ( $for_resource ) {
 			$resource_rules = (array) get_post_meta( $for_resource, '_wc_booking_availability', true );
 		}
@@ -443,8 +449,8 @@ class WC_Product_Vendors_Bookings {
 			$new_views = array();
 
 			// remove the count from each status
-			foreach( $views as $k => $v ) {
-				$new_views[$k] = preg_replace( '/\(\d+\)/', '', $v );
+			foreach ( $views as $k => $v ) {
+				$new_views[ $k ] = preg_replace( '/\(\d+\)/', '', $v );
 			}
 
 			$views = $new_views;
@@ -583,7 +589,7 @@ class WC_Product_Vendors_Bookings {
 		}
 
 		remove_filter( 'pre_get_posts', array( $this, 'filter_products_booking_list' ) );
-		
+
 		if ( 'wc_booking' === $typenow && WC_Product_Vendors_Utils::auth_vendor_user() && is_admin() && 'edit-wc_booking' === $current_screen->id ) {
 			$product_ids = WC_Product_Vendors_Utils::get_vendor_product_ids();
 
@@ -594,7 +600,7 @@ class WC_Product_Vendors_Bookings {
 		}
 
 		return true;
-	}	
+	}
 
 	/**
 	 * Filter products booking calendar to specific vendor
@@ -612,7 +618,7 @@ class WC_Product_Vendors_Bookings {
 			$product_ids = WC_Product_Vendors_Utils::get_vendor_product_ids();
 
 			if ( ! empty( $product_ids ) ) {
-				foreach( $booking_ids as $id ) {
+				foreach ( $booking_ids as $id ) {
 					$booking = get_wc_booking( $id );
 
 					if ( in_array( $booking->product_id, $product_ids ) ) {
@@ -714,7 +720,7 @@ class WC_Product_Vendors_Bookings {
 			return $location;
 		}
 
-		if ( preg_match( '/\bpost=(\d+)/', $location, $matches  ) ) {
+		if ( preg_match( '/\bpost=(\d+)/', $location, $matches ) ) {
 			// check the post type
 			$post = get_post( $matches[1] );
 
@@ -725,6 +731,42 @@ class WC_Product_Vendors_Bookings {
 		}
 
 		return $location;
+	}
+
+	/**
+	 * Clears the recent bookings cache on dashboard
+	 *
+	 * @access public
+	 * @since 2.0.21
+	 * @version 2.0.21
+	 * @return bool
+	 */
+	public function clear_recent_bookings_cache_on_create() {
+		global $wpdb;
+
+		$wpdb->query( "DELETE FROM $wpdb->options WHERE option_name LIKE '%wcpv_reports_bookings_wg%'" );
+
+		return true;
+	}
+
+	/**
+	 * Clears the recent bookings cache on dashboard
+	 *
+	 * @access public
+	 * @since 2.0.21
+	 * @version 2.0.21
+	 * @return bool
+	 */
+	public function clear_recent_bookings_cache_on_save_post( $post_id, $post ) {
+		global $wpdb;
+
+		if ( 'wc_booking' !== $post->post_type ) {
+			return;
+		}
+
+		$wpdb->query( "DELETE FROM $wpdb->options WHERE option_name LIKE '%wcpv_reports_bookings_wg%'" );
+
+		return true;
 	}
 
 	/**
