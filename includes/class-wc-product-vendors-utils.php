@@ -779,7 +779,7 @@ class WC_Product_Vendors_Utils {
 			// get all product ids
 			foreach ( $items as $item_id => $item ) {
 				$sql = 'SELECT `meta_value`';
-				$sql .= ' FROM {$wpdb->prefix}woocommerce_order_itemmeta';
+				$sql .= " FROM {$wpdb->prefix}woocommerce_order_itemmeta";
 				$sql .= ' WHERE `order_item_id` = %d';
 				$sql .= ' AND `meta_key` = %s';
 
