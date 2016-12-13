@@ -1,63 +1,66 @@
 *** Product Vendors Changelog ***
 
-2016.11.09 - version 2.0.22
+2016-12-07 - version 2.0.23
+* Fix - Method name changed in Bookings causing errors.
+
+2016-11-09 - version 2.0.22
 * Fix - Database query error.
 * Fix - Vendor admin in mobile not seeing menu icon.
 
-2016.10.25 - version 2.0.21
+2016-10-25 - version 2.0.21
 * Fix - Vendor widget not allowing simple HTML.
 * Fix - Vendor order date discrepancies between list and detail.
 * Fix - Order statuses were not translatable.
 * Fix - Prevent vendor approval from sending again if they're just changing admin roles.
 * Tweak - Vendor registration no longer sends password but request them to create their own.
 
-2016.09.28 - version 2.0.20
+2016-09-28 - version 2.0.20
 * Fix - CSV Commission export buttons were not working.
 
-2016.09.23 - version 2.0.19
+2016-09-23 - version 2.0.19
 * Fix - Vendors can see media files in list mode of others.
 
-2016.09.07 - version 2.0.18
+2016-09-07 - version 2.0.18
 * Fix - Product attribute names were not formatted correctly after WC 2.6.
 
-2016.08.31 - version 2.0.17
+2016-08-31 - version 2.0.17
 * Fix - UTC timezone offset causes errors as it is not handled properly.
 * Tweak - Performance with Bookings compatibility.
 
-2016.08.24 - version 2.0.16
+2016-08-24 - version 2.0.16
 * Fix - Hide vendor registration form from admins to prevent inadvertent role switching.
 * Fix - JetPack settings and widgets were showing for vendors.
 * Add - Vendor timezone option in vendor settings.
 * Add - Fulfillment status update notification email to admin.
 
-2016.07.18 - version 2.0.15
+2016-07-18 - version 2.0.15
 * Tweak - Scroll to the message of the form on vendor registration.
 * Fix - Undefined enable_bookings notice in settings.
 
-2016.07.07 - version 2.0.14
+2016-07-07 - version 2.0.14
 * Fix - Export unpaid commissions triggered an error.
 * Fix - Vendor user first and last name not showing in the support form emails.
 * Fix - Change load order of text domain so all strings can be translated.
 * Fix - Email templates were not being overridden.
 
-2016.06.28 - version 2.0.13
+2016-06-28 - version 2.0.13
 * Update - When registered user is applying to be a vendor, set their role to pending vendor.
 * Fix - Vendor switcher is not showing on the admin bar.
 
-2016.06.07 - version 2.0.12
+2016-06-07 - version 2.0.12
 * Add - Total earned commission in the vendors report.
 * Add - Admin toolbar menu items for vendors such as add product.
 * Fix - Commission number formatting.
 
-2016.06.03 - version 2.0.11
+2016-06-03 - version 2.0.11
 * Fix - Commission logic when it is fixed amount, it would incorrectly account for only one quantity.
 * Add - Allow vendors to manage users as an option.
 * Add - Bookings global availability options are now available to vendors.
 
-2016.05.16 - version 2.0.10
+2016-05-16 - version 2.0.10
 * Fix - Store admin was not able to see bookable product ( regression from last update ).
 
-2016.05.15 - version 2.0.9
+2016-05-15 - version 2.0.9
 * Fix - Typo on vendor level commission setting which causes commission not to match.
 * Fix - Order generate commission action filter overriding 3rd party actions.
 * Fix - Vendor dashboard no longer shows when vendor resets password.
@@ -66,91 +69,91 @@
 * Fix - Vendors can still add bookable product when their account has bookings disabled.
 * Fix - Vendor name in 2 byte characters would cause vendor dashboard not to show.
 
-2016.05.06 - version 2.0.8
+2016-05-06 - version 2.0.8
 * Fix - Vendor order notes were not processing properly.
 * Fix - Upgrading version 1.x to 2.x were not converting commission amount correctly.
 * Add - Capability to use decimals in commission amounts.
 * Add - Vendor description to vendor profile on 1.x data upgrade.
 
-2016.04.19 - version 2.0.7
+2016-04-19 - version 2.0.7
 * Fix - Fatal error caused by method return value is used in write context.
 
-2016.04.19 - version 2.0.6
+2016-04-19 - version 2.0.6
 * Fix - Sometimes PayPal Mass Payments does not recognize live environment based on clientID.
 * Add - Export all unpaid commission button for PayPal Mass payments.
 * Tweak - Combine batch PayPal Payouts to prevent over charging on fees.
 
-2016.04.14 - version 2.0.5
+2016-04-14 - version 2.0.5
 * Fix - When bulk/quick editing product, sometimes vendors are unassigned from the product.
 * Fix - When product is set to featured, it is removed after a vendor saves the product.
 * Fix - Update number formatting method to prevent rounding issues.
 
-2016.04.04 - version 2.0.4
+2016-04-04 - version 2.0.4
 * Add - Shortcode to list all vendors [wcpv_vendor_list].
 * Add - Placeholder commission in commission fields so users know what the current commission is.
 * Tweak - Don't display vendor registration form when vendor is logged in.
 * Fix - Vendor create products were not showing properly.
 
-2016.03.24 - version 2.0.3
+2016-03-24 - version 2.0.3
 * Fix - Error when vendor has bookings enabled but bookings plugin is not active.
 * Remove - Visibility and featured product settings from vendor quick edit.
 * Add - Trash product capability to vendors.
 
-2016.03.16 - version 2.0.2
+2016-03-16 - version 2.0.2
 * Fix - Possible non object issue on commission list if product was deleted.
 * Fix - Stock not being updated after order.
 * Fix - Product edit was not able to unselect a vendor.
 * Remove - Bookings global availability options for vendors.
 * Remove - Bookings resources for vendors.
 
-2016.03.02 - version 2.0.1
+2016-03-02 - version 2.0.1
 * Fix - Clear bookings calendar cache to prevent wrong bookings from showing to vendors.
 
-2016.02.23 - version 2.0.0
+2016-02-23 - version 2.0.0
 * Update - Release of 2.0.0 ( see here for changes https://docs.woothemes.com/document/product-vendors/#section-2 )
 
-2014.05.13 - version 1.0.9
+2014-05-13 - version 1.0.9
 * New - Adding compatibility for WooCommerce Bookings extension
 * Fix - Fixing typos in dashboard
 
-2014.04.03 - version 1.0.8
+2014-04-03 - version 1.0.8
 * New - Limiting media library to only show media items from current user's vendor
 * Tweak - Showing correct product and media counts for all statuses & views on list tables
 * Tweak - Adding Product Vendors admin pages to WooCommerce page list - this fixes the Chosen inputs on all pages
 * Fix - Fixing updating of vendor details page
 
-2014.01.10 - version 1.0.7
+2014-01-10 - version 1.0.7
 * Update - Updating calls to deprecated $woocommerce->add_inline_js() in WooCommerce 2.1+ and ensuring backwards compatibility for older versions
 * Update - Updating Commissions menu icon to vector font icon
 * Update - Removing Javascript for tooltips from dashboard report for WooCommerce 2.1+
 * Fix - Fixing PHP notices in WooCommerce 2.1+
 * Fix - Fixing rare issue with product access permissions in dashboard
 
-2014.01.01 - version 1.0.6
+2014-01-01 - version 1.0.6
 * Fix - Limiting request filter to dashboard requests only
 
-2013.12.20 - version 1.0.5
+2013-12-20 - version 1.0.5
 * Update - Adding lots of actions and filters for extensibility
 * Tweak - Improving vendor description display
 * Tweak - Improving admin input fields display
 
-2013.12.09 - version 1.0.4
+2013-12-09 - version 1.0.4
 * Fixing rounding errors in CSV export
 
-2013.11.22 - version 1.0.3
+2013-11-22 - version 1.0.3
 * Fixing rounding errors
 * Fixing duplicate PayPal email address on CSV export
 * Fixing saving of vendor admins
 
-2013.09.09 - version 1.0.2
+2013-09-09 - version 1.0.2
 * Allowing vendors to upload images to their own products
 * Fixing commission calculation in some instances
 * Fixing bug that caused duplicate vendors to display when editing a product
 
-2013.08.26 - version 1.0.1
+2013-08-26 - version 1.0.1
 * Adding 'product-vendor' and current vendor slug as body classes on vendor product pages
 * Fixing bug that caused the vendor URL to sometimes return a WP_Error object
 
-2013.08.15 - version 1.0
+2013-08-15 - version 1.0
 * First Release
 
