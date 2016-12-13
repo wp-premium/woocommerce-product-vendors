@@ -411,7 +411,7 @@ class WC_Product_Vendors_Bookings {
 
 		$availability_rules = array_filter( array_reverse( array_merge( WC_Product_Booking_Rule_Manager::process_availability_rules( $resource_rules, 'resource' ), WC_Product_Booking_Rule_Manager::process_availability_rules( $product_rules, 'product' ), WC_Product_Booking_Rule_Manager::process_availability_rules( $filtered_global_rules, 'global' ) ) ) );
 
-		usort( $availability_rules, array( $booking, 'priority_sort' ) );
+		usort( $availability_rules, array( $booking, 'rule_override_power_sort' ) );
 
 		return $availability_rules;
 	}
