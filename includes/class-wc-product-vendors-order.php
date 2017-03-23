@@ -57,7 +57,13 @@ class WC_Product_Vendors_Order {
 	 * @return bool
 	 */
 	public function process_manual_create_commission_action( $order ) {
-		$this->process( $order->id );
+		if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) {
+			$order_id = $order->get_id();
+		} else {
+			$order_id = $order->id;
+		}
+
+		$this->process( $order_id );
 
 		return true;
 	}
@@ -175,8 +181,14 @@ class WC_Product_Vendors_Order {
 
 					$last_commission_id = $wpdb->get_var( $wpdb->prepare( $check_sql, $order_item_id, $order_id, 'paid' ) );
 
+					if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) {
+						$order_date = $this->order->get_date_created();
+					} else {
+						$order_date = $this->order->order_date;
+					}
+
 					if ( empty( $existing_commission ) && 'yes' !== $check_commission_added ) {
-						$last_commission_id = $this->commission->insert( $order_id, $order_item_id, $this->order->order_date, $vendor_id, $vendor_data['name'], $item['product_id'], $item['variation_id'], $item['name'], $attributes, $item['line_total'], $item['qty'], $shipping_amount, $shipping_tax_amount, $item['line_tax'], $product_commission, $total_commission, 'unpaid', NULL );
+						$last_commission_id = $this->commission->insert( $order_id, $order_item_id, $order_date, $vendor_id, $vendor_data['name'], $item['product_id'], $item['variation_id'], $item['name'], $attributes, $item['line_total'], $item['qty'], $shipping_amount, $shipping_tax_amount, $item['line_tax'], $product_commission, $total_commission, 'unpaid', NULL );
 
 						$commission_added = true;
 					}
@@ -205,9 +217,15 @@ class WC_Product_Vendors_Order {
 						$wpdb->query( $wpdb->prepare( $sql, $order_item_id, '_commission_status', $init_status ) );
 					}
 
+					if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) {
+						$customer_user = $this->order->get_customer_user_agent();
+					} else {
+						$customer_user = $this->order->customer_user;
+					}
+
 					// add vendor id to customer meta
-					if ( ! empty( $this->order->customer_user ) ) {
-						WC_Product_Vendors_Utils::update_user_related_vendors( $this->order->customer_user, absint( $vendor_id ) );
+					if ( ! empty( $customer_user ) ) {
+						WC_Product_Vendors_Utils::update_user_related_vendors( $customer_user, absint( $vendor_id ) );
 					}
 				}
 			}

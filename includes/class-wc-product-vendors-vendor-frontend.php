@@ -138,8 +138,13 @@ class WC_Product_Vendors_Vendor_Frontend {
 		$sold_by = get_option( 'wcpv_vendor_settings_display_show_by', 'yes' );
 
 		if ( 'yes' === $sold_by ) {
+			if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) {
+				$product_id = $cart_item['product_id'];
+			} else {
+				$product_id = $cart_item['data']->id;
+			}
 
-			$sold_by = WC_Product_Vendors_Utils::get_sold_by_link( $cart_item['data']->id );
+			$sold_by = WC_Product_Vendors_Utils::get_sold_by_link( $product_id );
 
 			$values[] = array(
 				'name' => apply_filters( 'wcpv_sold_by_text', esc_html__( 'Sold By', 'woocommerce-product-vendors' ) ),

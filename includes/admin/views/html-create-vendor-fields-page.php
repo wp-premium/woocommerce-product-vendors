@@ -56,8 +56,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<div class="form-field term-admins">
 		<label for="wcpv-vendor-admins"><?php esc_html_e( 'Vendor Admins', 'woocommerce-product-vendors' ); ?> <?php echo wc_help_tip( __( 'Additional access level can be set individually per vendor user.', 'woocommerce-product-vendors' ) ); ?></label>
-		<input type="hidden" class="wc-customer-search" id="wcpv-vendor-admins" name="vendor_data[admins]" data-multiple="true" data-placeholder="<?php esc_attr_e( 'Search for Users', 'woocommerce-product-vendors' ); ?>" value="" data-allow_clear="true" style="max-width: 95%;" />
+		<?php if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) { ?>
+			<select id="wcpv-vendor-admins" style="width: 50%;" class="wc-customer-search" name="vendor_data[admins][]" multiple="multiple" data-placeholder="<?php esc_attr_e( 'Search for Users', 'woocommerce-product-vendors' ); ?>">
 
+				<?php
+					foreach( $selected_admins as $key => $value ) {
+						echo '<option value="' . esc_attr( $key ) . '"' . selected( true, true, false ) . '>' . wp_kses_post( $value ) . '</option>';						
+					}
+				?>
+			</select>
+		<?php } else { ?>
+			<input type="hidden" class="wc-customer-search" id="wcpv-vendor-admins" name="vendor_data[admins]" data-multiple="true" data-placeholder="<?php esc_attr_e( 'Search for Users', 'woocommerce-product-vendors' ); ?>" value="<?php echo esc_attr( $admins ); ?>" data-allow_clear="true" style="max-width: 95%;" data-selected="<?php echo esc_attr( json_encode( $selected_admins ) ); ?>" />
+		<?php } ?>
+		
 		<p><?php esc_html_e( 'A list of users who can manage this vendor.', 'woocommerce-product-vendors' ); ?></p>
 	</div>
 
