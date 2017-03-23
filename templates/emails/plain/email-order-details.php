@@ -18,7 +18,13 @@ foreach ( $order->get_items() as $item_id => $item ) :
 	$_product     = apply_filters( 'woocommerce_order_item_product', $order->get_product_from_item( $item ), $item );
 	$item_meta    = new WC_Order_Item_Meta( $item, $_product );
 
-	$vendor_id = WC_Product_Vendors_Utils::get_vendor_id_from_product( $_product->id );
+	if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) {
+		$product_id = $_product->get_id();
+	} else {
+		$product_id = $_product->id;
+	}
+
+	$vendor_id = WC_Product_Vendors_Utils::get_vendor_id_from_product( $product_id );
 
 	// remove the order items that are not from this vendor
 	if ( $this_vendor !== $vendor_id ) {

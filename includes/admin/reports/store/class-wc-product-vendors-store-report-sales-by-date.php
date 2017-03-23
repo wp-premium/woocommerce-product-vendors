@@ -589,7 +589,13 @@ class WC_Product_Vendors_Store_Report_Sales_By_Date extends WC_Admin_Report {
 		<div class="section">
 			<form method="GET">
 				<div>
-					<input type="hidden" class="wcpv-vendor-search" style="width:203px;" name="vendor_id" data-placeholder="<?php esc_attr_e( 'Search for a vendor&hellip;', 'woocommerce-product-vendors' ); ?>" />
+					<?php if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) { ?>
+						<select style="width: 50%;" class="wcpv-vendor-search-bar" name="vendor_id" data-placeholder="<?php esc_attr_e( 'Search for a vendor&hellip;', 'woocommerce-product-vendors' ); ?>">
+						</select>					
+					<?php } else { ?>
+						<input type="hidden" class="wcpv-vendor-search-bar" style="width:203px;" name="vendor_id" data-placeholder="<?php esc_attr_e( 'Search for a vendor&hellip;', 'woocommerce-product-vendors' ); ?>" />
+					<?php } ?>
+
 					<input type="submit" class="submit button" value="<?php esc_attr_e( 'Show', 'woocommerce-product-vendors' ); ?>" />
 					<input type="hidden" name="range" value="<?php if ( ! empty( $_GET['range'] ) ) echo esc_attr( $_GET['range'] ) ?>" />
 					<input type="hidden" name="start_date" value="<?php if ( ! empty( $_GET['start_date'] ) ) echo esc_attr( $_GET['start_date'] ) ?>" />

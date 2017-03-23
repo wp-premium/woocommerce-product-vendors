@@ -184,8 +184,14 @@ class WC_Product_Vendors_Emails {
 	 * @return bool
 	 */
 	public function send_no_stock_email( $product ) {
+		if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) {
+			$product_id = $product->get_id();
+		} else {
+			$product_id = $product->id;
+		}
+
 		// check if product belongs to a vendor
-		$vendor_id = WC_Product_Vendors_Utils::get_vendor_id_from_product( $product->id );
+		$vendor_id = WC_Product_Vendors_Utils::get_vendor_id_from_product( $product_id );
 
 		if ( NULL != $vendor_id ) {
 			$vendor_data = WC_Product_Vendors_Utils::get_vendor_data_by_id( $vendor_id );
@@ -211,8 +217,14 @@ class WC_Product_Vendors_Emails {
 	 * @return bool
 	 */
 	public function send_low_stock_email( $product ) {
+		if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) {
+			$product_id = $product->get_id();
+		} else {
+			$product_id = $product->id;
+		}
+
 		// check if product belongs to a vendor
-		$vendor_id = WC_Product_Vendors_Utils::get_vendor_id_from_product( $product->id );
+		$vendor_id = WC_Product_Vendors_Utils::get_vendor_id_from_product( $product_id );
 
 		if ( NULL != $vendor_id ) {
 			$vendor_data = WC_Product_Vendors_Utils::get_vendor_data_by_id( $vendor_id );

@@ -114,7 +114,7 @@ class WC_Product_Vendors_Bookings {
 			$args = array(
 				'post_type'      => 'wc_booking',
 				'posts_per_page' => 20,
-				'post_status'    => 'any',
+				'post_status'    => array( 'pending', 'publish', 'future', 'private' ),
 			);
 
 			$bookings = get_posts( apply_filters( 'wcpv_bookings_list_widget_args', $args ) );
@@ -411,7 +411,11 @@ class WC_Product_Vendors_Bookings {
 
 		$availability_rules = array_filter( array_reverse( array_merge( WC_Product_Booking_Rule_Manager::process_availability_rules( $resource_rules, 'resource' ), WC_Product_Booking_Rule_Manager::process_availability_rules( $product_rules, 'product' ), WC_Product_Booking_Rule_Manager::process_availability_rules( $filtered_global_rules, 'global' ) ) ) );
 
-		usort( $availability_rules, array( $booking, 'rule_override_power_sort' ) );
+		if ( defined( 'WC_BOOKINGS_VERSION' ) && version_compare( WC_BOOKINGS_VERSION, '1.9.13', '>' ) ) {
+			usort( $availability_rules, array( $booking, 'rule_override_power_sort' ) );
+		} else {
+			usort( $availability_rules, array( $booking, 'priority_sort' ) );
+		}
 
 		return $availability_rules;
 	}

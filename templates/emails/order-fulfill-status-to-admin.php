@@ -9,6 +9,12 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
+
+if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) {
+	$order_id = $order->get_id();
+} else {
+	$order_id = $order->id;
+}
 ?>
 
 <?php do_action( 'woocommerce_email_header', $email_heading, $email ); ?>
@@ -19,10 +25,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <ul>
 	<li><?php printf( esc_html__( 'Vendor', 'woocommerce-product-vendors' ) . ': %s', $vendor_name ); ?></li>
-	<li><?php printf( esc_html__( 'Order Number', 'woocommerce-product-vendors' ) . ': %d', $order->id ); ?></li>
+	<li><?php printf( esc_html__( 'Order Number', 'woocommerce-product-vendors' ) . ': %d', $order_id ); ?></li>
 	<li><?php printf( esc_html__( 'Order Item', 'woocommerce-product-vendors' ) . ': %s', $order_item_name ); ?></li>
 	<li><?php printf( esc_html__( 'Fulfillment Status', 'woocommerce-product-vendors' ) . ': %s', ucfirst( $fulfillment_status ) ); ?></li>
-	<li><a href="<?php echo admin_url( 'post.php?post=' . $order->id . '&action=edit' ); ?>"><?php echo admin_url( 'post.php?post=' . $order->id . '&action=edit' ); ?></a></li>
+	<li><a href="<?php echo admin_url( 'post.php?post=' . $order_id . '&action=edit' ); ?>"><?php echo admin_url( 'post.php?post=' . $order_id . '&action=edit' ); ?></a></li>
 </ul>
 
 <?php do_action( 'woocommerce_email_footer', $email ); ?>

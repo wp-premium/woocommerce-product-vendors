@@ -208,7 +208,13 @@ class WC_Product_Vendors_Vendor_Report_Sales_By_Product extends WC_Admin_Report 
 		<div class="section">
 			<form method="GET">
 				<div>
-					<input type="hidden" class="wc-product-search" style="width:203px;" name="product_ids[]" data-placeholder="<?php esc_attr_e( 'Search for a product&hellip;', 'woocommerce-product-vendors' ); ?>" data-action="woocommerce_json_search_products_and_variations" />
+					<?php if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) { ?>
+						<select class="wc-product-search" multiple="multiple" style="width: 50%;" name="product_ids[]" data-placeholder="<?php esc_attr_e( 'Search for a product&hellip;', 'woocommerce-product-vendors' ); ?>" data-action="woocommerce_json_search_products_and_variations">
+						</select>
+					<?php } else { ?>
+						<input type="hidden" class="wc-product-search" style="width:203px;" name="product_ids[]" data-placeholder="<?php esc_attr_e( 'Search for a product&hellip;', 'woocommerce-product-vendors' ); ?>" data-action="woocommerce_json_search_products_and_variations" />
+					<?php } ?>
+
 					<input type="submit" class="submit button" value="<?php esc_attr_e( 'Show', 'woocommerce-product-vendors' ); ?>" />
 					<input type="hidden" name="range" value="<?php if ( ! empty( $_GET['range'] ) ) echo esc_attr( $_GET['range'] ) ?>" />
 					<input type="hidden" name="start_date" value="<?php if ( ! empty( $_GET['start_date'] ) ) echo esc_attr( $_GET['start_date'] ) ?>" />

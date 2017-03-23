@@ -10,9 +10,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
+if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) {
+	$order_id = $order->get_id();
+} else {
+	$order_id = $order->id;
+}
+
 echo "= " . $email_heading . " =\n\n";
 
-echo sprintf( __( 'The order #%d from %s has been cancelled. The order was as follows:', 'woocommerce-product-vendors' ), $order->id, $order->get_formatted_billing_full_name() ) . "\n\n";
+echo sprintf( __( 'The order #%d from %s has been cancelled. The order was as follows:', 'woocommerce-product-vendors' ), $order_id, $order->get_formatted_billing_full_name() ) . "\n\n";
 
 echo "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\n";
 

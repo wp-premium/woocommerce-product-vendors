@@ -369,7 +369,7 @@ class WC_Product_Vendors_Store_Admin {
 		$paypal               = ! empty( $vendor_data['paypal'] ) ? $vendor_data['paypal'] : '';
 		$per_product_shipping = ! empty( $vendor_data['per_product_shipping'] ) ? $vendor_data['per_product_shipping'] : 'no';
 		$enable_bookings      = ! empty( $vendor_data['enable_bookings'] ) ? $vendor_data['enable_bookings'] : 'no';
-		$admins               = ! empty( $vendor_data['admins'] ) ? $vendor_data['admins'] : '';
+		$admins               = ! empty( $vendor_data['admins'] ) ? $vendor_data['admins'] : array();
 		$tzstring             = ! empty( $vendor_data['timezone'] ) ? $vendor_data['timezone'] : '';
 
 		$selected_admins = array();
@@ -379,7 +379,11 @@ class WC_Product_Vendors_Store_Admin {
 		}
 
 		if ( ! empty( $admins ) ) {
-			$admin_ids = array_filter( array_map( 'absint', explode( ',', $vendor_data['admins'] ) ) );
+			if ( version_compare( WC_VERSION, '2.7.0', '>=' ) && is_array( $vendor_data['admins'] ) ) {
+				$admin_ids = array_map( 'absint', $vendor_data['admins'] );
+			} else {
+				$admin_ids = array_filter( array_map( 'absint', explode( ',', $vendor_data['admins'] ) ) );
+			}
 
 			foreach ( $admin_ids as $admin_id ) {
 				$admin = get_user_by( 'id', $admin_id );
@@ -414,25 +418,64 @@ class WC_Product_Vendors_Store_Admin {
 	 */
 	public function save_vendor_fields( $term_id ) {
 		if ( ! empty( $_POST['vendor_data'] ) ) {
+			$posted_vendor_data    = $_POST['vendor_data'];
+			$sanitized_vendor_data = array();
 
-			$posted_vendor_data = $_POST['vendor_data'];
+			foreach( $posted_vendor_data as $data_key => $data_value ) {
+				if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) {
+					// Previous to WC 2.7, Select 2 needed saved values as string.
+					// Now no longer so we sanitize it as multidimensional array.
+					if ( 'admins' === $data_key ) {
+						$sanitized_vendor_data[ $data_key ] = array_map( 'absint', $data_value );
 
-			// sanitize
-			$posted_vendor_data = array_map( 'sanitize_text_field', $posted_vendor_data );
-			$posted_vendor_data = array_map( 'stripslashes', $posted_vendor_data );			
-						
-			// sanitize html editor content
-			$posted_vendor_data['profile'] = ! empty( $_POST['vendor_data']['profile'] ) ? wp_kses_post( stripslashes( $_POST['vendor_data']['profile'] ) ) : '';
-			
-			// validate commission as it takes an absolute number
-			$posted_vendor_data['commission'] = WC_Product_Vendors_Utils::sanitize_commission( $posted_vendor_data['commission'] );
+						continue;
+					}
+				}
 
-			// account for checkbox fields
-			$posted_vendor_data['enable_bookings']      = ! isset( $posted_vendor_data['enable_bookings'] ) ? 'no' : 'yes';
-			$posted_vendor_data['per_product_shipping'] = ! isset( $posted_vendor_data['per_product_shipping'] ) ? 'no' : 'yes';
-			$posted_vendor_data['instant_payout']       = ! isset( $posted_vendor_data['instant_payout'] ) ? 'no' : 'yes';
+				if ( 'profile' === $data_key ) {
+					// sanitize html editor content
+					$sanitized_vendor_data[ $data_key ] = ! empty( $data_value ) ? wp_kses_post( stripslashes( $data_value ) ) : '';
 
-			update_term_meta( $term_id, 'vendor_data', $posted_vendor_data );
+					continue;
+				}
+				
+				if ( 'commission' === $data_key ) {
+					// validate commission as it takes an absolute number
+					$sanitized_vendor_data[ $data_key ] = WC_Product_Vendors_Utils::sanitize_commission( $data_value );
+
+					continue;
+				}
+
+				if ( 'enable_bookings' === $data_key ) {
+					// account for checkbox fields
+					$sanitized_vendor_data[ $data_key ] = ! isset( $data_value ) ? 'no' : 'yes';
+
+					continue;			
+				}
+
+				if ( 'per_product_shipping' === $data_key ) {
+					// account for checkbox fields
+					$sanitized_vendor_data[ $data_key ] = ! isset( $data_value ) ? 'no' : 'yes';
+
+					continue;
+				}
+				
+				if ( 'instant_payout' === $data_key ) {
+					// account for checkbox fields
+					$sanitized_vendor_data[ $data_key ] = ! isset( $data_value ) ? 'no' : 'yes';
+
+					continue;
+				}
+
+				$sanitized_vendor_data[ $data_key ] = sanitize_text_field( $data_value );
+				$sanitized_vendor_data[ $data_key ] = stripslashes( $data_value );
+			}
+
+			if ( version_compare( WC_VERSION, '2.7.0', '>=' ) && empty( $posted_vendor_data['admins'] ) ) {
+				$sanitized_vendor_data['admins'] = array();
+			}
+
+			update_term_meta( $term_id, 'vendor_data', $sanitized_vendor_data );
 		}
 
 		return true;
@@ -483,8 +526,11 @@ class WC_Product_Vendors_Store_Admin {
 		}
 
 		if ( 'admins' === $column_name && ! empty( $vendor_data['admins'] ) ) {
-			
-			$admin_ids = array_filter( array_map( 'absint', explode( ',', $vendor_data['admins'] ) ) );
+			if ( version_compare( WC_VERSION, '2.7.0', '>=' ) && is_array( $vendor_data['admins'] ) ) {
+				$admin_ids = array_map( 'absint', $vendor_data['admins'] );
+			} else {
+				$admin_ids = array_filter( array_map( 'absint', explode( ',', $vendor_data['admins'] ) ) );
+			}
 
 			foreach ( $admin_ids as $admin_id ) {
 				$admin = get_user_by( 'id', $admin_id );
@@ -1216,10 +1262,14 @@ class WC_Product_Vendors_Store_Admin {
 		     wp_die( __( 'Cheatin&#8217; huh?', 'woocommerce-product-vendors' ) );	
 		}
 
-		$term = (string) wc_clean( stripslashes( $_GET['term'] ) );
-
-		if ( empty( $term ) ) {
+		if ( empty( $_GET['term'] ) ) {
 			wp_die( __( 'Cheatin&#8217; huh?', 'woocommerce-product-vendors' ) );
+		}
+
+		if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) {
+			$term = (string) wc_clean( stripslashes( $_GET['term']['term'] ) );
+		} else {
+			$term = (string) wc_clean( stripslashes( $_GET['term'] ) );
 		}
 
 		$args = array(
@@ -1307,11 +1357,17 @@ class WC_Product_Vendors_Store_Admin {
 				return;
 			}
 
+			if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) {
+				$product_id = $product->get_id();
+			} else {
+				$product_id = $product->id;
+			}
+
 			if ( ! empty( $_REQUEST['_wcpv_product_default_pass_shipping_tax'] ) && 'yes' === $_REQUEST['_wcpv_product_default_pass_shipping_tax'] ) {
-				update_post_meta( $product->id, '_wcpv_product_default_pass_shipping_tax', 'yes' );
+				update_post_meta( $product_id, '_wcpv_product_default_pass_shipping_tax', 'yes' );
 
 			} else {
-				update_post_meta( $product->id, '_wcpv_product_default_pass_shipping_tax', 'no' );
+				update_post_meta( $product_id, '_wcpv_product_default_pass_shipping_tax', 'no' );
 			}
 		}
 

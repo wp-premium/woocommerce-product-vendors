@@ -1128,7 +1128,13 @@ class WC_Product_Vendors_Vendor_Admin {
 			$payment_gateways = array();
 		}
 
-		$payment_method = ! empty( $order->payment_method ) ? $order->payment_method : '';
+		if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) {
+			$payment_method = $order->get_payment_method();
+		} else {
+			$payment_method = $order->payment_method;
+		}
+
+		$payment_method = ! empty( $payment_method ) ? $payment_method : '';
 
 		$order_list = new WC_Product_Vendors_Vendor_Order_Detail_List();
 
