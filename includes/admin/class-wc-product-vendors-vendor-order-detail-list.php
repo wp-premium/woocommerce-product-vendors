@@ -157,24 +157,78 @@ class WC_Product_Vendors_Vendor_Order_Detail_List extends WP_List_Table {
 		switch ( $column_name ) {
 
 			case 'product_name' :
-				$quantity = absint( $item->product_quantity );
-
+				$order          = wc_get_order( $item->order_id );
+				$quantity       = absint( $item->product_quantity );
 				$var_attributes = '';
-				$sku = '';
+				$sku            = '';
 
 				// check if product is a variable product
 				if ( ! empty( $item->variation_id ) ) {
 					$product = wc_get_product( absint( $item->variation_id ) );
 
-					$attributes = maybe_unserialize( $item->variation_attributes );
+					if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) {
+						$order_item = WC_Order_Factory::get_order_item( $item->order_item_id );
+						
+						if ( $metadata = $order_item->get_formatted_meta_data() ) {
+							foreach ( $metadata as $meta_id => $meta ) {
+								// Skip hidden core fields
+								if ( in_array( $meta->key, apply_filters( 'wcpv_hidden_order_itemmeta', array(
+									'_qty',
+									'_tax_class',
+									'_product_id',
+									'_variation_id',
+									'_line_subtotal',
+									'_line_subtotal_tax',
+									'_line_total',
+									'_line_tax',
+									'_fulfillment_status',
+									'_commission_status',
+									'method_id',
+									'cost',
+								) ) ) ) {
+									continue;
+								}
 
-					if ( ! empty( $attributes ) ) {
-						foreach ( $attributes as $name => $value ) {
-							if ( version_compare( WC_VERSION, '2.6.0', '>=' ) ) {
-								$name = wc_attribute_label( wc_sanitize_taxonomy_name( $name ) );
+								$var_attributes .= sprintf( __( '<br /><small>( %1$s: %2$s )</small>', 'woocommerce-product-vendors' ), wp_kses_post( rawurldecode( $meta->display_key ) ), wp_kses_post( $meta->value ) );
 							}
+						}
+					} else {
+						if ( $metadata = $order->has_meta( $item->order_item_id ) ) {
+							foreach ( $metadata as $meta ) {
+								// Skip hidden core fields
+								if ( in_array( $meta['meta_key'], apply_filters( 'wcpv_hidden_order_itemmeta', array(
+									'_qty',
+									'_tax_class',
+									'_product_id',
+									'_variation_id',
+									'_line_subtotal',
+									'_line_subtotal_tax',
+									'_line_total',
+									'_line_tax',
+									'_fulfillment_status',
+									'_commission_status',
+									'method_id',
+									'cost',
+								) ) ) ) {
+									continue;
+								}
 
-							$var_attributes .= sprintf( __( '<br /><small>( %1$s: %2$s )</small>', 'woocommerce-product-vendors' ), $name, $value );
+								// Skip serialised meta
+								if ( is_serialized( $meta['meta_value'] ) ) {
+									continue;
+								}
+
+								// Get attribute data
+								if ( taxonomy_exists( wc_sanitize_taxonomy_name( $meta['meta_key'] ) ) ) {
+									$term               = get_term_by( 'slug', $meta['meta_value'], wc_sanitize_taxonomy_name( $meta['meta_key'] ) );
+									$meta['meta_key']   = wc_attribute_label( wc_sanitize_taxonomy_name( $meta['meta_key'] ) );
+									$meta['meta_value'] = isset( $term->name ) ? $term->name : $meta['meta_value'];
+								} else {
+									$meta['meta_key']   = wc_attribute_label( $meta['meta_key'], $product );
+								}
+
+								$var_attributes .= sprintf( __( '<br /><small>( %1$s: %2$s )</small>', 'woocommerce-product-vendors' ), wp_kses_post( rawurldecode( $meta['meta_key'] ) ), wp_kses_post( $meta['meta_value'] ) );
+							}
 						}
 					}
 				} else {

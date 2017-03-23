@@ -202,7 +202,7 @@ class WC_Product_Vendors_Utils {
 			$name = $term[0]->name;
 		}
 
-		return array( 'link' => apply_filters( 'wcpv_sold_by_link', $link, $post_id, $term ), 'name' => $name );
+		return array( 'link' => apply_filters( 'wcpv_sold_by_link', $link, $post_id, $term ), 'name' => apply_filters( 'wcpv_sold_by_link_name', $name, $post_id, $term ) );
 	}
 
 	/**
@@ -262,7 +262,15 @@ class WC_Product_Vendors_Utils {
 			$vendor_data = get_term_meta( $term->term_id, 'vendor_data', true );
 
 			if ( ! empty( $vendor_data['admins'] ) ) {
-				$admin_ids = array_filter( array_map( 'absint', explode( ',', $vendor_data['admins'] ) ) );
+				if ( version_compare( WC_VERSION, '2.7.0', '>=' ) && is_array( $vendor_data['admins'] ) ) {
+					$admin_ids = array_map( 'absint', $vendor_data['admins'] );
+				} else {
+					if ( is_array( $vendor_data['admins'] ) ) {
+						$admin_ids = array_filter( array_map( 'absint', $vendor_data['admins'] ) );
+					} else {
+						$admin_ids = array_filter( array_map( 'absint', explode( ',', $vendor_data['admins'] ) ) );
+					}
+				}
 
 				if ( in_array( $user_id, $admin_ids ) ) {
 					$vendor_data['term_id']          = $term->term_id;
@@ -292,8 +300,8 @@ class WC_Product_Vendors_Utils {
 	 * @return mix
 	 */
 	private static function _get_vendor_login_cookie() {
-		if ( ! empty( $_COOKIE[ 'wcpv_vendor_id_' . COOKIEHASH ] ) ) {
-			return $_COOKIE[ 'wcpv_vendor_id_' . COOKIEHASH ];
+		if ( ! empty( $_COOKIE[ 'woocommerce_pv_vendor_id_' . COOKIEHASH ] ) ) {
+			return $_COOKIE[ 'woocommerce_pv_vendor_id_' . COOKIEHASH ];
 		}
 
 		return false;
@@ -336,8 +344,18 @@ class WC_Product_Vendors_Utils {
 
 			$vendor_data = get_term_meta( $term->term_id, 'vendor_data', true );
 
+			if ( version_compare( WC_VERSION, '2.7.0', '>=' ) && is_array( $vendor_data['admins'] ) ) {
+				$admin_ids = array_map( 'absint', $vendor_data['admins'] );
+			} else {
+				if ( is_array( $vendor_data['admins'] ) ) {
+					$admin_ids = array_filter( array_map( 'absint', $vendor_data['admins'] ) );
+				} else {
+					$admin_ids = array_filter( array_map( 'absint', explode( ',', $vendor_data['admins'] ) ) );
+				}
+			}
+
 			// if user is listed as one of the admins
-			if ( ! empty( $vendor_data['admins'] ) && in_array( $user_id, array_filter( array_map( 'absint', explode( ',', $vendor_data['admins'] ) ) ) ) ) {
+			if ( ! empty( $vendor_data['admins'] ) && in_array( $user_id, $admin_ids ) ) {
 				return true;
 			}
 		}
@@ -718,7 +736,7 @@ class WC_Product_Vendors_Utils {
 			if ( ! empty( $commission ) || '0' == $commission ) {
 				return array( 'commission' => $commission, 'type' => $vendor_data['commission_type'] );
 
-			// try to get the commission from the parent product
+				// try to get the commission from the parent product
 			} else {
 				$parent_id = wp_get_post_parent_id( $product_id );
 

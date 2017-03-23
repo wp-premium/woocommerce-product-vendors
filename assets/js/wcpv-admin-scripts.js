@@ -128,7 +128,7 @@ jQuery( document ).ready( function( $ ) {
 					}
 				};
 
-				$( ':input.wcpv-vendor-search' ).filter( ':not(.enhanced)' ).each( function() {
+				$( '.wcpv-vendor-search-bar' ).filter( ':not(.enhanced)' ).each( function() {
 					var select2_args = {
 						allowClear:  $( this ).data( 'allow_clear' ) ? true : false,
 						placeholder: $( this ).data( 'placeholder' ),
@@ -147,7 +147,7 @@ jQuery( document ).ready( function( $ ) {
 									security: wcpv_admin_local.vendor_search_nonce
 					            };
 					        },
-					        results: function( data ) {
+					        processResults: function( data ) {
 					        	var terms = [];
 						        if ( data ) {
 									$.each( data, function( id, text ) {

@@ -10,14 +10,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
+if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) {
+	$order_date = $order->get_date_created();
+	$billing_first_name = $order->get_billing_first_name();
+	$billing_last_name = $order->get_billing_last_name();
+} else {
+	$order_date = $order->order_date;
+	$billing_first_name = $order->billing_first_name;
+	$billing_last_name = $order->billing_last_name;
+}
+
 echo "= " . $email_heading . " =\n\n";
 
-echo sprintf( __( 'You have received an order from %s.', 'woocommerce-product-vendors' ), $order->billing_first_name . ' ' . $order->billing_last_name ) . "\n\n";
+echo sprintf( __( 'You have received an order from %s.', 'woocommerce-product-vendors' ), $billing_first_name . ' ' . $billing_last_name ) . "\n\n";
 
 echo "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\n";
 
 echo strtoupper( sprintf( __( 'Order number: %s', 'woocommerce-product-vendors' ), $order->get_order_number() ) ) . "\n";
-echo date_i18n( __( 'jS F Y', 'woocommerce-product-vendors' ), strtotime( $order->order_date ) ) . "\n";
+echo date_i18n( __( 'jS F Y', 'woocommerce-product-vendors' ), strtotime( $order_date ) ) . "\n";
 
 echo "\n";
 

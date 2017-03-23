@@ -9,10 +9,7 @@ jQuery( document ).ready( function( $ ) {
 			// per product shipping
 			$( document.body )
 				.on( 'init_shipping_per_product', function() {
-					$('input#_per_product_shipping').change();
-					$('input.variable_is_virtual').change();
-					$('.enable_per_product_shipping').change();
-					$('body').trigger( 'init_shipping_per_product_sortable' );
+					$( document.body ).trigger( 'init_shipping_per_product_sortable' );
 				})
 				.on( 'init_shipping_per_product_sortable', function() {
 					$( '.wcpv-per-product-shipping-rules tbody' ).sortable({
@@ -35,7 +32,7 @@ jQuery( document ).ready( function( $ ) {
 
 			$( '#woocommerce-product-data' ).on( 'woocommerce_variations_added woocommerce_variations_loaded', function() {
 				$( document.body ).trigger( 'init_shipping_per_product' );
-			} );
+			});
 
 			$( '#woocommerce-product-data' )
 				.on( 'focus', '.wcpv-per-product-shipping-rules input', function() {
