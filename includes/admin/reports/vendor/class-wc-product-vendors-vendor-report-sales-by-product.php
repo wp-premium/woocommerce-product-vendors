@@ -208,7 +208,7 @@ class WC_Product_Vendors_Vendor_Report_Sales_By_Product extends WC_Admin_Report 
 		<div class="section">
 			<form method="GET">
 				<div>
-					<?php if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) { ?>
+					<?php if ( version_compare( WC_VERSION, '3.0.0', '>=' ) ) { ?>
 						<select class="wc-product-search" multiple="multiple" style="width: 50%;" name="product_ids[]" data-placeholder="<?php esc_attr_e( 'Search for a product&hellip;', 'woocommerce-product-vendors' ); ?>" data-action="woocommerce_json_search_products_and_variations">
 						</select>
 					<?php } else { ?>

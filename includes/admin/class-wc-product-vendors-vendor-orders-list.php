@@ -360,16 +360,16 @@ class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 		switch ( $column_name ) {
 
 			case 'order_id' :
-				$order = get_post( absint( $item->order_id ) );
+				$order = wc_get_order( absint( $item->order_id ) );
 
 				if ( is_object( $order ) ) {
-					return '<a href="' . admin_url( 'admin.php?page=wcpv-vendor-order&id=' . absint( $item->order_id ) ) . '" class="wcpv-vendor-order-by-id">' . absint( $item->order_id ) . '</a>';
+					return '<a href="' . admin_url( 'admin.php?page=wcpv-vendor-order&id=' . absint( $item->order_id ) ) . '" class="wcpv-vendor-order-by-id">' . $order->get_order_number() . '</a>';
 				}
 
-				return sprintf( '%s ' . __( 'Order Not Found', 'woocommerce-product-vendors' ), '#' . absint( $item->order_id ) );
+				return sprintf( '%s ' . __( 'Order Not Found', 'woocommerce-product-vendors' ), '#' . $order->get_order_number() );
 
 			case 'order_status' :
-				$order = wc_get_order( $item->order_id );
+				$order = wc_get_order( absint( $item->order_id ) );
 
 				if ( is_object( $order ) ) {
 					$order_status = WC_Product_Vendors_Utils::format_order_status( $order->get_status() );
@@ -382,7 +382,7 @@ class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 			case 'order_date' :
 				$order = wc_get_order( absint( $item->order_id ) );
 
-				if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) {
+				if ( version_compare( WC_VERSION, '3.0.0', '>=' ) ) {
 					$order_date = $order->get_date_created();
 				} else {
 					$order_date = $order->order_date;
@@ -417,7 +417,7 @@ class WC_Product_Vendors_Vendor_Orders_List extends WP_List_Table {
 				if ( ! empty( $item->variation_id ) ) {
 					$product = wc_get_product( absint( $item->variation_id ) );
 
-					if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) {
+					if ( version_compare( WC_VERSION, '3.0.0', '>=' ) ) {
 						$order_item = WC_Order_Factory::get_order_item( $item->order_item_id );
 						
 						if ( $metadata = $order_item->get_formatted_meta_data() ) {

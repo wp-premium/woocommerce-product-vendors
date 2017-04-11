@@ -184,7 +184,7 @@ class WC_Product_Vendors_Emails {
 	 * @return bool
 	 */
 	public function send_no_stock_email( $product ) {
-		if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) {
+		if ( version_compare( WC_VERSION, '3.0.0', '>=' ) ) {
 			$product_id = $product->get_id();
 		} else {
 			$product_id = $product->id;
@@ -217,7 +217,7 @@ class WC_Product_Vendors_Emails {
 	 * @return bool
 	 */
 	public function send_low_stock_email( $product ) {
-		if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) {
+		if ( version_compare( WC_VERSION, '3.0.0', '>=' ) ) {
 			$product_id = $product->get_id();
 		} else {
 			$product_id = $product->id;

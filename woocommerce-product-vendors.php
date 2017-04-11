@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: WooCommerce Product Vendors
- * Version: 2.0.26
+ * Version: 2.0.27
  * Plugin URI: https://woocommerce.com/products/product-vendors/
  * Description: Set up a multi-vendor marketplace that allows vendors to manage their own products and earn commissions. Run stores similar to Amazon or Etsy.
  * Author: WooCommerce
@@ -14,6 +14,8 @@
  *
  * @package WordPress
  * @author WooCommerce
+ *
+ * Woo: 219982:a97d99fccd651bbdd728f4d67d492c31
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -33,6 +35,8 @@ if ( ! function_exists( 'woothemes_queue_update' ) ) {
 woothemes_queue_update( plugin_basename( __FILE__ ), 'a97d99fccd651bbdd728f4d67d492c31', '219982' );
 
 if ( ! class_exists( 'WC_Product_Vendors' ) ) {
+
+	define( 'WC_PRODUCT_VENDORS_VERSION', '2.0.27' );
 
 	/**
 	 * Main class.
@@ -69,7 +73,7 @@ if ( ! class_exists( 'WC_Product_Vendors' ) ) {
 		 * @return bool
 		 */
 		public function __clone() {
-			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'woocommerce-product-vendors' ), '2.0.26' );
+			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'woocommerce-product-vendors' ), WC_PRODUCT_VENDORS_VERSION );
 		}
 
 		/**
@@ -81,7 +85,7 @@ if ( ! class_exists( 'WC_Product_Vendors' ) ) {
 		 * @return bool
 		 */
 		public function __wakeup() {
-			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'woocommerce-product-vendors' ), '2.0.26' );
+			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'woocommerce-product-vendors' ), WC_PRODUCT_VENDORS_VERSION );
 		}
 
 		/**
@@ -111,7 +115,6 @@ if ( ! class_exists( 'WC_Product_Vendors' ) ) {
 		private function define_constants() {
 			global $wpdb;
 
-			define( 'WC_PRODUCT_VENDORS_VERSION', '2.0.26' );
 			define( 'WC_PRODUCT_VENDORS_PATH', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
 			define( 'WC_PRODUCT_VENDORS_TEMPLATES_PATH', untrailingslashit( plugin_dir_path( __FILE__ ) ) . '/templates/' );
 			define( 'WC_PRODUCT_VENDORS_PLUGIN_URL', untrailingslashit( plugins_url( basename( plugin_dir_path( __FILE__ ) ), basename( __FILE__ ) ) ) );
@@ -267,7 +270,7 @@ if ( ! class_exists( 'WC_Product_Vendors' ) ) {
 		 * @return string
 		 */
 		public function woocommerce_missing_notice() {
-			echo '<div class="error"><p>' . sprintf( esc_html__( 'WooCommerce Product Vendors Plugin requires WooCommerce to be installed and active. You can download %s here.', 'woocommerce-product-vendors' ), '<a href="http://www.woothemes.com/woocommerce/" target="_blank">WooCommerce</a>' ) . '</p></div>';
+			echo '<div class="error"><p>' . sprintf( esc_html__( 'WooCommerce Product Vendors Plugin requires WooCommerce to be installed and active. You can download %s here.', 'woocommerce-product-vendors' ), '<a href="https://woocommerce.com/" target="_blank">WooCommerce</a>' ) . '</p></div>';
 
 			return true;
 		}

@@ -455,12 +455,12 @@ class WC_Product_Vendors_Store_Admin_Commission_List extends WP_List_Table {
 	public function column_default( $item, $column_name ) {
 		switch ( $column_name ) {
 			case 'order_id' :
-				$order = get_post( absint( $item->order_id ) );
+				$order = wc_get_order( absint( $item->order_id ) );
 
 				if ( is_object( $order ) ) {
-					return edit_post_link( absint( $item->order_id ), '', '', absint( $item->order_id ) );
+					return edit_post_link( $order->get_order_number(), '', '', absint( $item->order_id ) );
 				} else {
-					return sprintf( '%s ' . __( 'Order Not Found', 'woocommerce-product-vendors' ), '#' . absint( $item->order_id ) );
+					return sprintf( '%s ' . __( 'Order Not Found', 'woocommerce-product-vendors' ), '#' . $order->get_order_number() );
 				}
 
 			case 'order_status' :
@@ -506,7 +506,7 @@ class WC_Product_Vendors_Store_Admin_Commission_List extends WP_List_Table {
 					$order   = wc_get_order( $item->order_id );
 					$product = wc_get_product( absint( $item->variation_id ) );
 
-					if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) {
+					if ( version_compare( WC_VERSION, '3.0.0', '>=' ) ) {
 						$order_item = WC_Order_Factory::get_order_item( $item->order_item_id );
 						
 						if ( $metadata = $order_item->get_formatted_meta_data() ) {

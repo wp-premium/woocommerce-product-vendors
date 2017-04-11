@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) {
+if ( version_compare( WC_VERSION, '3.0.0', '>=' ) ) {
 	$order_date = $order->get_date_created();
 	$billing_first_name = $order->get_billing_first_name();
 	$billing_last_name = $order->get_billing_last_name();

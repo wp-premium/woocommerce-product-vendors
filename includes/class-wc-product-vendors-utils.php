@@ -262,7 +262,7 @@ class WC_Product_Vendors_Utils {
 			$vendor_data = get_term_meta( $term->term_id, 'vendor_data', true );
 
 			if ( ! empty( $vendor_data['admins'] ) ) {
-				if ( version_compare( WC_VERSION, '2.7.0', '>=' ) && is_array( $vendor_data['admins'] ) ) {
+				if ( version_compare( WC_VERSION, '3.0.0', '>=' ) && is_array( $vendor_data['admins'] ) ) {
 					$admin_ids = array_map( 'absint', $vendor_data['admins'] );
 				} else {
 					if ( is_array( $vendor_data['admins'] ) ) {
@@ -344,7 +344,7 @@ class WC_Product_Vendors_Utils {
 
 			$vendor_data = get_term_meta( $term->term_id, 'vendor_data', true );
 
-			if ( version_compare( WC_VERSION, '2.7.0', '>=' ) && is_array( $vendor_data['admins'] ) ) {
+			if ( version_compare( WC_VERSION, '3.0.0', '>=' ) && is_array( $vendor_data['admins'] ) ) {
 				$admin_ids = array_map( 'absint', $vendor_data['admins'] );
 			} else {
 				if ( is_array( $vendor_data['admins'] ) ) {
@@ -503,6 +503,11 @@ class WC_Product_Vendors_Utils {
 						'terms'    => $term_id,
 					),
 				),
+				// This call is low-level, so we need to suppress all filters.
+				// The methods that use this will filter additionally as needed.
+				// One example is WC_Product_Vendors_Bookings::filter_products_booking_list on pre_get_posts.
+				// This breaks filtering on the WP_List_Table.
+				'suppress_filters' => true,
 			);
 
 			$query = new WP_Query( $args );
@@ -729,7 +734,7 @@ class WC_Product_Vendors_Utils {
 		$product = wc_get_product( $product_id );
 
 		// check if product is a variation
-		if ( 'variation' === $product->product_type || $product->is_type( 'variable' ) ) {
+		if ( 'variation' === $product->get_type() || $product->is_type( 'variable' ) ) {
 			// look for variation commission first
 			$commission = get_post_meta( $product_id, '_wcpv_product_commission', true );
 

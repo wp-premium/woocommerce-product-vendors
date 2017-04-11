@@ -166,7 +166,7 @@ class WC_Product_Vendors_Vendor_Order_Detail_List extends WP_List_Table {
 				if ( ! empty( $item->variation_id ) ) {
 					$product = wc_get_product( absint( $item->variation_id ) );
 
-					if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) {
+					if ( version_compare( WC_VERSION, '3.0.0', '>=' ) ) {
 						$order_item = WC_Order_Factory::get_order_item( $item->order_item_id );
 						
 						if ( $metadata = $order_item->get_formatted_meta_data() ) {
@@ -276,7 +276,7 @@ class WC_Product_Vendors_Vendor_Order_Detail_List extends WP_List_Table {
 				$status = WC_Product_Vendors_Utils::get_fulfillment_status( $item->order_item_id );
 				$product = wc_get_product( $item->product_id );
 
-				if ( is_object( $product ) && ( $product->is_virtual() || $product->is_downloadable() || 'booking' === $product->product_type ) ) {
+				if ( is_object( $product ) && ( $product->is_virtual() || $product->is_downloadable() || 'booking' === $product->get_type() ) ) {
 					return __( 'N/A', 'woocommerce-product-vendors' );
 				}
 
