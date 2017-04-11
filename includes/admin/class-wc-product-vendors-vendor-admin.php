@@ -1128,7 +1128,7 @@ class WC_Product_Vendors_Vendor_Admin {
 			$payment_gateways = array();
 		}
 
-		if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) {
+		if ( version_compare( WC_VERSION, '3.0.0', '>=' ) ) {
 			$payment_method = $order->get_payment_method();
 		} else {
 			$payment_method = $order->payment_method;

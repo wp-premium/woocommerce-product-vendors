@@ -138,7 +138,7 @@ class WC_Product_Vendors_Vendor_Frontend {
 		$sold_by = get_option( 'wcpv_vendor_settings_display_show_by', 'yes' );
 
 		if ( 'yes' === $sold_by ) {
-			if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) {
+			if ( version_compare( WC_VERSION, '3.0.0', '>=' ) ) {
 				$product_id = $cart_item['product_id'];
 			} else {
 				$product_id = $cart_item['data']->id;
