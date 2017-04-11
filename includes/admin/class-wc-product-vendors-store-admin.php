@@ -379,7 +379,7 @@ class WC_Product_Vendors_Store_Admin {
 		}
 
 		if ( ! empty( $admins ) ) {
-			if ( version_compare( WC_VERSION, '2.7.0', '>=' ) && is_array( $vendor_data['admins'] ) ) {
+			if ( version_compare( WC_VERSION, '3.0.0', '>=' ) && is_array( $vendor_data['admins'] ) ) {
 				$admin_ids = array_map( 'absint', $vendor_data['admins'] );
 			} else {
 				$admin_ids = array_filter( array_map( 'absint', explode( ',', $vendor_data['admins'] ) ) );
@@ -422,8 +422,8 @@ class WC_Product_Vendors_Store_Admin {
 			$sanitized_vendor_data = array();
 
 			foreach( $posted_vendor_data as $data_key => $data_value ) {
-				if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) {
-					// Previous to WC 2.7, Select 2 needed saved values as string.
+				if ( version_compare( WC_VERSION, '3.0.0', '>=' ) ) {
+					// Previous to WC 3.0, Select 2 needed saved values as string.
 					// Now no longer so we sanitize it as multidimensional array.
 					if ( 'admins' === $data_key ) {
 						$sanitized_vendor_data[ $data_key ] = array_map( 'absint', $data_value );
@@ -471,7 +471,7 @@ class WC_Product_Vendors_Store_Admin {
 				$sanitized_vendor_data[ $data_key ] = stripslashes( $data_value );
 			}
 
-			if ( version_compare( WC_VERSION, '2.7.0', '>=' ) && empty( $posted_vendor_data['admins'] ) ) {
+			if ( version_compare( WC_VERSION, '3.0.0', '>=' ) && empty( $posted_vendor_data['admins'] ) ) {
 				$sanitized_vendor_data['admins'] = array();
 			}
 
@@ -526,7 +526,7 @@ class WC_Product_Vendors_Store_Admin {
 		}
 
 		if ( 'admins' === $column_name && ! empty( $vendor_data['admins'] ) ) {
-			if ( version_compare( WC_VERSION, '2.7.0', '>=' ) && is_array( $vendor_data['admins'] ) ) {
+			if ( version_compare( WC_VERSION, '3.0.0', '>=' ) && is_array( $vendor_data['admins'] ) ) {
 				$admin_ids = array_map( 'absint', $vendor_data['admins'] );
 			} else {
 				$admin_ids = array_filter( array_map( 'absint', explode( ',', $vendor_data['admins'] ) ) );
@@ -1266,7 +1266,7 @@ class WC_Product_Vendors_Store_Admin {
 			wp_die( __( 'Cheatin&#8217; huh?', 'woocommerce-product-vendors' ) );
 		}
 
-		if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) {
+		if ( version_compare( WC_VERSION, '3.0.0', '>=' ) ) {
 			$term = (string) wc_clean( stripslashes( $_GET['term']['term'] ) );
 		} else {
 			$term = (string) wc_clean( stripslashes( $_GET['term'] ) );
@@ -1357,7 +1357,7 @@ class WC_Product_Vendors_Store_Admin {
 				return;
 			}
 
-			if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) {
+			if ( version_compare( WC_VERSION, '3.0.0', '>=' ) ) {
 				$product_id = $product->get_id();
 			} else {
 				$product_id = $product->id;

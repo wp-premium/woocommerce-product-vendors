@@ -1,11 +1,16 @@
 *** Product Vendors Changelog ***
 
+2017-03-28 - version 2.0.27
+* Update - Additional updates for WooCommerce 3.0 compatibility.
+* Add - Compatibility with Sequential Numbers Pro.
+* Fix - Filters on the Bookings list table were not filtering properly.
+
 2017-03-02 - version 2.0.26
 * Fix - In cart bookings should not show in vendor dashboard.
 * Tweak - Vendor ID cookie name to allow hosting to not cache cookie.
 
 2017-02-13 - version 2.0.25
-* Update - WooCommerce 2.7 compatibility.
+* Update - WooCommerce 3.0 compatibility.
 * Fix - Variation attribute not showing in commission list.
 * Fix - Compatibility issue with Bookings reverted version.
 * New - Introduce filter "wcpv_sold_by_link_name".

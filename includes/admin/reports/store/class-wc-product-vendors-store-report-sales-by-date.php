@@ -589,7 +589,7 @@ class WC_Product_Vendors_Store_Report_Sales_By_Date extends WC_Admin_Report {
 		<div class="section">
 			<form method="GET">
 				<div>
-					<?php if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) { ?>
+					<?php if ( version_compare( WC_VERSION, '3.0.0', '>=' ) ) { ?>
 						<select style="width: 50%;" class="wcpv-vendor-search-bar" name="vendor_id" data-placeholder="<?php esc_attr_e( 'Search for a vendor&hellip;', 'woocommerce-product-vendors' ); ?>">
 						</select>					
 					<?php } else { ?>

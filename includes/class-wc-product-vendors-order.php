@@ -57,7 +57,7 @@ class WC_Product_Vendors_Order {
 	 * @return bool
 	 */
 	public function process_manual_create_commission_action( $order ) {
-		if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) {
+		if ( version_compare( WC_VERSION, '3.0.0', '>=' ) ) {
 			$order_id = $order->get_id();
 		} else {
 			$order_id = $order->id;
@@ -155,7 +155,7 @@ class WC_Product_Vendors_Order {
 
 					$attributes = '';
 					
-					if ( 'variation' === $_product->product_type ) {
+					if ( 'variation' === $_product->get_type() ) {
 						// get variation attributes
 						$variation_attributes = $_product->get_variation_attributes();
 
@@ -181,7 +181,7 @@ class WC_Product_Vendors_Order {
 
 					$last_commission_id = $wpdb->get_var( $wpdb->prepare( $check_sql, $order_item_id, $order_id, 'paid' ) );
 
-					if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) {
+					if ( version_compare( WC_VERSION, '3.0.0', '>=' ) ) {
 						$order_date = $this->order->get_date_created();
 					} else {
 						$order_date = $this->order->order_date;
@@ -217,7 +217,7 @@ class WC_Product_Vendors_Order {
 						$wpdb->query( $wpdb->prepare( $sql, $order_item_id, '_commission_status', $init_status ) );
 					}
 
-					if ( version_compare( WC_VERSION, '2.7.0', '>=' ) ) {
+					if ( version_compare( WC_VERSION, '3.0.0', '>=' ) ) {
 						$customer_user = $this->order->get_customer_user_agent();
 					} else {
 						$customer_user = $this->order->customer_user;

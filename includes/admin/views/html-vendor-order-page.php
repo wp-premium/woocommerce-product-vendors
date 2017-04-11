@@ -23,7 +23,7 @@ $timezone = ! empty( $vendor_data['timezone'] ) ? sanitize_text_field( $vendor_d
 						<div class="panel-wrap woocommerce">
 							<div id="order_data" class="panel">
 
-								<h2><?php printf( esc_html__( 'Order #%s Details', 'woocommerce-product-vendors' ), $order_id ); ?></h2>
+								<h2><?php printf( esc_html__( 'Order #%s Details', 'woocommerce-product-vendors' ), $order->get_order_number() ); ?></h2>
 
 								<div class="order_data_column_container">
 									<div class="order_data_column">
